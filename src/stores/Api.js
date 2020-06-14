@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { action, decorate } from 'mobx';
-
+import config from 'config'
 class Api {
 	api = axios.create({
-		baseURL: 'http://localhost:4000/'
+		baseURL: `${config.apiUrl}`
 	});
 
 	getUsers = () => {
@@ -58,8 +58,12 @@ class Api {
 	loginaccount = (data) => {
 		return this.api.post('accounts/login', {
 			mode: 'cors',
-			data: data
-		});
+			data: data,
+			headers: {
+				'Content-Type': 'application/json',
+			}
+		}
+		);
 	};
 
 	adddistributor = (data) => {
