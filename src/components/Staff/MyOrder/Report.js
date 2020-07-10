@@ -15,13 +15,31 @@ class Reports extends React.Component {
 
   
   render() { 
-    let {startingStore:{addReport,report}}=this.props
+  
+    let {staffStore:{addReport,report,assignOrder,order,notif,addNotif}}=this.props
+
+let myId = JSON.parse(sessionStorage.getItem('userData'))
+
+   let selectedOrder =this.props.orderid;
+   let dis =this.props.dis
+
  function Report() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleClickOpen = () => {
+    order.setProperty('orderID',selectedOrder)
+    order.setProperty('orderStatus','Failed')
+    report.setProperty("order_ID",selectedOrder)
+    report.setProperty("report_ID",`${getHash(date.getFullYear())}-${ Math.floor(1000 + Math.random() * 9000)}`)
+    report.setProperty("account_ID",myId.account_ID)
+    report.setProperty("distributor_ID",dis)
+    report.setProperty("report_Detail","Low Stock")
+    
+    report.setProperty("report_Date",moment().format('MMM/DD/YYYY,h:mm:ssa'))
+    report.setProperty("report_Status",'Pending')
+    report.setProperty('report_Type','Order Report')
     setOpen(true);
   };
 
@@ -43,19 +61,25 @@ class Reports extends React.Component {
 let date = new Date();
 const submit =() =>{
   
+  notif.setProperty('notif_ID',`${getHash(date.getHours())}-${ Math.floor(1000 + Math.random() * 9000)}`)
+  notif.setProperty('account_ID',myId.account_ID)
+  notif.setProperty('distributor_ID',myId.distributor_ID)
+  notif.setProperty('notif_subject','Order Process')
+  notif.setProperty('notif_description',`Order ${selectedOrder} has been reported`)
+  notif.setProperty('notif_date',moment().format('MMM/DD/YYYY,h:mm:ssa'))
+  notif.setProperty('notif_status','unread')
 
-  report.setProperty("report_ID",`${getHash(date.getFullYear())}-${ Math.floor(1000 + Math.random() * 9000)}`)
-  report.setProperty("order_ID","7--1253614998-7516")
-  report.setProperty("distributor_ID","2020--1371079641-2752")
-  report.setProperty("report_Detail","Reason 2")
-  report.setProperty("report_Note","Tamad ko magUbra wala pa sweldo!")
-  report.setProperty("report_Date",moment().format('MMMM Do YYYY, h:mm:ss a'))
-  report.setProperty("report_Status",'Pending')
   addReport();
+  assignOrder();
+  addNotif();
+  setTimeout(()=>{
+    setOpen(false);
+  },500)
+ 
 }
   return (
     <div>
-      <Button variant="outlined" style={{backgroundColor:"#F7A31C",color:"white"}} onClick={handleClickOpen}>
+      <Button variant="outlined" style={{backgroundColor:"#F7A31C",color:"white"}} size='small' onClick={handleClickOpen}>
         Report
       </Button>
       <Dialog
@@ -81,16 +105,21 @@ const submit =() =>{
             
                 <Typography variant="h6">Add Note : </Typography>
                   <Grid item sm={12} xs={12} >
-          <TextareaAutosize aria-label="minimum height" rowsMin={7} style={{width:"100%"}}  />
+          <TextareaAutosize aria-label="minimum height" rowsMin={7} style={{width:"100%"}} 
+          onChange={report_Note=>{
+            report.setProperty("report_Note",report_Note.target.value)
+          }}
+          
+          />
           </Grid>
           </Grid>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} style={{backgroundColor:"#F7A31C",color:"white"}}>
-            Cancel
+          <Button autoFocus onClick={handleClose} size='small' style={{backgroundColor:"#F7A31C",color:"white"}}>
+            Close
           </Button>
-          <Button onClick={submit} style={{backgroundColor:"#208769",color:"white"}} autoFocus>
+          <Button onClick={submit} size='small' style={{backgroundColor:"#208769",color:"white"}} autoFocus>
             Submit
           </Button>
         </DialogActions>
@@ -105,4 +134,4 @@ return (
 }
 }
 
-export default inject("startingStore")(observer(Reports));
+export default inject("staffStore")(observer(Reports));

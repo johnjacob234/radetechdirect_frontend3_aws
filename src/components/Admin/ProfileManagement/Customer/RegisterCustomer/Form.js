@@ -105,7 +105,7 @@ class RegForm extends Component{
       onChange={account_fName=>{
         account.setProperty("account_fName", account_fName.target.value)
         account.setProperty('account_ID',`${date.getFullYear()}-${getHash(account_fName.target.value)}-${ Math.floor(1000 + Math.random() * 9000)}` )
-        account.setProperty("account_dateRegistered",moment().format('MMMM Do YYYY, h:mm:ss a') )
+        account.setProperty("account_dateRegistered",moment().format('MMM/DD/YYYY, h:mm:ss a') )
         account.setProperty('account_username', account_fName.target.value.split(" ")[0]+"123")
        
       

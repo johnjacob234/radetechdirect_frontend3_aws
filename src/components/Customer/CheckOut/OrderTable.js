@@ -29,12 +29,12 @@ arrayBufferToBase64 (buffer) {
   bytes.forEach((b) => binary += String.fromCharCode(b));
   return window.btoa(binary);
 };
-  componentDidMount(){
-    let{startingStore:{getCart}}=this.props;
-    getCart();
-  }
+  // componentDidMount(){
+  //   let{customerStore:{getCart}}=this.props;
+  //   getCart();
+  // }
   render() { 
-let {startingStore:{listOfCart}}=this.props
+let {customerStore:{listOfCart,stock}}=this.props
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -54,11 +54,13 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(image, product, quantity, price, total) {
-  return { image, product, quantity, price, total };
+function createData( product, quantity,  total) {
+  return {  product, quantity, total };
 }
 let getuname = JSON.parse(sessionStorage.getItem('userData'))
-let rowss =  listOfCart.map(product => {
+let getDist = JSON.parse(sessionStorage.getItem('distData'))
+let filterCart =listOfCart.filter(cart => cart.account_ID === getuname.account_ID && cart.distributor_ID === getDist.distributor_ID)
+let rowss =  filterCart.map(product => {
 
   return (
 
@@ -71,13 +73,13 @@ let rowss =  listOfCart.map(product => {
 
  })
 
- let filterCart =listOfCart.filter(cart => cart.account_ID === getuname.account_ID)
+
 
 let myOrder =filterCart.map(order => {
 
 return(createData(
 
-<img style={{width:"35px" , height:"35px"}} src={order.product_Img} />,order.product_Name,order.product_Quantity,order.product_Price,order.product_TotalAmount
+order.product_Name,order.product_Quantity,<span>&#8369;{order.product_TotalAmount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>
 
 
 ))
@@ -98,35 +100,33 @@ const useStyles = makeStyles({
   return (
     <React.Fragment>
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
+      <Table className={classes.table} aria-label="customized table" size='small'>
         <TableHead >
           <TableRow>
-            <StyledTableCell align="center">Image</StyledTableCell>
-            <StyledTableCell align="center">Product</StyledTableCell>
-            <StyledTableCell align="center">Quantity</StyledTableCell>
-            <StyledTableCell align="center">Price</StyledTableCell>
-            <StyledTableCell align="center">Total</StyledTableCell>
+           
+            <StyledTableCell align="left">Product</StyledTableCell>
+            <StyledTableCell align="right">Quantity</StyledTableCell>
+         
+            <StyledTableCell align="right">Amount</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {myOrder.map((row) => (
             <StyledTableRow key={row.product}>
-              <StyledTableCell component="th" scope="row" align="center">
-                {row.image}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.product}</StyledTableCell>
-              <StyledTableCell align="center">{row.quantity}</StyledTableCell>
-              <StyledTableCell align="center">{row.price}</StyledTableCell>
-              <StyledTableCell align="center">{row.total}</StyledTableCell>
+             
+              <StyledTableCell component="th" scope="row" align="left">{row.product}</StyledTableCell>
+              <StyledTableCell align="right">{row.quantity}</StyledTableCell>
+             
+              <StyledTableCell align="right">{row.total}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
 
-   <Grid container direction="row" alignItems='center' justify='center' xs={12} sm={12}>
+   <Grid container direction="row" alignItems='center' justify='center' xs={12} sm={12} style={{marginTop:"8px"}}>
        <Grid item xs={12} sm={12}>
-           <Typography variant='p' style={{fontWeight:"bold",marginTop:"16px"}}> Total: &#8369; {rowss.pop()}</Typography>
+           <Typography variant='p' style={{fontWeight:"bold",marginTop:"16px"}}>Total: &#8369;{rowss.pop()}</Typography>
            
        </Grid>
 
@@ -142,4 +142,4 @@ return (
 }
 }
 
-export default inject('startingStore')(observer(Ordertable));
+export default inject('customerStore')(observer(Ordertable));

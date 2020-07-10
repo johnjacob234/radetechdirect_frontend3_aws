@@ -1,30 +1,22 @@
-import React,{useEffect} from 'react';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Grid, IconButton, InputBase, Paper } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import {inject,observer} from 'mobx-react'
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import { ThemeProvider } from '@material-ui/core/styles';
-import theme from './../theme'
-
-import EnhancedTable from './table'
-import ExpiringTable from './table/expiring'
-import { Grid,Paper,InputBase,IconButton } from '@material-ui/core';
-
-import SearchIcon from '@material-ui/icons/Search'
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import SearchIcon from '@material-ui/icons/Search';
+import PropTypes from 'prop-types';
+import React from 'react';
+import SwipeableViews from 'react-swipeable-views';
+import theme from './../theme';
 import RestockTable from './Restock/table';
-import Dropdown from './table/dropsample.js'
-import FilterGrid from './Filter'
-
-
-
+import EnhancedTable from './table';
+import ExpiringTable from './table/expiring';
 
 
  function TabPanel(props) {
@@ -68,11 +60,27 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     backgroundColor:"#FAFAFA"
   },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  
+  },
+
+  search: {
+    // padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'right',
+    width: '90%',
+    float:"right"
+  },
 }));
 
 export default function InventoryTab() {
   const classes = useStyles();
-  // const [filter,setFilter]= React.useState("")
+  const [filter,setFilter]= React.useState("")
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -83,10 +91,7 @@ export default function InventoryTab() {
     setValue(index);
   };
 
-  // let search=(e,filter)=>{
-  //   setFilter(e.target.value)
-  //   console.log(setFilter,"filter")
-  // }
+  
   
   return (
     <div className={classes.root}>
@@ -112,86 +117,181 @@ export default function InventoryTab() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
+          <Grid container lg={12} xs={12} sm={12}>
+          <Grid item  lg={12} xs={12} sm={12}>
       <Paper className={classes.paper} style={{marginBottom:"10px"}}>
+    
         <Grid
   container
-  sm={12}
+  lg={12} xs={12} sm={12}
   direction="row"
   justify="flex-end"
   alignItems="flex-end"
   
 >
        
-          <Grid item  >
-          <FormControl variant="outlined" className={classes.formControl} style={{marginRight:"5px",backgroundColor:"white"}}>
-        <InputLabel  htmlFor="outlined-age-native-simple" >
-          Category
-        </InputLabel>
-        <Select
-          native
-        
-         
-        
+          <Grid item xs={2}  >
+
+
+
+      <FormControl  variant="outlined" className={classes.formControl} style={{marginRight:"5px",width:"95%"}}>
+        <InputLabel htmlFor="grouped-native-select">Category</InputLabel>
+        <Select native defaultValue="" id="grouped-native-select"
+       onChange={(e)=>setFilter(e.target.value)}
         >
-          <option value="" />
-          <option value="Category1">Category 1</option>
-          <option value="Category2">Category 2</option>
-          <option value="Category3">Category 3</option>
+       <option aria-label="None" value="" />
+          <optgroup label="Beverages">
+            <option value='Coffee'>Coffee</option>
+            <option value='Tea'>Tea</option>
+            <option value='Juice'>Juice</option>
+            <option value='Soda'>Soda</option>
+            <option value='Milk'>Milk</option>
+            <option value='Water'>Water</option>
+          </optgroup>
+          <optgroup label="Bread/Bakery">
+            <option value='Sandwich Loaf'>Sandwich Loaf</option>
+            <option value='Cake'>Cake</option>
+            <option value='Brownies'>Brownies</option>
+            <option value='Cookies'>Cookies</option>
+            <option value='Biscuits'>Biscuits</option>
+            <option value='Pizzas'>Pizzas</option>
+            <option value='Doughnuts'>Doughnuts</option>
+            <option value='Pandesal'>Pandesal</option>
+            <option value='Pies'>Pies</option>
+          </optgroup>
+          <optgroup label="Canned/Jarred">
+            <option value='Sardines'>Sardines</option>
+            <option value='Tuna'>Tuna</option>
+            <option value='Corned beef'>Corned beef</option>
+            <option value='Mushroom'>Mushroom</option>
+            <option value='Sausage'>Sausage</option>
+            <option value='Condenced Milk'>Condenced Milk</option>
+            <option value='Evaporated Milk'>Evaporated Milk</option>
+            <option value='Sisig'>Sisig</option>
+            <option value='Corn'>Corn</option>
+            <option value='Fruits'>Fruits</option>
+            <option value='Juice'>Juice</option>
+          </optgroup>
+          <optgroup label="Cleaning">
+            <option value='Disinfectant'>Disinfectant</option>
+            <option value='Sprays'>Sprays</option>
+            <option value='Toilet'>Toilet</option>
+            <option value='Floor'>Floor</option>
+            <option value='Furnature'>Furnature</option>
+            <option value='Carpet'>Carpet</option>
+            <option value='Detergent'>Detergent</option>
+            <option value='Bleach'>Bleach</option>
+            <option value='Fabric Conditioner'>Fabric Conditioner</option>
+            <option value='Dishwashing'>Dishwashing</option>
+          </optgroup>
+          <optgroup label="Dry/Baking">
+            <option value='Flour'>Flour</option>
+            <option value='Sugar'>Sugar</option>
+            <option value='Measuring'>Measuring</option>
+          </optgroup>
+          <optgroup label="Liquor">
+          <option value='Brandy'>Brandy</option>
+          <option value='Beer'>Beer</option>
+            <option value='Whiskey'>Whiskey</option>
+            <option value='Gin'>Gin</option>
+           
+          </optgroup>
+          <optgroup label="Produce">
+            <option value='Fruits'>Fruits</option>
+            <option value='Vegetable'>Vegetable</option>
+          </optgroup>
+          <optgroup label="Paper Goods">
+            <option value='Toilet Paper'>Toilet Paper</option>
+            <option value='Table Napkin'>Table Napkin</option>
+          </optgroup>
+          <optgroup label="Personal Care">
+            <option value='Soap'>Soap</option>
+            <option value='Shampoo'>Shampoo</option>
+            <option value='Cotton'>Cotton</option>
+            <option value='Shaving'>Shaving</option>
+            <option value='Lotion'>Lotion</option>
+            <option value='Facial Wash'>Facial Wash</option>
+            <option value='Facial Cream'>Facial Cream</option>
+          </optgroup>
         </Select>
       </FormControl>
+
       </Grid>
-<Grid item>
-            <FormControl variant="outlined" className={classes.formControl} style={{marginRight:"5px",backgroundColor:"white"}}>
-        <InputLabel  htmlFor="outlined-age-native-simple" >
-          Brand
-        </InputLabel>
+<Grid item xs={2}>
+           
+              <FormControl variant="outlined" className={classes.formControl} style={{marginRight:"2px",width:"95%"}}>
+        <InputLabel htmlFor="outlined-age-native-simple">Brand</InputLabel>
         <Select
-          native
-        
+       
          
-        
+          onChange={(e)=>setFilter(e.target.value)}
+          label="Brand"
         >
-          <option value="" />
-          <option value="Brand1">Brand 1</option>
-          <option value="Brand2">Brand 2</option>
-          <option value="Brand3">Brand 3</option>
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value="Ajinomoto">Ajinomoto</MenuItem>
+          <MenuItem value="Bear Brand">Bear Brand</MenuItem>
+          <MenuItem value="Lays">Lays</MenuItem>
+          <MenuItem value="Lucky Me">Lucky Me</MenuItem>
+          <MenuItem value="Maggi">Maggi</MenuItem>
+          <MenuItem value="Milo">Milo</MenuItem>
+          <MenuItem value="Nescafe">Nescafe</MenuItem>
+          <MenuItem value="Oishi">Oishi</MenuItem>
+          <MenuItem value="Palmolive">Palmolive</MenuItem>
+         
+          <MenuItem value="Safeguard">Safeguard</MenuItem>
+          <MenuItem value="Siver Swan">Siver Swan</MenuItem>    
+          <MenuItem value="Surf">Surf</MenuItem>
+          <MenuItem value="Uniliver">Uniliver</MenuItem>
+        
         </Select>
       </FormControl>
+
+      
+
 </Grid>
-<Grid sm={4} > 
-      <Paper component="form" >
-    
-    <InputBase 
-    type="search"
-      // value={filter}
-     fullWidth={false} 
-     style={{fontSize:"20px",paddingLeft:"5px"}}
-      placeholder="Search "
-      // onChange={(e)=>search(filter)}
-    />
-    <IconButton type="submit"  aria-label="search" style={{backgroundColor:"orange",borderRadius:"4px",height:"38px",float:"right"}}>
-      <  SearchIcon style={{color:"white",marginTop:'-15%',float:"right"}}/>
-    </IconButton>
+<Grid sm={3}  > 
+<Paper component="form" className={classes.search} >
+   
+   <InputBase
+     className={classes.input}
+     placeholder="Search Items"
+     inputProps={{ 'aria-label': 'search Items' }}
+     onChange={(e)=>setFilter(e.target.value)}
+   />
+   <span style={{  backgroundColor:"#FFA500",borderRadius:"3px"}}>
+   <IconButton type="submit" className={classes.iconButton} aria-label="search">
+     <SearchIcon style={{color:"white"}}/>
+   </IconButton>
+   </span>
   
-  </Paper >
+ </Paper>
 
       </Grid>
       </Grid>
+     
       </Paper >
+      </Grid>
       <Grid item sm={12}>
-          <EnhancedTable/>
+          <EnhancedTable mysearch={filter}/>
           </Grid>
-          
+          </Grid>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-        <Dropdown/>
+          <Grid container lg={12} md={12} xs={12}>
+          <Grid item lg={12} md={12} xs={12}> <Paper className={classes.paper}></Paper> </Grid>
+            <Grid item lg={12} md={12} xs={12}>
+        <ExpiringTable/>
+        </Grid>
+        </Grid>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <Grid container direction="row" sm={12}>
-            <Grid item xs={12}>
-              <FilterGrid/>
-            </Grid>
-            <Grid item xs={12}>
+          <Grid container direction="row" lg={12} md={12} xs={12}>
+           <Grid item lg={12} md={12} xs={12}>
+
+           </Grid>
+            <Grid item lg={12} md={12} xs={12}>
         <RestockTable/>
         </Grid>
         </Grid>

@@ -15,7 +15,8 @@ class Passign extends React.Component {
     componentDidMount(){
       let {startingStore:{staffAssigned,getOrder}}=this.props
       staffAssigned();
-      getOrder()
+      getOrder();
+     
   
     }
     render() { 
@@ -51,7 +52,7 @@ let filterorder = listOfOrder.filter((order =>order.distributor_ID === getId.dis
 let rows = filterorder.map(orderss =>{
     return(createData(
     
-    orderss.orderID,orderss.modeOfPayment,orderss.orderDate,orderss.paymentStatus,orderss.orderStatus,orderss.distributor_ID,
+    orderss.orderID,orderss.modeOfPayment,orderss.orderDate,orderss.paymentStatus,orderss.orderStatus,<span> {listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>
 
     
     
@@ -76,12 +77,12 @@ const useStyles = makeStyles({
       <Table className={classes.table} aria-label="customized table">
         <TableHead >
           <TableRow>
-          <StyledTableCell>Reference no.</StyledTableCell>
+          <StyledTableCell>Reference #</StyledTableCell>
             <StyledTableCell align="left">Payment Method</StyledTableCell>
             <StyledTableCell align="center">Date</StyledTableCell>
             <StyledTableCell align="left">Payment Status</StyledTableCell>
             <StyledTableCell align="left">Order Status</StyledTableCell>
-            <StyledTableCell align="left">Retail ID</StyledTableCell>
+            <StyledTableCell align="left">Customer</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

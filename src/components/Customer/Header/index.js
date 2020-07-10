@@ -5,20 +5,34 @@ import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import SearchIcon from '@material-ui/icons/Search';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
+import {withRouter} from 'react-router-dom'
+class CHeader extends React.Component {
+  state = {  }
+  render() { 
 
+    let mycart=()=>{
+      setTimeout(()=>{
+     this.props.history.push("/Customer/MyCart");
+      },500)
+    }
 const styles = {
     backgroundColor:"#208769",
     
     
   };
 
+
 function Header(){
  
   function  logout() {
     localStorage.clear();
-    window.location.href = '/';
+    window.location.href = '/Login';
 }
+
+
 
 return(
 
@@ -60,13 +74,14 @@ return(
       
 <div style={{textAlign:"center",marginTop:"-2px"}}>
 <IconButton style={{backgroundColor:"#1E7A60",marginRight:"12px"}}>
-  <HomeOutlinedIcon style={{color:"white"}}/>
+  <MailOutlineIcon style={{color:"white"}}/>
+</IconButton>
+
+<IconButton onClick={mycart} style={{backgroundColor:"#1E7A60",marginRight:"12px"}}>
+  <ShoppingCartOutlinedIcon style={{color:"white"}}/>
 </IconButton>
 <IconButton onClick={logout} style={{backgroundColor:"#1E7A60",marginRight:"12px"}}>
-  <PermIdentityOutlinedIcon style={{color:"white"}}/>
-</IconButton>
-<IconButton style={{backgroundColor:"#1E7A60",marginRight:"12px"}}>
-  <ShoppingCartOutlinedIcon style={{color:"white"}}/>
+  <ExitToAppIcon style={{color:"white"}}/>
 </IconButton>
 </div>
         </Grid>
@@ -88,4 +103,11 @@ return(
 
 
 }
-export default Header;
+
+
+
+return ( <Header/> );
+}
+}
+
+export default withRouter(CHeader);

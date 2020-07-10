@@ -59,7 +59,7 @@ class RegForm extends Component{
    
   accessType = (value) => {
     let {startingStore:{account}}=this.props
-   console.log(value)
+ 
     if (value ==="staff"){
       this.setState({disabled: false})
       account.setProperty("account_accessType", value)
@@ -69,8 +69,7 @@ class RegForm extends Component{
       this.setState({disabled: true})
       account.setProperty("account_accessType", value)
     }
-     console.log(account.account_accessType,"last")
-    console.log(value ,this.state.disabled, "awtrss")
+ 
   }
   RegistrationForm = () => {
     const classes = useStyles();
@@ -86,19 +85,7 @@ class RegForm extends Component{
       }
       
 
-    //   function onChangeaccount_mName(value) {
-    //     account.setProperty('account_mName' , value)
-    //     }
-        
-    //      function onChangeaccount_lName(value) {
-    //     account.setProperty('account_lName' , value)
-    //     }
-  
-    // const [selectedDate, setSelectedDate] = React.useState(new Date('1990-08-18T21:11:54'));
-  
-    // const handleDateChange = date => {
-    //   setSelectedDate(date);
-    // };
+
     const inputLabel = React.useRef(null);
     const [labelWidth, setLabelWidth] = React.useState(0);
     React.useEffect(() => {
@@ -178,7 +165,7 @@ class RegForm extends Component{
         onChange={account_fName=>{
           account.setProperty("account_fName", account_fName.target.value)
           account.setProperty('account_ID',`${date.getFullYear()}-${getHash(account_fName.target.value)}-${ Math.floor(1000 + Math.random() * 9000)}` )
-          account.setProperty("account_dateRegistered",moment().format('MMMM Do YYYY, h:mm:ss a') )
+          account.setProperty("account_dateRegistered",moment().format('MMM/DD/YYYY,h:mm:ssa') )
           account.setProperty('account_username', account_fName.target.value.split(" ")[0]+"123")
          
         
@@ -238,14 +225,7 @@ class RegForm extends Component{
           style={{height:"50px"}}
           onChange={account_contactNo=>{account.setProperty("account_contactNo", account_contactNo.target.value)}}
         />
-        {/* <TextField
-          id="outlined-secondary"
-          label="Contract"
-          variant="outlined"
-          color="secondary"
-          style={{height:"50px",marginBottom:"20px"}}
-          onChange={account_contract=>{account.setProperty("account_contract", account_contract.target.value)}}
-        /> */}
+
         <FormControl variant="outlined" className={classes.formControl} style={{width:"22.5%",marginLeft:"7px",marginTop:"7.5px"}}>
           <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
             Contract
@@ -285,17 +265,7 @@ class RegForm extends Component{
           
         /> 
   
-      {/* <KeyboardDatePicker
-            margin="normal"
-            id="date-picker-dialog"
-            label="Date picker dialog"
-            format="MM/dd/yyyy"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          /> */}
+
   
   
   

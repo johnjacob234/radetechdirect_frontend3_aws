@@ -6,11 +6,7 @@ import React, { Component } from 'react';
 
 
 
-// import {
-//   MuiPickersUtilsProvider,
-//   KeyboardTimePicker,
-//   KeyboardDatePicker,
-// } from '@material-ui/pickers';
+
 
 
 
@@ -34,8 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-//   var dateB = moment(account_birthday).format('YYYY MMMM Do ');
-// console.log(dateB);
+
   function getHash(input){
     var hash = 0, len = input.length;
     for (var i = 0; i < len; i++) {
@@ -148,7 +143,7 @@ class RegForm extends Component{
           distributor.setProperty("distributor_warehouseName", distributor_warehouseName.target.value)
           distributor.setProperty("distributor_accessType", "distributor")
           distributor.setProperty('distributor_ID',`${date.getFullYear()}-${getHash(distributor_warehouseName.target.value)}-${ Math.floor(1000 + Math.random() * 9000)}` )
-          distributor.setProperty("distributor_dateRegistered",moment().format('MMMM Do YYYY, h:mm:ss a') )
+          distributor.setProperty("distributor_dateRegistered",moment().format('MMM/DD/YYYY') )
          
 
      
@@ -192,6 +187,7 @@ class RegForm extends Component{
           id="outlined-secondary"
           label="Contact No"
           variant="outlined"
+          inputProps={{maxLength:11}}
           color="secondary"
           style={{height:"50px",width:"97%"}}
           onChange={distributor_contactNo=>{distributor.setProperty("distributor_contactNo", distributor_contactNo.target.value)}}

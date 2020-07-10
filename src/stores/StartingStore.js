@@ -10,6 +10,7 @@ import MyCart from './../models/MyCart'
 import Order from './../models/Order'
 import Report from './../models/Report'
 import CustomerLogs from './../models/CustomerLogs'
+import Notification from '../models/Notification'
 class StartingStore {
   account =new Account();
   product = new Product();
@@ -21,6 +22,8 @@ class StartingStore {
   order = new Order();
   report = new Report();
   cLogs = new CustomerLogs();
+  notif =new  Notification();
+  listOfNotif =[];
 
   welcomeMessage = "Welcome!";
   listOfUsers = [];
@@ -34,6 +37,7 @@ class StartingStore {
   listOfOrder =[];
   listOfDistributorDocs = [];
   listOfToken = [];
+  listOfClogs=[];
   api = undefined
   
 
@@ -43,12 +47,21 @@ class StartingStore {
 
 
   addAccount = () => {
+
+    return new Promise ((resolve,reject) =>{
     this.api.addaccount(this.account)
     .then(resp => {
-      console.log(resp.data)
-
+     
+      
+      if (resp.data !== false ) {   
+        resolve(true);       
+        } 
+else {         
+ resolve(false);      
+ }  
      
     })
+  })
   }
 
   getAccounts = () => {
@@ -63,11 +76,14 @@ class StartingStore {
   
 
   getProducts = () => { 
+   
     return new Promise((resolve, reject) => {   
-      let getDisId = JSON.parse(sessionStorage.getItem('userData'))
+      let getId = JSON.parse(sessionStorage.getItem('userData'))
+            
+     
 
     
-      this.api.getproducts(getDisId.distributor_ID)
+      this.api.getproducts(getId.distributor_ID)
       .then(resp => {    
          this.listofProducts = resp.data
    
@@ -80,12 +96,59 @@ class StartingStore {
            });
           })
     }
+    getProductsR = () => { 
+ 
+      return new Promise((resolve, reject) => {   
+     
+
+      
+        this.api.getproducts(this.product.distributor_ID )
+        .then(resp => {    
+           this.listofProducts = resp.data
+     
+           if (resp.data !== false ) {   
+                    resolve(resp.data);       
+                    } 
+           else {         
+             resolve(false);      
+             }  
+             });
+            })
+      }
+
+      
 
     getProductImg = () => {
-      return new Promise((resolve,reject)=>{
-        let getId = JSON.parse(sessionStorage.getItem('userData'))
 
+      return new Promise((resolve,reject)=>{
+       
+ let getId = JSON.parse(sessionStorage.getItem('userData'))
+            
+     
+
+    
+   
         this.api.getproductImg(getId.distributor_ID)
+        .then(resp => {
+          this.listofProductImg = resp.data
+  
+          if (resp.data !== false ) {   
+            resolve(resp.data);       
+            } 
+   else {         
+     resolve(false);      
+     }  
+        })
+
+      })
+     
+    }
+    getProductImgR = () => {
+
+      return new Promise((resolve,reject)=>{
+       
+ 
+        this.api.getproductImg(this.product.distributor_ID)
         .then(resp => {
           this.listofProductImg = resp.data
   
@@ -117,30 +180,50 @@ class StartingStore {
     })
   }
 
+  createToken = (data) => { 
+    return new Promise((resolve, reject) => {   
+      this.api.logintoken(data)
+      .then(resp => {    
+  
+   
+         if (resp.data !== false ) {   
+                  resolve(resp.data);       
+                  } 
+         else {         
+           resolve(false);      
+           }  
+           });
+          })
+    }
 
   loginAccount = () => { 
     return new Promise((resolve, reject) => {   
          this.api.loginaccount(this.account)
          .then(resp => {        
-             console.log(resp.data) 
+          
+           
              sessionStorage.setItem("userData",JSON.stringify(resp.data));
-            //  this.cookies.set("userData", resp.data, {            
-            //  expires: new Date(Date.now() + 5592000)          });      
+           
          
-            
-          console.log(resp.data.account_accessType , "Aws")   
-            if (resp.data.account_accessType === "superadmin"  ) {   
+            this.createToken(this.account.account_username);
+         
+          let access = resp.data.account_accessType ? resp.data.account_accessType : resp.data.distributor_accessType
+            if (access === "superadmin"  ) {   
                      resolve(1);       
                      } 
-              else if (resp.data.distributor_accessType === "distributor"){
+              else if (access === "distributor"){
+
                 resolve(2);
               }
-              else if (resp.data.account_accessType === "customer"){
+              else if (access === "customer"){
                 resolve(3);
               }
-              else if (resp.data.account_accessType === "staff"){
-                console.log('tama')
+              else if (access === "Staff"){
+               
                 resolve(4);
+              }else if (access === 'manager'){
+                
+                resolve(5);
               }
 
             else {         
@@ -156,6 +239,7 @@ class StartingStore {
           return new Promise((resolve, reject) => {   
             this.api.addproduct(this.product)
             .then(resp => {    
+              console.log(resp.data,'return')
                this.listofProducts = resp.data
          
                if (resp.data !== false ) {   
@@ -170,14 +254,16 @@ class StartingStore {
 
 
         addProductImg = (img) => {
-         
+    
           this.api.addproductImg(img)
           .then(resp => {
-            console.log(resp ,"resp")
-            this.product.setProperty('product_Img' , resp.data.secure_url )
+           
+            this.product.setProperty('product_Img' , resp.data.url )
             this.addProduct()
            
-          })
+          }).catch(err=>{
+            console.log(err)
+          }) 
         }
 
         editProduct = () => {
@@ -186,7 +272,7 @@ class StartingStore {
                 return data._id
             }
           })
-      console.log(this.product,"ID")
+     
        
       this.api.editproduct(this.product, prod[0]._id)
           .then(resp => {
@@ -195,20 +281,7 @@ class StartingStore {
           })
         }
 
-      //   addStocks = () => {
-      //     let stock = this.listofProducts.filter(data=> {
-      //       if (data.product_ID === this.product.product_ID){
-      //           return data._id
-      //       }
-      //     })
-      // console.log(this.product,"ID")
-       
-      // this.api.addstocks(this.product, stock[0]._id)
-      //     .then(resp => {
-         
-      //       this.listofProducts=resp.data
-      //     })
-      //   }
+
 
 
         
@@ -229,7 +302,7 @@ class StartingStore {
         addDistributor = () => {
           this.api.adddistributor(this.distributor)
           .then(resp => {
-            console.log(resp.data)
+         this.listOfDistributors=resp.data;
       
            
           })
@@ -260,7 +333,7 @@ class StartingStore {
                 return data._id
             }
           })
-      console.log(dis)
+    
        
           this.api.editdistributor(this.distributor , dis[0]._id)
           .then(resp => {
@@ -303,17 +376,17 @@ class StartingStore {
 
 
         addStock = () => {
-          let getId = JSON.parse(sessionStorage.getItem('userData'))
+        
           let dis = this.listofProducts.filter(data=> {
             if (data.product_ID === this.product.product_ID){
                 return data._id
             }
           })
-      console.log(dis)
+    
        
           this.api.addstock(this.stock , dis[0]._id)
           .then(resp => {
-         console.log(resp.data,"respss")
+       
             this.listofProducts=resp.data
           })
         }
@@ -365,6 +438,26 @@ class StartingStore {
           } )
           }
 
+          getCartD = () => {
+            return new Promise ((resolve,reject) =>{
+            let getuserId = JSON.parse(sessionStorage.getItem('userData'))
+            
+            this.api.getcart(getuserId.distributor_ID)
+            .then(resp =>{
+              this.listOfCart =resp.data
+
+              if (resp.data !== false){
+                resolve(resp.data);
+
+              }
+              else{
+                resolve(false);
+              }
+            });
+          } )
+          }
+
+
           editCart = () => {
 
             let getuserId = JSON.parse(sessionStorage.getItem('userData'))
@@ -374,7 +467,7 @@ class StartingStore {
               }
 
             })
-        console.log(cartz,"awa")
+      
          
             this.api.editcart(this.cart , cartz[0]._id,getuserId.account_ID, getuserId.distributor_ID)
             .then(resp => {
@@ -392,10 +485,10 @@ class StartingStore {
               }
 
             })
-            console.log(cartz,"deleter")
+        
             this.api.deletecart(this.cart , cartz[0]._id,getuserId.account_ID)
             .then(resp => {
-               console.log(resp.data,"editt")
+           
               this.listOfCart=resp.data
             })
           }
@@ -418,16 +511,18 @@ class StartingStore {
           }
 
           getOrder = () => {
+       
             return new Promise ((resolve,reject) =>{
             let getuserId = JSON.parse(sessionStorage.getItem('userData'))
+        
             
-            this.api.getorder(getuserId.distributor_ID)
+            this.api.getorder(getuserId.account_ID ? getuserId.account_ID  : getuserId.distributor_ID)
             .then(resp =>{
               this.listOfOrder =resp.data
-
+                
               if (resp.data !== false){
                 resolve(resp.data);
-               console.log(resp.data,"safasfas")
+           
               }
               else{
                 resolve(false);
@@ -436,18 +531,45 @@ class StartingStore {
           } )
           }
 
+   
+
+
+          getOrderD = () => {
+           
+            return new Promise ((resolve,reject) =>{
+              let getuserId = JSON.parse(sessionStorage.getItem('userData'))
+              
+              
+              this.api.getorder(this.order.account_ID ? this.order.account_ID  : getuserId.distributor_ID)
+              .then(resp =>{
+                this.listOfOrder =resp.data
+  
+                if (resp.data !== false){
+                  resolve(resp.data);
+             
+                }
+                else{
+                  resolve(false);
+                }
+              });
+            } )
+     
+          }
+
+  
+
           staffAssigned = () => {
             return new Promise ((resolve,reject) =>{
             let getuserId = JSON.parse(sessionStorage.getItem('userData'))
-            console.log(getuserId.account_ID,getuserId.distributor_ID,"duwa")
+     
             this.api.staffassigned(getuserId.account_ID,getuserId.distributor_ID)
             .then(resp =>{
-              console.log(resp.data)
+          
               this.listOfOrder =resp.data
                   
               if (resp.data !== false){
                 resolve(resp.data);
-               console.log(resp.data,"packerassign")
+            
               }
               else{
                 resolve(false);
@@ -458,12 +580,12 @@ class StartingStore {
 
           assignOrder = () => {
             let dis = this.listOfOrder.filter(data=> {
-              console.log(this.order,"filtere")
+            
               if (data.orderID === this.order.orderID){
                   return data._id
               }
             })
-        console.log(dis,"assign order")
+     
          
             this.api.assignorder(this.order , dis[0]._id)
             .then(resp => {
@@ -476,15 +598,15 @@ class StartingStore {
           addToken = () => {
             this.api.addtoken(this.token)
             .then(resp => {
-              console.log(resp.data)
-        
+              this.listOfToken =resp.data
+    
              
             })
           }
 
           deletetoken =() =>{
             let mytoken =this.listOfCart.filter(data =>{
-              if (data.distributor_ID === this.token.Distributor_ID){
+              if (data.distributor_ID === this.token.distributor_ID){
                 return data._id
               }
             })
@@ -507,7 +629,7 @@ class StartingStore {
                 resolve(resp.data);
 
               }
-              else{
+              else{ 
                 resolve(false);
               }
             });
@@ -517,19 +639,20 @@ class StartingStore {
 
 
           accessDistributor = () => { 
+            
             return new Promise((resolve, reject) => {   
               this.api.accessdistributor(this.token.access_Token)
               .then(resp => {        
-                  console.log(resp.data,"my") 
+                
 
                   sessionStorage.setItem("distributorData",JSON.stringify(resp.data));
             
            
                
                let getdisId = JSON.parse(sessionStorage.getItem('distributorData'))
-              // 
+            
                 
-              console.log(getdisId.distributor)
+         
               
              
                 if (resp.data[0].access_distributor_ID === getdisId.distributor_ID  ) {   
@@ -552,7 +675,7 @@ class StartingStore {
                   this.api.addreport(this.report)
                   .then(resp => {    
                      this.listOfReport = resp.data
-                      console.log(resp.data,'reports')
+               
                      if (resp.data !== false ) {   
                               resolve(resp.data);       
                               } 
@@ -563,17 +686,122 @@ class StartingStore {
                       })
                 }
 
-        
-                addcLogs = () => {
-                  this.api.addclogs(this.cLogs)
-                  .then(resp => {
-                    console.log(resp.data)
-              
+                // getReport = () => { 
+   
+                //   return new Promise((resolve, reject) => {   
+                //     let getId = JSON.parse(sessionStorage.getItem('userData'))
+                          
                    
+              
+                  
+                //     this.api.getreport(getId.distributor_ID)
+                //     .then(resp => {    
+                //        this.listofProducts = resp.data
+                 
+                //        if (resp.data !== false ) {   
+                //                 resolve(resp.data);       
+                //                 } 
+                //        else {         
+                //          resolve(false);      
+                //          }  
+                //          });
+                //         })
+                //   }
+
+                getReport = () => {
+                  this.api.getreport()
+                  .then(resp => {
+              
+                   this.listOfReport=resp.data
+                  
+                
                   })
                 }
 
+
+        
+                addcLogs = () => {
+         
+                  return new Promise((resolve,reject)=>{
+                    this.api.addclogs(this.cLogs)
+                    .then(resp =>{
+                      this.listOfClogs =resp.data;
+                   
+                      if(resp.data !== false){
+                        resolve(resp.data);
+                      }
+                      else{
+                        resolve(false);
+                      }
+
+                    })
+
+
+
+
+                  })
+                }
+
+     
+
+                getcLogs = () => {
+                  return new Promise ((resolve,reject) =>{
+                  let getuserId = JSON.parse(sessionStorage.getItem('userData'))
+                
+                  this.api.getclogs(getuserId.distributor_ID)
+                  .then(resp =>{
+                 
+                    this.listOfClogs =resp.data
+      
+                    if (resp.data !== false){
+                      resolve(resp.data);
+      
+                    }
+                    else{
+                      resolve(false);
+                    }
+                  });
+                } )
+                }
+
+
            
+   
+                archiveAccount = () => {
+                  let user = this.listOfUsers.filter(data=> {
+                    if (data.account_ID === this.account.account_ID){
+                        return data._id
+                    }
+                  })
+                  
+               
+                  this.api.archiveaccount(this.account , user[0]._id)
+                  .then(resp => {
+                 
+                    this.listOfUsers=resp.data
+                  })
+                }
+                getNotif = () => { 
+   
+                  return new Promise((resolve, reject) => {   
+                    let getId = JSON.parse(sessionStorage.getItem('userData'))
+                          
+                   
+              
+                  
+                    this.api.getnotif(getId.distributor_ID)
+                    .then(resp => {    
+                       this.listOfNotif = resp.data
+                 
+                       if (resp.data !== false ) {   
+                                resolve(resp.data);       
+                                } 
+                       else {         
+                         resolve(false);      
+                         }  
+                         });
+                        })
+                  }
 }
 
 decorate(StartingStore, {
@@ -606,16 +834,21 @@ decorate(StartingStore, {
   productStocks:observable,
  getStock:action,
   stock:observable,
+  notif :observable,
+    listOfNotif :observable,
+
  
   cart : observable,
   addtoCart:action,
   listOfCart:observable,
   getCart:action,
+  getCartD:action,
   deleteCart:action,
   addOrder:action,
   order:observable,
   listOfOrder:observable,
   getOrder:action,
+  getOrderD:action,
   token:observable,
   listOfToken:observable,
   addToken:action,
@@ -625,10 +858,19 @@ decorate(StartingStore, {
   assignOrder:action,
   staffAssigned:action,
   report:observable,
+  addReport:action,
   listOfReport:observable,
+  getReport:action,
   archiveDistributor:action,
   cLogs:observable,
   addcLogs:action,
+  listOfClogs:observable,
+  getcLogs:action,
+  archiveAccount:action,
+  getProductsR:action,
+  getProductImgR:action,
+  createToken:action,
+  getNotif:action,
   
 });
 

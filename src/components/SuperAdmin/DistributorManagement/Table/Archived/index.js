@@ -23,8 +23,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { useTheme } from '@material-ui/core/styles';
 
-import ArchiveIcon from '@material-ui/icons/Archive';
 
+import UnarchiveIcon from '@material-ui/icons/Unarchive';
 
 
 
@@ -95,7 +95,7 @@ const headCells = [
   { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
   { id: 'contact_no', numeric: false, disablePadding: false, label: 'Contact No.' },
   { id: 'date_registered', numeric: false, disablePadding: false, label: 'Date Registered' },
-  { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
+  { id: 'action', numeric: true, disablePadding: false, label: 'Restore Account' },
 ];
 
 function ArchivedDisTableHead(props) {
@@ -263,7 +263,7 @@ const handleArchive = (dis) => {
   const [orderBy, setOrderBy] = React.useState('');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
 
@@ -271,7 +271,7 @@ const handleArchive = (dis) => {
   let filterDis =listOfDistributors.filter(dis => dis.distributor_status === 'archived')
   let rows = filterDis.map(distributor => {
     return(createData(distributor.distributor_warehouseName,distributor.distributor_tierNo,distributor.distributor_address,distributor.distributor_emailAddress,distributor.distributor_contactNo,distributor.distributor_dateRegistered,
-    <div> <IconButton onClick={()=>{handleArchive(distributor)}} size="medium" style={{backgroundColor:"#F8B701"}}> <ArchiveIcon /> </IconButton></div>  ))
+    <div> <IconButton onClick={()=>{handleArchive(distributor)}} size="medium" style={{backgroundColor:"#F8B701"}}> <UnarchiveIcon /> </IconButton></div>  ))
    
    })
   const handleRequestSort = (event, property) => {
@@ -381,7 +381,7 @@ const handleArchive = (dis) => {
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.contact_no}</TableCell>
                       <TableCell align="left">{row.date_registered}</TableCell>
-                      <TableCell align="left">{row.action}</TableCell>
+                      <TableCell align="center">{row.action}</TableCell>
                     </TableRow>
                   );
                 })}

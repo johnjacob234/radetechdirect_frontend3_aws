@@ -12,10 +12,16 @@ import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router
 // import SuperAdminDashboard from './Dashboard'; 
 import LogoutButton from './../Logout';
 import pr from './../pr.png';
+import DashboardGrid from './Dashboard';
 import DistributorManagement from './DistributorManagement';
 import DrawerList from './DrawerRouter';
+import IssuesGrid from './Issues';
+class adDrawer extends Component{
 
-const drawerWidth = 240;
+  state = {}
+render(){
+
+const drawerWidth = 270;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,23 +52,28 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
+   
   },
   drawerOpen: {
     width: drawerWidth,
+    backgroundColor:"#208769",
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
+     
     }),
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
+   
     }),
     overflowX: 'hidden',
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1,
+      backgroundColor:"#208769",
     },
   },
   toolbar: {
@@ -79,23 +90,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const toolbar ={
-  
-  display: 'flex',
-  alignItems: 'flex-start',
-  justifyContent: 'flex-end',
- 
-}
-const content = {
-  flexGrow: 1,
-  padding:"6px",
-  
-}
 
-class adDrawer extends Component{
 
-  state = {}
-render(){
+
 
   function SupAdminDrawer() {
     const classes = useStyles();
@@ -177,8 +174,8 @@ render(){
         }}
       >
         <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          <IconButton onClick={handleDrawerClose} style={{backgroundColor:"#1E7A60"}}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon style={{color:"white"}}/> : <ChevronLeftIcon style={{color:"white"}}/>}
           </IconButton>
         </div>
         <Divider />
@@ -190,13 +187,14 @@ render(){
 
      
   <div>
-  <main style={content}>
-        <div style={toolbar} />
+  <main className={classes.content}>
+        <div className={classes.toolbar} />
       
         <Router>
   <Switch>
-      {/* <Route exact path="/SuperAdmin" render={()=><SuperAdminDashboard/>}/> */}
-      <Route exact path="/SuperAdmin" render={()=><DistributorManagement/>}/>
+      <Route exact path="/SuperAdmin" render={()=><DashboardGrid/>}/>
+      <Route path="/SuperAdmin/DistributorManagement" render={()=><DistributorManagement/>}/>
+      <Route path="/SuperAdmin/Issues" render={()=><IssuesGrid/>}/>
      
       
       

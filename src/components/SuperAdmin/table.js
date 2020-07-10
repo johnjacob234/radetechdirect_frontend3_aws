@@ -82,6 +82,7 @@ function EnhancedTableHead(props) {
   };
 
   return (
+    <React.Fragment>
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
@@ -115,6 +116,7 @@ function EnhancedTableHead(props) {
         ))}
       </TableRow>
     </TableHead>
+    </React.Fragment>
   );
 }
 

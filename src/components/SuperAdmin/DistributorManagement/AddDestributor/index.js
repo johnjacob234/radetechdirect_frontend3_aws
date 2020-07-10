@@ -2,13 +2,14 @@ import { Button, Dialog, Divider, Slide, Typography } from '@material-ui/core';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import MuiAlert from '@material-ui/lab/Alert';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import RegForm from './Form.js';
-import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -31,34 +32,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 class AddDistributors extends Component {
   state={}
   render (){
-
-    function error(){
-   return  <Alert variant="filled" >
-   This is an error alert — check it out!
- </Alert>
-  }
-  function success(){
-    return  <Alert variant="filled" >
-    This is a success alert — check it out!
-  </Alert>
-  }
+    let {startingStore:{addDistributor,distributor}}=this.props;
+    function Alert(props) {
+      return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
     
-    const handleOk = () => {
-     
-      let {startingStore:{addDistributor}}=this.props;
-           
-         addDistributor();
-         
-                success();
-            this.setState({ loading: true });
-  
-            setTimeout(() => {
-              this.setState({ loading: false, visible: false });
-            }, 3000);
+ 
 
 
-     
-    };
+
 
   
 
@@ -68,6 +50,7 @@ function RegisterDistributor() {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [openS, setOpenS] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const handleClickOpen = () => {
@@ -77,37 +60,47 @@ function RegisterDistributor() {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleCloseS = (event, reason) => {
+    setOpenS(false);
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenS(false);
+  };
+
+  const handleOk = () => {
+     
+   
+    distributor.setProperty("distributor_status",'active')
+ addDistributor();
+  setOpen(false);
+  setOpenS(true);
+// }else{
+//   console.log('false')
+// }
+    //  this.setState({ loading: true });
+
+    //  setTimeout(() => {
+    //    this.setState({ loading: false, visible: false });
+    //  }, 3000);
+
+     // success();
+
+};
+
  
   return (
     <div>
+      <Snackbar open={openS} autoHideDuration={500} anchorOrigin={{vertical:'top',horizontal:'center'}} onClose={handleCloseS}>
+        <Alert onClose={handleCloseS} severity="success">
+          Distributor Successfully Added!
+        </Alert>
+      </Snackbar>
       <Button variant="outlined"  onClick={handleClickOpen} style={{marginTop:"8px",backgroundColor:"#208769",color:"white"}}>
        < AddCircleOutlineIcon /> <span style={{marginLeft:"5px"}}> Add Distributor</span>
       </Button>
-      {/* <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton style={{backgroundColor:"#1E7A60"}} edge="start" color="inherit" onClick={handleClose} aria-label="close">
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Register Distributor
-            </Typography>
-            <Button style={{backgroundColor:"#1E7A60"}} autoFocus color="inherit"  onClick={()=> {handleOk()}}>
-              Submit
-            </Button>
-          </Toolbar>
-        </AppBar>
-
-
-
-
-
-        <List style={{backgroundColor:" #f1f2f6",height:"100vh"}}>
-         
-          <RegForm></RegForm>
-         
-        </List>
-      </Dialog> */}
+ 
       <Dialog
           fullScreen={fullScreen}
           open={open}

@@ -2,19 +2,21 @@ import { Grid } from '@material-ui/core';
 import { inject, observer } from "mobx-react";
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
-import Header from './Header';
+import AccountSetting from './AccountSettings';
+import CheckOutGrid from './CheckOut';
 import Footer from './Footer';
+import Header from './Header';
 import Home from './Home';
+import Carousel from './Home/carousel.js';
 import ItemInfo from './itemInfo';
+import MyAccountGrid from './MyAccount';
 import MyCart from './myCart';
-import AccessD from './AccessDistributor';
+import MyOrderTab from './MyOrders';
+import TrackOrder from './MyOrders/Ongoing/Track';
+import MyPurchases from './MyPurchases';
 import Register from './Register';
+import UserForm from './RegisterS/UserForm.js';
 import CustomizedSteppers from './Stepper';
-
-import UserForm from './RegisterS/UserForm.js'
-import CheckOutGrid from './CheckOut'
-
-
 
  class CustRoute extends Component {
 
@@ -31,20 +33,29 @@ import CheckOutGrid from './CheckOut'
         <Grid>
        <Header/>
        </Grid>
+       <Grid>
+<Carousel/>
+       </Grid>
 
 </div>
      
 
 <Switch>
-      <Route exact path="/Customer" render={()=><AccessD/>}/>
+      {/* <Route  path="/AccessDistributor" render={()=><AccessD/>}/> */}
       <Route path="/Customer/Register" render={()=><Register/>}/>
-    <Route path="/Customer/Home" render={()=><Home/>}/>
+    <Route exact path="/Customer/Home" render={()=><Home/>}/>
         <Route path="/Customer/itemInfo" render={()=><ItemInfo/>}/>
        <Route path="/Customer/Stepper" render={()=><CustomizedSteppers/>}/>
        <Route path="/Customer/RegisterS" render={()=><UserForm/>}/>
    
       <Route  path="/Customer/MyCart" render={()=><MyCart/>}/>
       <Route path="/Customer/CheckOut" render={()=><CheckOutGrid/>}/>
+      <Route path="/Customer/MyAccount" render={()=><MyAccountGrid/>}/>
+      <Route path="/Customer/MyOrder" render={()=><MyOrderTab/>}/>
+      <Route path="/Customer/MyOrder/Track" render={()=><TrackOrder/>}/>
+      <Route path="/Customer/MyPurchases" render={()=><MyPurchases/>}/>
+      <Route path="/Customer/MyPurchases" render={()=><MyPurchases/>}/>
+      <Route path="/Customer/AccountSetting" render={()=><AccountSetting/>}/>
      
       {/*<Route  path="/Admin/AdminUserManagement" render={()=><AdminUserManagement/>}/> */}
       
@@ -66,4 +77,4 @@ import CheckOutGrid from './CheckOut'
   }
 }
 
-export default withRouter(inject("startingStore")(observer(CustRoute)));
+export default withRouter(inject("customerStore")(observer(CustRoute)));

@@ -57,7 +57,7 @@ class HomeTab extends React.Component {
 
   componentWillMount() {
       
-    let {startingStore:{getProducts,getProductImg }}=this.props;
+    let {customerStore:{getProducts,getProductImg }}=this.props;
 
     getProducts()
 
@@ -123,4 +123,4 @@ return (
 }
 }
 
-export default inject("startingStore")(observer(HomeTab));
+export default inject("customerStore")(observer(HomeTab));

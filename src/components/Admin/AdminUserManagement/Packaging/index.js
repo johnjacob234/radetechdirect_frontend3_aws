@@ -20,6 +20,7 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 
 import OrderTable from './orderTable.js'
 import AssignedTable from './assignedTable.js'
+import AssignOrder from './addButton'
 class Packaging extends React.Component {
   state = {  }
 
@@ -88,7 +89,7 @@ const ExpansionPanelDetails = withStyles(theme => ({
 
  function DeliveryGrid() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState('panel1');
+  const [expanded, setExpanded] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -105,12 +106,12 @@ const ExpansionPanelDetails = withStyles(theme => ({
   };
 
 
-
+let myID =JSON.parse(sessionStorage.getItem('userData'))
 
 
 let getpacker = listOfUsers.filter(pack => {
 
-  if (pack.staff_Role === 'Packer'){
+  if (pack.staff_Role === 'Packer' && pack.distributor_ID === myID.distributor_ID){
     return pack
   }
 
@@ -128,7 +129,7 @@ return(
          <Typography variant='subtitle1'>Currently Assigned Orders</Typography>
        </Grid>
        <Grid item xs={6} sm={6} style={{textAlign:"right"}}>
-       <Button variant="outlined" size='small' style={{backgroundColor:"#208769",color:"white"}} onClick={handleClickOpen} startIcon={<AddCircleOutlineOutlinedIcon />}>
+       {/* <Button variant="outlined" size='small' style={{backgroundColor:"#208769",color:"white"}} onClick={handleClickOpen} startIcon={<AddCircleOutlineOutlinedIcon />}>
         Add
       </Button>
       <Dialog
@@ -149,14 +150,14 @@ return(
         <DialogActions>
           {/* <Button autoFocus onClick={handleClose} color="primary">
             Disagree
-          </Button> */}
+          </Button> 
           <Button onClick={handleClose} style={{backgroundColor:"#FFA500",color:"white"}} autoFocus>
             Close
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
 
-
+<AssignOrder accountId={mypacker.account_ID}/>
        </Grid>
        
        <Grid item xs={12} sm={12} style={{marginTop:"16px"}}>
@@ -179,7 +180,7 @@ return(
 
 
   return (
-    <div className={classes.root} style={{height:"380px"}}>
+    <div className={classes.root} style={{height:"470px"}}>
       <Grid container spacing={3} >
         <Grid item sm={12}>
           <Grid container direction="row"> 

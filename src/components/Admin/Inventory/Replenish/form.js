@@ -84,7 +84,7 @@ class ReplenishForm extends Component{
   onFileChange = (e) => {
     
     this.setState({ loading: true });
-      let {startingStore:{product}}=this.props;
+      let {inventoryStore:{product}}=this.props;
     
       Resizer.imageFileResizer(
         e.target.files[0],
@@ -108,10 +108,11 @@ class ReplenishForm extends Component{
       
   }
 
+
   ReplenishForm = () => {
     const classes = useStyles();
-    let {startingStore:{product,stock}}=this.props
-    const [labelWidth, setLabelWidth] = React.useState(0);   
+    let {inventoryStore:{product,stock}}=this.props
+    // const [labelWidth, setLabelWidth] = React.useState(0);   
     const [selectedDate, setSelectedDate] = React.useState(new Date('2019-08-18T21:11:54'));
     const [exselectedDate, exsetSelectedDate] = React.useState(new Date('2019-08-18T21:11:54'));
 
@@ -291,9 +292,11 @@ class ReplenishForm extends Component{
      variant="outlined"
      onChange={
       product_Stocks=>{
+        let {inventoryStore:{listOfProducts}}=this.props;
+
         stock.setProperty("product_replenishQty", product_Stocks.target.value)
         // product.setProperty("product_Stocks",product_Stocks.target.value + product.product_Stocks.target.value)
-        
+        // product.setProperty("product_Stocks", products.product_Stocks + product_Stocks.target.value)
       stock.setProperty('stock_ID',`${getHash(product_Stocks.target.value)}-${ Math.floor(1000 + Math.random() * 9000)}` )
       
     
@@ -380,4 +383,4 @@ return (
 }}
 
 
-export default inject("startingStore")(observer(ReplenishForm));
+export default inject("inventoryStore")(observer(ReplenishForm));

@@ -34,14 +34,14 @@ class adminTable extends Component{
     let {startingStore:{listOfUsers}}=this.props;
 
     let listofmanager = listOfUsers.filter(user => user.account_accessType === "admin")
-    // console.log(listofmanager , "aw")
+
 function createData(shop, name, address, contact, email,status,action) {
   return { shop, name, address, contact, email,status,action };
 }
 
-// let rows = [];
+
 let rows = listofmanager.map(user => {
-//  rows.push(createData(user.account_ID))
+
  return(createData(user.account_ID ,`${user.account_fName}  ${user.account_mName}  ${user.account_lName}`,user.account_contactNo,user.account_address,user.account_emailAddress,"active",<div><IconButton   size="medium" style={{backgroundColor:"#31AF91"}} > <EditIcon /> </IconButton> <IconButton size="medium" style={{backgroundColor:"#31AF91"}}> <ArchiveIcon /> </IconButton></div>  ))
 
 })

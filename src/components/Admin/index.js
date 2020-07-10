@@ -1,5 +1,6 @@
+
 import { AppBar, Avatar, CssBaseline, Divider, Drawer, Grid, IconButton, Toolbar, Typography } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme,withStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -12,22 +13,57 @@ import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router
 import OptionButton from './toolbar';
 import Accounting from './Accounting';
 import AdminUserManagement from './AdminUserManagement';
+
+
 import CRM from './CRM';
 import AdminDashboard from './Dashboard';
 import Inventory from './Inventory';
 import DrawerList from './List.js';
 import OrderManagement from './OrderManagement';
 import pr from './pr.png';
-import ProfileManagement from './ProfileManagement';
+
+// import ProfileManagement from './ProfileManagement';
 import SettingGrid from './Setting'
 import ReportGrid from './Reports'
 import ProfileGrid from './CRM/Customer/CustomerProfile'
 
+// report
+import SalesByCustomer from './Reports/Sales/SalesByCustomer'
+import SalesByItem from './Reports/Sales/SalesByItem'
+import OFByItem from './Reports/Sales/OFByItem'
+import SalesReturn from './Reports/Sales/SalesReturn'
+import PackingHistory from './Reports/Sales/PackingHistory'
+
+import InventorySummary from './Reports/Inventory/Summary'
+import EvalReport from './Reports/Inventory/Evaluation'
+import ProdSales from './Reports/Inventory/ProdSalesReport'
+import StockSummary from './Reports/Inventory/StockReport'
+
+import CustBalance from './Reports/Payments&Receivables/CustomerBalance'
+import Invoice from './Reports/Payments&Receivables/InvoiceDetails'
+import SalesOrder from './Reports/Payments&Receivables/SalesOrder'
+import PaymentReceived from './Reports/Payments&Receivables/PaymentsReceived'
+
+import IssuesGrid from './Issues'
+import Notif from './notification'
+
+
+
+
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import ListItemText from '@material-ui/core/ListItemText';
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 class adDrawer extends Component{
 
   state = {}
 render(){
+
+  
 
 const drawerWidth = 255;
 
@@ -112,12 +148,34 @@ const useStyles = makeStyles(theme => ({
 
 
 
-
+// let item=(e)=>{
+//   if(e.notif_subject === 'Order'){
+//     this.props.history.push("/Admin/OrderManagement");
+//   }else if (e.notif_subject === 'Account'){
+//     this.props.history.push("/Admin/CRM");
+//   }else if(e.notif_subject === 'Inventory'){
+//     this.props.history.push("/Admin/InventoryManagement");
+//   }else{
+//     return null
+//   }
+// }
 
   function AdminDrawer() {
     const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
+
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -127,6 +185,33 @@ const useStyles = makeStyles(theme => ({
     setOpen(false);
   };
 
+// let filnotf =listOfNotif.filter(notf => notf.distributor_ID === myID.distributor_ID)
+
+// let getnotif = filnotf.map(notif =>{
+//   return(
+//     <span>
+//     <ListItem alignItems="flex-start" button  >
+//     <ListItemText
+//       primary={notif.notif_date}
+//       secondary={
+//         <React.Fragment>
+//           <Typography
+//             component="span"
+//             variant="body2"
+//             className={classes.inline}
+//             color="textPrimary"
+//           >
+//           {notif.notif_subject}
+//           </Typography>
+//        - {notif.notif_description}
+//         </React.Fragment>
+//       }
+//     />
+//       </ListItem>
+//      <Divider variant="inset" component="li" />
+//      </span>
+//   )
+// })
   return (
 
     <div className={classes.root}>
@@ -160,9 +245,26 @@ const useStyles = makeStyles(theme => ({
                  >
           <Grid >
            
-             <IconButton style={{backgroundColor:"#1E7A60",marginRight:"12px"}}>
+             <IconButton style={{backgroundColor:"#1E7A60",marginRight:"12px",height:'43px'}} 
+              // onClick={handleClick}
+             >
   <NotificationsOutlinedIcon style={{color:"white",fontSize:"18px"}}/>
+  
 </IconButton>
+{/* <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+       
+          <List>
+      {getnotif}
+        
+      </List>
+      </StyledMenu> */}
+
 <IconButton style={{backgroundColor:"#1E7A60"}}>
   <QuestionAnswerOutlinedIcon style={{color:"white",fontSize:"18px"}}/>
 </IconButton>
@@ -179,6 +281,12 @@ const useStyles = makeStyles(theme => ({
    
        
       </AppBar>
+
+    
+
+
+
+
       <Drawer
         
         variant="permanent"
@@ -219,11 +327,33 @@ const useStyles = makeStyles(theme => ({
       <Route path="/Admin/CustomerProfile" render={()=><ProfileGrid/>}/>
      
    
-      <Route  path="/Admin/ProfileManagement" render={()=><ProfileManagement/>}/>
+      {/* <Route  path="/Admin/ProfileManagement" render={()=><ProfileManagement/>}/> */}
       <Route  path="/Admin/Accounting" render={()=><Accounting/>}/>
       <Route  path="/Admin/AdminUserManagement" render={()=><AdminUserManagement/>}/>
       <Route  path="/Admin/Setting" render={()=><SettingGrid/>}/>
+     
+    
+      {/* Report Routes */}
       <Route  path="/Admin/Reports" render={()=><ReportGrid/>}/>
+      <Route  path="/Admin/SalesByCustomer" render={()=><SalesByCustomer/>}/>
+      <Route  path="/Admin/SalesByItem" render={()=><SalesByItem/>}/>
+      <Route  path="/Admin/OFByItem" render={()=><OFByItem/>}/>
+      <Route  path="/Admin/SalesReturn" render={()=><SalesReturn/>}/>
+      <Route  path="/Admin/PackingHistory" render={()=><PackingHistory/>}/>
+
+      <Route  path="/Admin/InventorySummary" render={()=><InventorySummary/>}/>
+      <Route  path="/Admin/EvalReport" render={()=><EvalReport/>}/>
+      <Route  path="/Admin/ProdSales" render={()=><ProdSales/>}/>
+      <Route  path="/Admin/StockSummary" render={()=><StockSummary/>}/>
+
+      <Route  path="/Admin/CustBalance" render={()=><CustBalance/>}/>
+      <Route  path="/Admin/Invoice" render={()=><Invoice/>}/>
+      <Route  path="/Admin/SalesOrder" render={()=><SalesOrder/>}/>
+      <Route  path="/Admin/PaymentReceived" render={()=><PaymentReceived/>}/>
+
+
+      <Route  path="/Admin/Issues" render={()=><IssuesGrid/>}/>
+
       
   </Switch>
         

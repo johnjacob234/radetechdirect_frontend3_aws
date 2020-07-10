@@ -6,19 +6,20 @@ import {Typography,Divider} from '@material-ui/core'
 import {BrowserRouter as Router,withRouter} from 'react-router-dom'
 import {inject,observer} from 'mobx-react'
 import {TextField,Button} from '@material-ui/core'
-
-
+import UpdateIcon from '@material-ui/icons/Update';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 class Profile extends React.Component {
     state = {  }
 
     componentDidMount(){
-      let {startingStore:{getAccounts}}=this.props;
+      let {staffStore:{getAccounts}}=this.props;
           getAccounts();
         
     }
 
     render() { 
-     
+      let{staffStore:{account,editAccount,listOfUsers}}=this.props
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
 }));
-let {startingStore:{listOfUsers}}=this.props;
+
 function createData(id,fname,mname,lname,suffix,address,emailAddress,contactNo,birthday,username,password){
   return{id,fname,mname,lname,suffix,address,emailAddress,contactNo,birthday,username,password}
 
@@ -53,32 +54,64 @@ return(createData(
 
 
 })
-let{startingStore:{account,editAccount}}=this.props
-let  update = myaccount =>{
 
-  console.log(myaccount.id,'from update')
-  account.setProperty("account_ID",myaccount.id)
-  editAccount();
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
  function MyProfile() {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const [opens, setOpens] = React.useState(false);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
   
+  let  update = myaccount =>{
+  
+    if (myaccount != null){
+      account.setProperty("account_ID",myaccount.id)
+    
+      editAccount();
+      setOpen(true);
+    }else{
+      setOpens(true);
+    }
+
+
+    }
 
 
 
   return (
     <div className={classes.root}>
+       <Snackbar open={open} autoHideDuration={3000}  anchorOrigin={{vertical:'center',horizontal:'center'}}>
+        <Alert  severity="success">
+          Profile Update Successful!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar open={opens} autoHideDuration={3000}  anchorOrigin={{vertical:'center',horizontal:'center'}}>
+        <Alert  severity="error">
+          Profile Update Error!
+        </Alert>
+      </Snackbar>
+
+
       <form autoComplete='off'>
       {getAccount.map((row)=>(
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12}>
-        <Typography variant="h5"> MyProfile</Typography> 
+        <Typography variant="h6"> My Profile</Typography> 
         <Divider style={{marginTop:"10px"}} />
         </Grid>
         <Grid item xs={12} sm={12}>
           <Paper className={classes.paper}>
-            <Typography variant="h6" style={{marginBottom:"16px"}}>Personal Info </Typography>
+            <Typography variant="h6" style={{marginBottom:"16px"}}>Personal Information </Typography>
             <Grid container direction="row" alignItems="center" justify="center" sm={12} xs={12}>
               <Grid item xs={12} sm={12}>
                 <Grid container direction='row' alignItems='center' justify='center' sm={12} xs={12}>
@@ -150,7 +183,7 @@ let  update = myaccount =>{
           }}
           />
           </Grid>
-          <Typography variant="h6" style={{marginBottom:"16px"}}>Account  </Typography>
+          <Typography variant="h6" style={{marginBottom:"16px"}}>Account Details </Typography>
           <Grid item sm={12} xs={12}>    
           <TextField id="outlined-basic" label="Username"  
           defaultValue={row.username} variant="outlined" 
@@ -167,6 +200,7 @@ let  update = myaccount =>{
           <TextField id="outlined-basic" label="Password"  
           defaultValue={row.password} variant="outlined" 
           size="small"
+          type='password'
           style={{marginBottom:"8px",width:"100%"}}
           onChange={account_password=>{
             account.setProperty('account_password',account_password.target.value)
@@ -175,7 +209,7 @@ let  update = myaccount =>{
           </Grid>
 
           <Grid item sm={12} xs={12}>
-          <Button variant="contained" style={{backgroundColor:"#208769",color:"white"}} onClick={()=>{update(row)}}>
+          <Button variant="contained" startIcon={<UpdateIcon/>} style={{backgroundColor:"#208769",color:"white"}} onClick={()=>{update(row)}}>
           Update
         </Button>
           </Grid>
@@ -196,4 +230,4 @@ return (
 }
 }
 
-export default withRouter(inject("startingStore")(observer(Profile)));
+export default withRouter(inject("staffStore")(observer(Profile)));

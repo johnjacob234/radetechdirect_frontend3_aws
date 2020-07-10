@@ -10,9 +10,19 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import {inject,observer} from 'mobx-react';
 class orderTable extends React.Component {
+  componentDidMount(){
+    let {staffStore:{getProductsR,product}}=this.props;
+    product.setProperty('distributor_ID',this.props.dis)
+    getProductsR();
+   
+  }
+
     state = {  }
 
-    render() { 
+ 
+    render() {
+      let {staffStore:{listofProducts,product}}= this.props;
+   
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -32,33 +42,47 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, quantity, status) {
-  return { name, quantity, status };
+function createData(name, qty, status) {
+  return { name, qty, status };
 }
 
-let {startingStore:{listOfOrder}}=this.props;
 
-let filorder = listOfOrder.filter((order)=> order.packer_ID === '2020-2314539-3712')
-console.log(filorder,'ordertable')
-let rowss =filorder.map(orders =>{
+let {staffStore:{listOfOrder,listOfCart}}=this.props;
+let getMyId = JSON.parse(sessionStorage.getItem('userData'))
 
-return(
+let filorder =listOfOrder.filter(order =>{
 
-orders.orderItems
+  if(  order.packer_ID === getMyId.account_ID && order.orderID === this.props.myOrder && order.orderStatus === 'Packing'){
+    return order
+  }else if( order.dispatcher_ID === getMyId.account_ID && order.orderID === this.props.myOrder && order.orderStatus === 'Dispatch'){
+    return order
+  }
+ 
+  
+  
+  
+  })
+ 
+let rows = filorder.map(orders => {
 
 
-)
+  return (createData(
+    orders.orderItems.map(item =>{
+      
+       return item
+        
+     }), orders.order_Quantity.map(item =>{
+      
+       return item
+        
+     })
+     ))
 
 
 })
 
-const rows = [
-  createData('Coke', 18, <Checkbox/>),
- 
-  createData('Jeep', 2, <Checkbox/>),
- 
-  createData('Milo', 56, <Checkbox/>),
-];
+
+
 
 const useStyles = makeStyles({
   table: {
@@ -75,32 +99,167 @@ const useStyles = makeStyles({
         <TableHead>
           <TableRow>
             <StyledTableCell>Product</StyledTableCell>
-            <StyledTableCell align="center">Quantity</StyledTableCell>
-            <StyledTableCell align="center">Status</StyledTableCell>
-           
+            <StyledTableCell align="right">Quantity</StyledTableCell>
+            {/* <StyledTableCell align="center">Status</StyledTableCell> */}
+
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.quantity}</StyledTableCell>
-              <StyledTableCell align="center">{row.status}</StyledTableCell>
+
+
+
+        {rows.map((row) => {
+          let names = row.name.map((itm,itmIndex) =>{return itm});
+          let qtys = row.qty.map(qties => {return (<React.Fragment> <span style={{width:'100%',padding:'5px'}}>{qties}</span><br/>   </React.Fragment>)});
+       
+          let item = names.map( items =>{ return (<React.Fragment> <span style={{width:'100%',padding:'5px'}}>{items}</span><br/>   </React.Fragment>)})
+          let qty = qtys.map(itemqty => {return itemqty})
+          return(
+          <StyledTableRow key={item}>
+
+        
+        <StyledTableCell align="center">{item}  </StyledTableCell>
+       
+  
+        <StyledTableCell align="right">{qtys}</StyledTableCell>
+            {/* <StyledTableCell align="center"><Checkbox/></StyledTableCell> */}
            
-            </StyledTableRow>
-          ))}
+                </StyledTableRow>
+  ) })}
+
+
+
         </TableBody>
       </Table>
     </TableContainer>
   );
 }
 
-return ( 
+return (
     <OrderTable/>
  );
 }
 }
 
-export default inject("startingStore")(observer(orderTable));
+export default inject("staffStore")(observer(orderTable));
+
+
+
+// import React from 'react';
+// import { withStyles, makeStyles } from '@material-ui/core/styles';
+// import Table from '@material-ui/core/Table';
+// import TableBody from '@material-ui/core/TableBody';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableContainer from '@material-ui/core/TableContainer';
+// import TableHead from '@material-ui/core/TableHead';
+// import TableRow from '@material-ui/core/TableRow';
+// import Paper from '@material-ui/core/Paper';
+// import {inject,observer} from 'mobx-react'
+
+
+
+// class OrderItems extends React.Component {
+
+//   render() {
+//  let orderId=this.props.orderid
+//  let {customerStore:{listOfOrder}}=this.props;
+
+// const StyledTableCell = withStyles((theme) => ({
+//   head: {
+//     backgroundColor: "#208769",
+//     color: theme.palette.common.white,
+//   },
+//   body: {
+//     fontSize: 14,
+//   }
+// }))(TableCell);
+
+// const StyledTableRow = withStyles((theme) => ({
+//   root: {
+//     '&:nth-of-type(odd)': {
+//       backgroundColor: theme.palette.action.hover,
+//     },
+//   },
+// }))(TableRow);
+
+// function createData(name, qty) {
+//   return { name, qty };
+// }
+// let filorder =listOfOrder.filter(ord => ord.orderID === orderId)
+
+// let rows = filorder.map(orders =>{
+//   return (createData(
+//    orders.orderItems.map(item =>{
+     
+//       return item
+       
+//     }), orders.order_Quantity.map(item =>{
+     
+//       return item
+       
+//     })
+//     ))
+// })
+
+
+
+// const useStyles = makeStyles({
+//   table: {
+//     minWidth: '100%',
+//   },
+// });
+
+//  function CompletedTable() {
+//   const classes = useStyles();
+
+//   return (
+//     <React.Fragment>
+//     <TableContainer component={Paper}>
+//       <Table className={classes.table} aria-label="customized table">
+//         <TableHead>
+//           <TableRow>
+//             <StyledTableCell>Item</StyledTableCell>
+//             <StyledTableCell align="right">Quantity</StyledTableCell>
+          
+       
+//           </TableRow>
+//         </TableHead>
+//         <TableBody>
+//           {rows.map((row) => {
+//           let names = row.name.map((itm,itmIndex) =>{return itm});
+//           let qtys = row.qty.map(qties => {return (<React.Fragment> <span style={{width:'100%',padding:'5px'}}>{qties}</span><br/>   </React.Fragment>)});
+       
+//           let item = names.map( items =>{ return (<React.Fragment> <span style={{width:'100%',padding:'5px'}}>{items}</span><br/>   </React.Fragment>)})
+//           let qty = qtys.map(itemqty => {return itemqty})
+//      return(
+ 
+//             <StyledTableRow key={item}>
+//               <StyledTableCell component="th" align="left">
+//               {item} 
+//               </StyledTableCell>
+                        
+//               <StyledTableCell align="right">{qtys}</StyledTableCell>
+           
+           
+//             </StyledTableRow> 
+         
+         
+
+//            ) })}
+//         </TableBody>
+//       </Table>
+//     </TableContainer>
+//      </React.Fragment>
+//   );
+// }
+
+// return (
+//  <CompletedTable/>
+// )
+// }
+// }
+
+// export default inject('customerStore')(observer(OrderItems))
+
+
+

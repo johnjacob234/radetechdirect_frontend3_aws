@@ -23,7 +23,7 @@ class setting extends React.Component {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop:"70px",
+    
     marginLeft:"10px",
   },
   paper: {

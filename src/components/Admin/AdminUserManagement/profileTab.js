@@ -46,7 +46,7 @@ function a11yProps(index) {
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: "1220px",
+    width: "100%",
   },
 }));
 
@@ -76,7 +76,7 @@ export default function ProfilesTab() {
           aria-label="full width tabs example"
         >
           <Tab label="Staff" {...a11yProps(0)} />
-          <Tab label="Admin" {...a11yProps(1)} />
+          <Tab label="Manager" {...a11yProps(1)} />
   
         </Tabs>
       </AppBar>

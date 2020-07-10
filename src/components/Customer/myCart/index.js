@@ -1,10 +1,10 @@
-import React from 'react';
-import Paper from '@material-ui/core/Paper';
+import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import {Typography,Button} from '@material-ui/core'
-import {inject,observer} from 'mobx-react'
-import CartTable from './cartTable.js'
-import moment from 'moment';
+import Paper from '@material-ui/core/Paper';
+import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import CartTable from './cartTable.js';
 
 class Cart extends React.Component {
   constructor(props){
@@ -13,22 +13,27 @@ class Cart extends React.Component {
     super(props)
     this.state = {
       listOfProducts : [],
-
+      listOfCart : [],
     }
   }
     componentDidMount() {
 
-      let {startingStore:{getCart }}=this.props;
+     
+      
+      let {customerStore:{getCart }}=this.props;
 
 
-      getCart();
+      getCart().then(res => 
+        this.setState({listOfCart : res})
+      );
 
 
     }
 
     render() {
+      let getuname = JSON.parse(sessionStorage.getItem('userData'))
+      let dist = JSON.parse(sessionStorage.getItem('distData'))
   
-
       let date = new Date();
       function getHash(input){
         var hash = 0, len = input.length;
@@ -42,55 +47,15 @@ class Cart extends React.Component {
         return hash;
       }
 
-//  const checkOut = () =>{
-//   let getuname = JSON.parse(sessionStorage.getItem('userData'))
-//   let {startingStore:{addOrder,deleteCart,order}}=this.props;
 
-//     order.setProperty("orderID",`${date.getDate()}-${getHash(getuname.account_username)}-${ Math.floor(1000 + Math.random() * 9000)}`)
-//     order.setProperty("distributor_ID",getuname.distributor_ID)
-//     order.setProperty("orderDate",moment().format('MMMM Do YYYY, h:mm:ss a'))
-//    order.setProperty("account_ID",getuname.account_ID)
-//    order.setProperty("modeOfPayment",'Cash on Delivery')
-//    order.setProperty("orderStatus",'Packing')
-//    order.setProperty("paymentStatus",'Paid')
-//    order.setProperty("orderItes",)
-//     addOrder();
-//     //  deleteCart();
-
-//  }
-
-// const totalamount =()=>{
   
-  let {startingStore:{listOfCart}}=this.props;
-  // let getcart =listOfCart.filter( (mycart )=> mycart.account_ID === getuname.account_ID)
-  // console.log(getcart,"mycart")
-  let a = listOfCart.length;
+  let {customerStore:{listOfCart}}=this.props;
+
+  let a = listOfCart.filter(carts => carts.account_ID === getuname.account_ID && carts.distributor_ID === dist.distributor_ID).length;
 
 
 
-    //  console.log(mycart.product_Price[],"getid")
-    // listOfCart.filter((stock) => stock.account_ID === getuname.account_ID)
-    // .reduce((sum, record) => sum + record.product_Price , 0)
 
-  //   let totala =[{level:parseInt(mycart.product_Price)},];
-
-
-
-  //  let  total = totala[0];
-  //  console.log("total",totala)
-  //  let totalcar += total;
-
-  // const arr = [amount:{mycart.product_Price},];
-
-  // const total = arr.reduce((prev,next) => prev + next.amount,0);
-
-  // console.log(total);
-  // var a = [{level:mycart.product_Price}]
-// console.log(a.reduce( function(cnt,o){ return cnt + o.level; }, 0))
-
-
-  // {return listOfCart.filter((mycartammount) => mycart.account_ID === getuname.account_ID)
-    // .reduce((sum, record) => sum + record.product_replenishQty , 0) }
 
    
   let rows =  listOfCart.map(product => {
@@ -141,34 +106,14 @@ return(
 
 </Grid>
 
-{/* {createData.map((row,index) =>{ */}
-{/* <Grid container sm={12} xs={12}>
-  <Grid item sm={12} xs={12} style={{textAlign:"center"}}>
-<Typography variant="p">Total : <span style={{color:"#208769",fontWeight:"bold"}}> &#8369; {rows.pop()}</span></Typography>
-  </Grid>
 
-  <Grid item sm={12} xs={12} style={{marginTop:"16px",marginBottom:"16px"}}>
-    <Grid container sm={12} xs={12}> */}
-            {/* <Grid item sm={6} xs={7} style={{textAlign:"center"}}>
-            <Button variant="contained" style={{backgroundColor:"#208769",color:"white"}}>
-        continue shopping
-      </Button >
-            </Grid>
-            <Grid item sm={6} xs={5} style={{textAlign:"center"}}>
-            <Button variant="contained" style={{backgroundColor:"#FFA500",color:"white"}} onClick={()=>checkOut()}>
-        checkout
-      </Button>
-            </Grid> */}
-    {/* </Grid>
-  </Grid>
-    </Grid> */}
 
 
     </div>
 
 );
 
-// })}
+
 
 }
 
@@ -180,4 +125,4 @@ return(
     }
 }
 
-export default inject("startingStore")(observer(Cart));
+export default withRouter(inject("customerStore")(observer(Cart)));

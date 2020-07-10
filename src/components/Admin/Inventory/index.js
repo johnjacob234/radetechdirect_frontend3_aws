@@ -15,15 +15,10 @@ import InventoryTab from './tab.js'
 
 
 
-
 class InventDrawer extends Component{
 
-
-
-
-
 render(){
-  let {startingStore:{getProducts}}=this.props;
+  let {inventoryStore:{getProducts}}=this.props;
 
   function Inventory()  {
     
@@ -41,27 +36,18 @@ render(){
     return (
       <div >
        
-        
-       
-  
-        <Grid container direction="column" style={{width:"1220px"}}>
+      
+        <Grid container direction="row" lg={12} sm={12} xs={12}>
+          <Grid item lg={12} sm={12} xs={12} style={{marginBottom:"10px"}}>
           <Typography variant="h5" style={{marginBottom:"5px"}}>
            Inventory Management
         </Typography>
-          </Grid>
-          <Divider style={{marginBottom:"10px"}}/>
+        </Grid>
+         
           
-        
-            <Grid
-    container
-    direction="row"
-    justify="flex-end"
-    alignItems="flex-end"
-    
-  >
+        <Grid item lg={12} sm={12} xs={12}>
+            <Grid container direction="row" justify="flex-end" alignItems="flex-end"  lg={12} sm={12} xs={12}>
       
-           
-        
             <Grid item >
              <AddButton/>
              </Grid>
@@ -70,17 +56,13 @@ render(){
              </Grid>
                
           </Grid >
-             <Grid container xs="12" sm="12">
+          </Grid>
+             <Grid container xs={12} sm={12} lg={12}>
            <InventoryTab/>
          </Grid>
          
-        
-         
-          
-        
-          
-   
-       
+         </Grid>
+
       </div>
     );
   }
@@ -91,4 +73,4 @@ return (
 )
 }
 }
-export default withRouter(inject("startingStore")(observer(InventDrawer)));
+export default withRouter(inject("inventoryStore")(observer(InventDrawer)));

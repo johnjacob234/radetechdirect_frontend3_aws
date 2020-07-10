@@ -37,8 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-//   var dateB = moment(account_birthday).format('YYYY MMMM Do ');
-// console.log(dateB);
+
   function getHash(input){
     var hash = 0, len = input.length;
     for (var i = 0; i < len; i++) {
@@ -71,7 +70,7 @@ class EditForm extends Component{
       this.setState({disabled: true})
     }
     
-    console.log(value ,this.state.disabled, "awtrss")
+ 
   }
   RegistrationForm = () => {
     const classes = useStyles();
@@ -181,7 +180,7 @@ class EditForm extends Component{
         onChange={account_fName=>{
           account.setProperty("account_fName", account_fName.target.value)
           account.setProperty('account_ID',`${date.getFullYear()}-${getHash(account_fName.target.value)}-${ Math.floor(1000 + Math.random() * 9000)}` )
-          account.setProperty("account_dateRegistered",moment().format('MMMM Do YYYY, h:mm:ss a') )
+         
           account.setProperty('account_username', account_fName.target.value.split(" ")[0]+"123")
          
         

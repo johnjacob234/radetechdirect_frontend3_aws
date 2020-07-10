@@ -35,7 +35,7 @@ const changecode =()=>{
     <div>
       <Button
         variant="contained"
-        color="primary"
+        style={{backgroundColor:'#FFA500',color:'white'}}
         className={classes.button}
         startIcon={<AutorenewIcon />}
         onClick={()=>changecode()}

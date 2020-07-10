@@ -21,9 +21,9 @@ class Quantity extends React.Component {
   }
   render() {
     
-    let  {startingStore:{cart}}=this.props;
+    let  {customerStore:{cart}}=this.props;
     const displayCounter = this.state.counter > -1;
-    console.log(this.state.counter.toString(),"quantity")
+   
     let {price,handleChange}=this.props;
     // let totalPrice ={price}
     // let total = totalPrice * this.state.counter
@@ -31,14 +31,14 @@ class Quantity extends React.Component {
     cart.setProperty("product_TotalAmount",total)
     return (
       <div>
-    <Typography variant='p'><span>Total : </span>&#8369; {total}.00</Typography>
+    <Typography variant='p'><span>Total : </span>&#8369; {total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}.00</Typography>
       <ButtonGroup size="small" aria-label="small outlined button group">
-         <Button onClick={this.handleIncrement}>+</Button>
+      <Button onClick={this.handleDecrement}>-</Button>
         {displayCounter && <TextField  value={this.state.counter.toString()} onChange={
            cart.setProperty("product_Quantity",this.state.counter.toString())
            
         }/>}
-                 {displayCounter && <Button onClick={this.handleDecrement}>-</Button>}
+                 {displayCounter &&  <Button onClick={this.handleIncrement}>+</Button>}
       </ButtonGroup>
       </div>
     );
@@ -46,4 +46,4 @@ class Quantity extends React.Component {
   }
 }
 
-export default inject("startingStore")(observer(Quantity));
+export default inject("customerStore")(observer(Quantity));

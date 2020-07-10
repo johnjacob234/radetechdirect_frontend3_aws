@@ -15,17 +15,6 @@ import Resizer from 'react-image-file-resizer';
 
 
 
-
-
-
-
-
-// import {
-//   MuiPickersUtilsProvider,
-//   KeyboardTimePicker,
-//   KeyboardDatePicker,
-// } from '@material-ui/pickers';
-
 const useStyles = makeStyles(theme => ({
   root: {
     '& > *': {
@@ -42,28 +31,7 @@ const useStyles = makeStyles(theme => ({
  
 }));
 
-// const useStyles = makeStyles(theme => ({
-  
-//   root: {
-//     '& .MuiTextField-root': {
-//       margin: theme.spacing(1),
-//       width: 200,
-//     },
-//     formControl: {
-//       margin: theme.spacing(1),
-//       minWidth: 220,
-//     },
-//     selectEmpty: {
-//       marginTop: theme.spacing(2),
-//     },
-//     formControl2: {
-//       margin: theme.spacing(1),
-//       minWidth: 220,      },
-//   },
-// }));
 
-//   var dateB = moment(account_birthday).format('YYYY MMMM Do ');
-// console.log(dateB);
   function getHash(input){
     var hash = 0, len = input.length;
     for (var i = 0; i < len; i++) {
@@ -89,7 +57,7 @@ class EditForm extends Component{
   onFileChange = (e) => {
     
     this.setState({ loading: true });
-      let {startingStore:{product}}=this.props;
+      let {inventoryStore:{product}}=this.props;
     
       Resizer.imageFileResizer(
         e.target.files[0],
@@ -115,7 +83,7 @@ class EditForm extends Component{
 
   EditForm = () => {
     const classes = useStyles();
-    let {startingStore:{product}}=this.props
+    let {inventoryStore:{product}}=this.props
     const [labelWidth, setLabelWidth] = React.useState(0);   
     const [selectedDate, setSelectedDate] = React.useState(new Date('2019-08-18T21:11:54'));
     const [exselectedDate, exsetSelectedDate] = React.useState(new Date('2019-08-18T21:11:54'));
@@ -163,25 +131,6 @@ class EditForm extends Component{
         <Grid container  direction="row" sm={12} >
         <Grid item xs={4} style={{margin:"5px"}}>
 
-     {/* <div className="container">
-      
-      <input
-       accept="image/*"
-   
-       id="contained-button-file"
-       multiple
-       type="file"
-       style={{display:"none"}}
-       onChange={e=> this.onFileChange(e)}
-     />
-     <label htmlFor="contained-button-file">
-       <Button variant="contained"  component="span" color="primary" style={{height:"100%",width:"100%",color:"white"}}>
-   {this.state.loading ?  <CircularProgress color="secondary" style={{margin:"5px"}}/>: <PhotoCamera style={{margin:"5px"}}/>} Upload Image
-       </Button>
-     </label>
-
-  
-     </div> */}
 
      </Grid>
      <Grid item xs={6} style={{textAlign:"center"}}>
@@ -211,12 +160,7 @@ class EditForm extends Component{
      
      /></Grid>
      <Grid item  xs={5} style={{margin:"5px"}}>
-       {/* <TextField 
-     id="outlined-basic" 
-     label="Category" 
-     variant="outlined" 
-     onChange={product_Category=>{product.setProperty("product_Category", product_Category.target.value)}}
-     /> */}
+
      
      
      <FormControl variant="outlined" className={classes.formControl} style={{width:"100%"}}>
@@ -274,13 +218,18 @@ class EditForm extends Component{
          onChange={product_UoM=>{product.setProperty("product_UoM", product_UoM.target.value)}}
          labelWidth={labelWidth}
        >
-         <MenuItem value="">
-           <em></em>
-         </MenuItem>
-         <MenuItem value="Pcs">Pcs</MenuItem>
-         <MenuItem value="Pack">Pack</MenuItem>
-         <MenuItem value="Box">Box</MenuItem>
-         <MenuItem value="Case">Case</MenuItem>
+             <MenuItem value="">
+            <em></em>
+          </MenuItem>
+          <MenuItem value="Beverages">Beverages</MenuItem>
+          <MenuItem value="Bread/Bakery">Bread/Bakery</MenuItem>
+          <MenuItem value="Canned/Jarred Goods">Canned/Jarred Goods</MenuItem>
+          <MenuItem value="Cleaning">Cleaning</MenuItem>
+          <MenuItem value="Dry/Baking Goods">Dry/Baking Goods </MenuItem>
+          <MenuItem value="Liquor">Liquor</MenuItem>
+          <MenuItem value="Produce">Produce </MenuItem>
+          <MenuItem value="Paper Goods">Paper Goods </MenuItem>
+          <MenuItem value="Personal Care">Personal Care</MenuItem>
        </Select>
      </FormControl>
      </Grid>
@@ -437,4 +386,4 @@ return (
 }}
 
 
-export default inject("startingStore")(observer(EditForm));
+export default inject("inventoryStore")(observer(EditForm));

@@ -2,11 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import CompletedTable from './Table/index.js'
+import CompletedTable from './Table'
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
 
-const useStyles = makeStyles(theme => ({
+import SearchIcon from '@material-ui/icons/Search';
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -15,58 +16,54 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+    input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  
+  },
+
+  search: {
+    // padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'right',
+    width: 350,
+    float:"right"
+  },
 }));
 
-export default function CompletedPage() {
+export default function SummaryGrid() {
   const classes = useStyles();
-
+  const [filter,setFilter]= React.useState("")
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-    
-        <Grid item xs={6}>
-         
-              <Typography style={{textAlign:"left"}}>
-              <span style={{}}> Reference # :</span> 
-                <TextField
+      <Grid item sm={12} xs={12} style={{textAlign:"right",float:"right",marginBottom:"10px"}}>
         
-          id="outlined-size-small"
-         
-          variant="outlined"
-          size="small"
+        <Paper component="form" className={classes.search} >
+     
+        <InputBase
+          className={classes.input}
+          placeholder="Search "
+          inputProps={{ 'aria-label': 'search' }}
+          onChange={(e)=>setFilter(e.target.value)}
         />
-              </Typography>
-          
-        </Grid>
-        <Grid item xs={6}>
-       
-              <Typography style={{textAlign:"left"}}>
-              <span style={{}}> Payment Method :</span> 
-                <TextField
-        
-          id="outlined-size-small"
-         
-          variant="outlined"
-          size="small"
-        />
-              </Typography >
-
-              <Typography style={{textAlign:"left",marginTop:"10px"}}>
-              <span style={{}}> Customer :</span> 
-                <TextField
-        
-          id="outlined-size-small"
-         
-          variant="outlined"
-          size="small"
-        />
-              </Typography>
-        
+        <span style={{  backgroundColor:"#FFA500",borderRadius:"3px"}}>
+        <IconButton type="submit" className={classes.iconButton} aria-label="search">
+          <SearchIcon style={{color:"white"}}/>
+        </IconButton>
+        </span>
+     
+      </Paper>
+     
+     
         </Grid>
         <Grid item xs={12}>
-
-              <CompletedTable/>
-            </Grid>
+          <CompletedTable mysearch={filter}/>
+        </Grid>
+        
       </Grid>
     </div>
   );

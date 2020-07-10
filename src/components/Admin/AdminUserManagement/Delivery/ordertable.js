@@ -32,7 +32,7 @@ class Ordertable extends React.Component {
     console.log(this.props.id,'account_ID')
     const assign = (myorder) => {
       let {startingStore:{assignOrder,order}}=this.props;
-    
+    console.log(myorder.orderID,"orderID")
  
       order.setProperty("orderID", myorder.orderID)
       order.setProperty("dispatcher_ID",this.props.id)
@@ -69,7 +69,8 @@ let orders = listOfOrder.filter((order) => order.distributor_ID === getId.distri
 let rows = orders.map(orderss =>{
 return(createData(
 
-orderss.orderID,orderss.modeOfPayment,orderss.orderDate,orderss.paymentStatus,orderss.orderStatus,orderss.distributor_ID,
+orderss.orderID,orderss.modeOfPayment,orderss.orderDate,orderss.paymentStatus,orderss.orderStatus,<span> {listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>
+,
 <div><IconButton  onClick={()=>{assign(orderss)}}  size="medium" style={{backgroundColor:"#31AF91"}} > <AssignmentReturnedOutlinedIcon /> </IconButton></div>
 
 
@@ -80,7 +81,7 @@ orderss.orderID,orderss.modeOfPayment,orderss.orderDate,orderss.paymentStatus,or
 
 
 })
-console.log(rows,"asdsad")
+
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
@@ -95,12 +96,12 @@ const useStyles = makeStyles({
       <Table className={classes.table} aria-label="customized table">
         <TableHead >
           <TableRow>
-            <StyledTableCell>Order no.</StyledTableCell>
+            <StyledTableCell>Reference #</StyledTableCell>
             <StyledTableCell align="right">Payment Method</StyledTableCell>
             <StyledTableCell align="center">Date</StyledTableCell>
             <StyledTableCell align="right">Payment Status</StyledTableCell>
             <StyledTableCell align="right">Order Status</StyledTableCell>
-            <StyledTableCell align="center">Retail ID</StyledTableCell>
+            <StyledTableCell align="center">Customer</StyledTableCell>
             <StyledTableCell align="right">Assign</StyledTableCell>
           </TableRow>
         </TableHead>

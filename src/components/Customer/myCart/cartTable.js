@@ -1,33 +1,32 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, TableRow } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import { lighten, makeStyles, useTheme } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
-import {Grid,TableRow} from '@material-ui/core';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import clsx from 'clsx';
+import MuiAlert from '@material-ui/lab/Alert';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import EditForm from './editCart';
-import moment from 'moment';
-import {BrowserRouter as Router,withRouter} from 'react-router-dom'
+
+
 class MyCart extends React.Component {
-  state = {  }
+
+
+
  
 
 
@@ -51,25 +50,18 @@ arrayBufferToBase64 (buffer) {
   return window.btoa(binary);
 };
 
-// componentDidMount() {
-      
-//   let {startingStore:{getCart }}=this.props;
 
-
-//   getCart();
-
-
-// }
 
   render() { 
-    let {startingStore:{listOfCart,editCart,deleteCart,cart }}=this.props;
-    
+    let {customerStore:{listOfCart,editCart,deleteCart,cart }}=this.props;
+    let getuname = JSON.parse(sessionStorage.getItem('userData'))
+    let dist = JSON.parse(sessionStorage.getItem('distData'))
     let date = new Date();
     function getHash(input){
       var hash = 0, len = input.length;
       for (var i = 0; i < len; i++) {
         hash  = ((hash << 5) - hash) + input.charCodeAt(i);
-        hash |= 0; // to 32bit integer
+        hash |= 0; 
       }
 
 
@@ -84,7 +76,7 @@ arrayBufferToBase64 (buffer) {
       )
     
      })
-     console.log(cartID,"fromtable")
+
 
      let quantity =  listOfCart.map(cart => {
   
@@ -93,19 +85,23 @@ arrayBufferToBase64 (buffer) {
       )
     
      })
-     console.log(quantity[0],"quantity")
 
 
-    //  const shop =()=>{
-    //   let getuname = JSON.parse(sessionStorage.getItem('userData'))
-    //   setTimeout(() => {
-    //     // openNotificationSucess();
-    //     this.props.history.push({"pathname":"/Customer/Home", state:{ id: getuname.distributor_ID}} )
-    //   }, 500);
-    //  }
 
-function createData( image, name, quantity, price, edit) {
-  return {  image, name, quantity, price, edit };
+     const shop =()=>{
+      // let getuname = JSON.parse(sessionStorage.getItem('userData'))
+      setTimeout(() => {
+        // openNotificationSucess();
+        this.props.history.push("/Customer/Home")
+      }, 500);
+     }
+
+function createData( 
+  // image,
+   name, quantity, price, edit, del) {
+  return {  
+    // image,
+     name, quantity, price, edit,del };
 }
 
 let rows2 =  listOfCart.map(cart => {
@@ -162,12 +158,26 @@ function stableSort(array, comparator) {
 
 const headCells = [
  
-  { id: 'image', numeric: false, disablePadding:false, label: 'Image' },
+  // { id: 'image', numeric:false, disablePadding:false, label: 'Image' },
   { id: 'name', numeric: false, disablePadding: false, label: 'Product' },
-  { id: 'quantity', numeric: false, disablePadding: true, label: 'Quantity' },
-  { id: 'price', numeric: false, disablePadding: false, label: 'Price' },
-  { id: 'edit', numeric:false,  disablePadding: false, label: 'Action' },
+  { id: 'quantity', numeric: true, disablePadding: true, label: 'Qty' },
+  { id: 'price', numeric: true, disablePadding: false, label: 'Amount' },
+  { id: 'edit', numeric:true,  disablePadding: false, label: 'Mod' },
+  { id: 'del', numeric:true,  disablePadding: false, label: 'Rem' },
 ];
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: '#208769',
+    color: theme.palette.common.white,
+   
+    padding:'1px',
+   
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
 function CartTableHead(props) {
   const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
@@ -176,14 +186,15 @@ function CartTableHead(props) {
   };
 
   return (
-    <TableHead>
-      <TableRow>
+    <TableHead >
+      <TableRow >
   
         {headCells.map(headCell => (
-          <TableCell
+          <StyledTableCell
+        
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
+            // padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -198,7 +209,7 @@ function CartTableHead(props) {
                 </span>
               ) : null}
             </TableSortLabel>
-          </TableCell>
+          </StyledTableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -215,66 +226,9 @@ CartTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles(theme => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
-
-// const CartTableToolbar = props => {
-//   const classes = useToolbarStyles();
-//   const { numSelected } = props;
 
 
-  
-//   return (
-//     <Toolbar
-//       className={clsx(classes.root, {
-//         [classes.highlight]: numSelected > 0,
-//       })}
-//     >
-//       {numSelected > 0 ? (
-//         <Typography className={classes.title} color="inherit" variant="subtitle1">
-//           {numSelected} selected
-//         </Typography>
-//       ) : (
-//         <Typography className={classes.title} variant="h6" id="tableTitle">
-//           Products on Cart
-//         </Typography>
-//       )}
 
-//       {numSelected > 0 ? (
-//         <Tooltip title="Delete">
-       
-//         </Tooltip>
-//       ) : (
-//         <Tooltip title="Filter list">
-//           <IconButton aria-label="filter list">
-//             <FilterListIcon />
-//           </IconButton>
-//         </Tooltip>
-//       )}
-//     </Toolbar>
-//   );
-// };
-
-// CartTableToolbar.propTypes = {
-//   numSelected: PropTypes.number.isRequired,
-// };
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -285,7 +239,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: '100%',
+    minWidth: '200',
   },
   visuallyHidden: {
     border: 0,
@@ -299,7 +253,9 @@ const useStyles = makeStyles(theme => ({
     width: 1,
   },
 }));
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
  function CartTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -312,11 +268,11 @@ const useStyles = makeStyles(theme => ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   let getuname = JSON.parse(sessionStorage.getItem('userData'))
-
+  const [opens, setOpens] = React.useState(false);
   const handleClickOpen = (prod) => {
   
     setOpen(true);
-    console.log(prod, "ariii")
+ 
     cart.setProperty("cart_ID", prod.cart_ID)
     cart.setProperty("account_ID", prod.account_ID)
     cart.setProperty("product_ID", prod.product_ID)
@@ -328,7 +284,7 @@ const useStyles = makeStyles(theme => ({
     
     cart.setProperty("product_Img", prod.product_Img)
     cart.setProperty("product_Quantity", prod.product_Quantity)
-    cart.setProperty("product_TotalAmount", prod.product_TotalAmount)
+    // cart.setProperty("product_TotalAmount", prod.product_TotalAmount)
 
   };
 
@@ -336,8 +292,8 @@ const useStyles = makeStyles(theme => ({
     setOpen(false);
   };
 
-  const handleOk = () => {
-   
+  const handleOk = (e) => {
+  
     editCart();
 
 
@@ -346,23 +302,24 @@ const useStyles = makeStyles(theme => ({
 
 const handleDelete = (del) => {
 
-console.log(del,'awtss')
+
   cart.setProperty("cart_ID",del.cart_ID)
   cart.setProperty("account_ID", del.account_ID)
-  console.log(cart,)
+ 
   //  setTimeout(() => {
   //  this.setState({ loading: false, visible: false });
   deleteCart();
+  setOpens(true);
 //  }, 3000);
 
  
 }
 
 let rowss =  listOfCart.map(product => {
-  let getuname = JSON.parse(sessionStorage.getItem('userData'))
+
   return (
 
-    listOfCart.filter((amount) => amount.account_ID === getuname.account_ID)
+    listOfCart.filter((amount) => amount.account_ID === getuname.account_ID && amount.distributor_ID === dist.distributor_ID)
     .reduce((sum, record) => parseInt(sum) + parseInt(record.product_TotalAmount) , 0)
 
 
@@ -379,16 +336,18 @@ let rowss =  listOfCart.map(product => {
     setOrderBy(property);
   };
 
+  let filcart = listOfCart.filter(carts => carts.account_ID === getuname.account_ID && carts.distributor_ID === dist.distributor_ID)
 
-  let rows =  listOfCart.map(cart => {
+  let rows =  filcart.map(cart => {
   
     return(createData(
-  <img style={{width:"35px" , height:"35px"}} src={cart.product_Img} />,cart.product_Name,
-    cart.product_Quantity,cart.product_TotalAmount.toLocaleString(),<div><IconButton  onClick={()=>{handleClickOpen(cart)}}  size="medium" style={{backgroundColor:"#31AF91"}} > <EditIcon /> </IconButton>{' '}<IconButton  onClick={()=> {handleDelete(cart)}}  size="medium" style={{backgroundColor:"#FFA500"}} > <DeleteIcon /> </IconButton></div>))
+  // <img style={{width:"35px" , height:"35px"}} src={cart.product_Img} />,
+  cart.product_Name,
+    cart.product_Quantity,<span>&#8369;{cart.product_TotalAmount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>,<div><IconButton  onClick={()=>{handleClickOpen(cart)}}  size="medium" style={{backgroundColor:"#31AF91"}} > <EditIcon style={{fontSize:"12px"}}/> </IconButton></div>,<div><IconButton  onClick={()=> {handleDelete(cart)}}  size="medium" style={{backgroundColor:"#FFA500"}} > <DeleteIcon style={{fontSize:"14px"}}/> </IconButton></div>))
    
    })
 
- console.log(rows,'getitems')
+ 
 
 
  
@@ -446,8 +405,14 @@ let rowss =  listOfCart.map(product => {
   return (
    
     <div className={classes.root}>
+      <Snackbar open={opens} autoHideDuration={3000}  anchorOrigin={{vertical:'center',horizontal:'center'}}>
+        <Alert  severity="success">
+          Item successfully removed!
+        </Alert>
+      </Snackbar>
+
       <Paper className={classes.paper}>
-        {/* <CartTableToolbar numSelected={selected.length} /> */}
+    
         <TableContainer>
           <Table
             className={classes.table}
@@ -464,7 +429,7 @@ let rowss =  listOfCart.map(product => {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            <TableBody>
+            <TableBody >
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -482,14 +447,15 @@ let rowss =  listOfCart.map(product => {
                     
                     >
                  
-                      <TableCell component="th" id={labelId} scope="row" align="left"  >
+                      {/* <TableCell component="th" id={labelId} scope="row" align="left"  padding='none'>
                        <span style={{paddingleft:"10px"}}> {row.image}</span>
-                      </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.quantity}</TableCell>
-                      <TableCell align="left">{row.price}</TableCell>
+                      </TableCell> */}
+                      <TableCell component="th" id={labelId} scope="row" align="left" style={{fontSize:"12px"}} >{row.name}</TableCell>
+                      <TableCell align="right" style={{fontSize:"12px"}} padding='none'>{row.quantity}</TableCell>
+                      <TableCell align="right" style={{fontSize:"12px"}} padding='none'>{row.price}</TableCell>
                     
-                      <TableCell  align='left'>{row.edit}</TableCell>
+                      <TableCell align="right" padding='none'>{row.edit}</TableCell>
+                      <TableCell align="center" padding='none'>{row.del}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -514,7 +480,7 @@ let rowss =  listOfCart.map(product => {
 
 
       <Dialog
-        fullScreen={fullScreen}
+        // fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
@@ -546,7 +512,7 @@ let rowss =  listOfCart.map(product => {
     <Grid container sm={12} xs={12}>
             <Grid item sm={6} xs={7} style={{textAlign:"center"}}>
             <Button variant="contained" style={{backgroundColor:"#208769",color:"white"}} 
-            // onClick={()=>{shop()}}
+            onClick={()=>{shop()}}
             >
         continue shopping
       </Button >
@@ -572,4 +538,9 @@ return (
 }
 }
 
-export default withRouter(inject("startingStore")(observer(MyCart)));
+export default withRouter(inject("customerStore")(observer(MyCart)));
+
+
+
+
+

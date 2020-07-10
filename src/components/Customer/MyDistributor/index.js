@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 class Distributors extends React.Component {
 
   componentDidMount() {
-    let {startingStore:{getDistributors,getCart }}=this.props;
+    let {customerStore:{getDistributors,getCart }}=this.props;
   
 getDistributors();
 getCart();
@@ -36,15 +36,15 @@ getCart();
 
     render() { 
 
- let {startingStore:{listOfDistributors,distributor,listOfUsers}}=this.props;
+ let {customerStore:{listOfDistributors,distributor,listOfUsers}}=this.props;
  let getDisId = JSON.parse(sessionStorage.getItem('userData'))
  let listOfDis = listOfDistributors.filter(distributor => distributor.distributor_ID === getDisId.distributor_ID)
-console.log(listOfDis.distributor_warehouseName,"disID")
+
 let MyDist =listOfDis.map(distributorss =>{
 
  const viewProducts = (distributorss)=>{
 
-   console.log(distributorss,"getDistributor")
+   
    
    distributor.setProperty("distributor_ID",distributorss.distributor_ID)
 
@@ -173,4 +173,4 @@ return ( <DistGrid/> );
 }
 }
 
-export default withRouter(inject("startingStore")(observer(Distributors)));
+export default withRouter(inject("customerStore")(observer(Distributors)));

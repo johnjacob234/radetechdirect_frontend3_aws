@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 
 import Typography from '@material-ui/core/Typography';
 import { inject, observer } from 'mobx-react';
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import OrderTab from './tab.js';
 import DashGrid from './OrderDashboard'
@@ -14,45 +14,28 @@ import DashGrid from './OrderDashboard'
 class adDrawer extends Component{
 
 
-//   constructor(props) {
-//     super(props);
-    
-// }
-
   state = {}
 render(){
   function OrderManagement() {
 
-  // const theme = useTheme();
-  // const [open, setOpen] = React.useState(false);
-
+ 
 
   return (
-<div style={{display:"flex"}}>
-      <main >
-        <div  />
-
-      <Grid container direction="row">
+<Fragment>
+      <Grid container direction="row" lg={12} sm={12} xs={12}>
         <Typography variant="h5" >
            Order Management
         </Typography>
         
         </Grid>
-        
-        <Divider style ={{marginBottom:"5px"}}/>
-        <Grid container direction="row">
-       <DashGrid/>
-        
-        </Grid>
-
-        
-        <Grid container style={{marginTop:"1%"}}>
+ 
+        <Divider style ={{marginBottom:"5px"}}/> 
+        <Grid container style={{marginTop:"1%"}} lg={12} sm={12} xs={12}>
         <OrderTab/>
         </Grid >
         
        
-      </main>
-      </div>
+        </Fragment>
   );
 }
 return ( 
@@ -64,7 +47,7 @@ return (
 
 }
 }
-export default withRouter(inject("startingStore")(observer(adDrawer)));
+export default withRouter(adDrawer);
 
 
 

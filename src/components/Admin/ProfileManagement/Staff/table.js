@@ -47,16 +47,14 @@ class staffTable extends Component{
     let {startingStore:{listOfUsers,account,editAccount}}=this.props;
  
     let listofstaff = listOfUsers.filter(user=> user.account_accessType === "staff")
-    // console.log(listofstaff , "aw")
+  
 
   
 function createData(shop, name, address, contact, email,status,action) {
   return { shop, name, address, contact, email,status,action };
 }
 
-// let rows = [];
 
-// console.log(samp, listOfUsers);
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;

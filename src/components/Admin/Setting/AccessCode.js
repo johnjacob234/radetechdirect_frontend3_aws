@@ -31,13 +31,13 @@ function createData(token, date) {
 }
 
 let {startingStore:{listOfToken}}=this.props;
-
-
-let rows = listOfToken.map(tokenz => {
+let myid = JSON.parse(sessionStorage.getItem('userData'))
+let filtoken =listOfToken.filter(tken => tken.distributor_ID === myid.distributor_ID)
+let rows = filtoken.map(tokenz => {
 
   return(createData(
 
-    tokenz.access_Token,tokenz.dateGenerated
+    tokenz.access_Token,tokenz.date_Generated
 
 
   ))
@@ -49,7 +49,7 @@ let rows = listOfToken.map(tokenz => {
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
-        <TableHead style={{backgroundColor:"black",color:"white"}}>
+        <TableHead style={{backgroundColor:"#208769",color:"white"}}>
           <TableRow>
             <TableCell style={{color:"white",fontWeight:"bolder"}}>My Access Code</TableCell>
             <TableCell align="right" style={{color:"white",fontWeight:"bolder"}}>Date Generated</TableCell>

@@ -1,11 +1,19 @@
 import { FormControlLabel, Grid, IconButton, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { lighten, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import ArchiveIcon from '@material-ui/icons/Archive';
-import EditIcon from '@material-ui/icons/Edit';
+import InfoIcon from '@material-ui/icons/Info';
+// import EditIcon from '@material-ui/icons/Edit';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import theme from './../../../theme';
 
 
 
@@ -13,9 +21,9 @@ class custTable extends Component{
   state = { }
   
   render(){
-    let {startingStore:{listOfUsers}}=this.props;
-
-    let listOfcustomer = listOfUsers.filter(user => user.account_accessType === "customer")
+    let {crmStore:{listOfUsers,account,editAccount}}=this.props;
+let myID = JSON.parse(sessionStorage.getItem('userData'));
+    let listOfcustomer = listOfUsers.filter(user => user.account_accessType === "customer" && user.distributor_ID === myID.distributor_ID && user.account_status === 'active');
 
 function createData(shop, name, address, contact, email,status,action) {
   return { shop, name, address, contact, email ,status,action};
@@ -30,7 +38,9 @@ const profile = custprof => {
   
  };
 
-// console.log(samp, listOfUsers);
+
+
+
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -58,8 +68,8 @@ function getSorting(order, orderBy) {
 const headCells = [
   { id: 'shop', numeric: false, disablePadding: true, label: 'ID' },
   { id: 'name', numeric: true, disablePadding: false, label: 'Full Name' },
-  { id: 'address', numeric: true, disablePadding: false, label: 'Address' },
-  { id: 'contact', numeric: true, disablePadding: false, label: 'Contact No.' },
+  { id: 'address', numeric: true, disablePadding: false, label: 'Contact No.' },
+  { id: 'contact', numeric: true, disablePadding: false, label: 'Address' },
   { id: 'email', numeric: true, disablePadding: false, label: 'Email' },
   { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
   { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
@@ -75,12 +85,7 @@ function CustListTableHead(props) {
     <TableHead style={{textAlign:"left",color:'white'}}>
       <TableRow>
         <TableCell padding="checkbox" style={{fontWeight:"bold",color:'white',backgroundColor:"#208769"}}>
-          {/* <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          /> */}
+    
         </TableCell>
         {headCells.map(headCell => (
           <TableCell
@@ -119,66 +124,9 @@ CustListTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles(theme => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
 
-// const CustListTableToolbar = props => {
-//   const classes = useToolbarStyles();
-//   const { numSelected } = props;
 
-//   return (
-//     <Toolbar
-//       className={clsx(classes.root, {
-//         [classes.highlight]: numSelected > 0,
-//       })}
-//     >
-//       {numSelected > 0 ? (
-//         <Typography className={classes.title} color="inherit" variant="subtitle1">
-//           {numSelected} selected
-//         </Typography>
-//       ) : (
-//         <Typography className={classes.title} variant="h6" id="tableTitle">
-//           Customer Profile
-//         </Typography>
-//       )}
 
-//       {numSelected > 0 ? (
-//         <Tooltip title="Delete">
-//           <IconButton aria-label="delete">
-//             <DeleteIcon />
-//           </IconButton>
-//         </Tooltip>
-//       ) : (
-//         <Tooltip title="Filter list">
-//           <IconButton aria-label="filter list">
-//             <FilterListIcon />
-//           </IconButton>
-//         </Tooltip>
-//       )}
-//     </Toolbar>
-//   );
-// };
-
-// CustListTableToolbar.propTypes = {
-//   numSelected: PropTypes.number.isRequired,
-// };
 
 
 const useStyles = makeStyles(theme => ({
@@ -204,27 +152,43 @@ const useStyles = makeStyles(theme => ({
     width: 1,
   },
 }));
-
+let mysearch = props =>{
+  return this.props.mysearch
+}
  function CustListTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('shop');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [open, setOpen] = React.useState(false);
+  const filter = mysearch();
 
 
+  const handleClickOpen =(arc)=>{
+    setOpen(true);
+    account.setProperty("account_ID", arc.account_ID)
+    account.setProperty("account_status",'archived')
+  }
 
+  const handleArchive = () => {
 
+   
+    editAccount();
+  
 
+  };
 
-
+  const handleClose = () => {
+    setOpen(false);
+  };
 
 // table Data
 let rows = listOfcustomer.map(user => {
 
-  return(createData(user.account_ID ,`${user.account_fName}  ${user.account_mName}  ${user.account_lName}`,user.account_contactNo,user.account_address,user.account_emailAddress,"active",<div><IconButton   size="medium" style={{backgroundColor:"#31AF91"}} onClick={()=>{profile(user)}}> <EditIcon /> </IconButton> <IconButton size="medium" style={{backgroundColor:"#FFA500"}}> <ArchiveIcon /> </IconButton></div>  ))
+  return(createData(user.account_ID ,`${user.account_fName}  ${user.account_mName}  ${user.account_lName}`,user.account_contactNo,user.account_address,user.account_emailAddress,user.account_status,<div><IconButton   size="medium" style={{backgroundColor:"#31AF91"}} onClick={()=>{profile(user)}}> <InfoIcon /> </IconButton> <IconButton size="medium" style={{backgroundColor:"#FFA500"}} onClick={()=>{handleClickOpen(user)}}> <ArchiveIcon /> </IconButton></div>  ))
  
  })
 
@@ -283,7 +247,31 @@ let rows = listOfcustomer.map(user => {
 
   return (
     <div className={classes.root}>
-    
+      {/* Deactivate Dialog */}
+    <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Deactivate this account?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+           
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <ThemeProvider theme={theme}>
+          <Button onClick={handleClose} color="secondary" variant='contained' style={{color:'white'}}>
+            Cancel
+          </Button>
+          <Button onClick={handleArchive} color="primary" autoFocus variant='contained' style={{color:'white'}}>
+            Agree
+          </Button>
+          </ThemeProvider>
+        </DialogActions>
+      </Dialog>
+
       <Paper className={classes.paper}>
       <Grid container xs={12}>
         {/* <CustListTableToolbar numSelected={selected.length} /> */}
@@ -312,7 +300,8 @@ let rows = listOfcustomer.map(user => {
                 .map((row, index) => {
                   // const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
+                  if(filter.length !== 0){
+                    if(row.shop.startsWith(filter) || row.name.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) || row.address.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) || row.status.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase())){
                   return (
                     <TableRow
                       hover
@@ -339,7 +328,40 @@ let rows = listOfcustomer.map(user => {
                       <TableCell align="left">{row.status}</TableCell>
                       <TableCell align="left">{row.action}</TableCell>
                     </TableRow>
+                    );
+
+                  }
+                  else{
+                    return null
+                 
+                }
+  
+                  }
+                  return (
+                    <TableRow
+                      hover
+                      // onClick={event => handleClick(event, row.name)}
+                      // role="checkbox"
+                      // aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.name}
+                      // selected={isItemSelected}
+                    >
+                      <TableCell >
+                    
+                      </TableCell>
+                      <TableCell component="th" align="left" id={labelId} scope="row" padding="none">
+                        {row.shop}
+                      </TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">{row.address}</TableCell>
+                      <TableCell align="left">{row.contact}</TableCell>
+                      <TableCell align="left">{row.email}</TableCell>
+                      <TableCell align="left">{row.status}</TableCell>
+                      <TableCell align="left">{row.action}</TableCell>
+                    </TableRow>
                   );
+  
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
@@ -381,4 +403,4 @@ return (
  );
 }}
 
-export default withRouter(inject("startingStore")(observer(custTable)));
+export default withRouter(inject("crmStore")(observer(custTable)));

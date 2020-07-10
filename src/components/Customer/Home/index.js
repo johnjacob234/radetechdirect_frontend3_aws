@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-
 import { inject, observer } from "mobx-react";
-
 import {Grid} from '@material-ui/core';
-
-
 import CenteredTabs from './tab.js';
-
 import {
   BrowserRouter as Router,withRouter,
 
@@ -31,16 +26,18 @@ const styles={
   };
 
   componentDidMount() {
-    let {startingStore:{getProducts,getDistributors }}=this.props;
+    let {customerStore:{getProducts,getDistributors,product }}=this.props;
   
         getDistributors();
+        
+        // product.setProperty('distributor_ID',this.props.location.state.id)
         getProducts();  
-  
+       
     
   }
   
   render() {
-    
+ 
     return (
       
       <div >
@@ -68,4 +65,4 @@ const styles={
   }
 }
 
-export default withRouter(inject("startingStore")(observer(Home)));
+export default withRouter(inject("customerStore")(observer(Home)));

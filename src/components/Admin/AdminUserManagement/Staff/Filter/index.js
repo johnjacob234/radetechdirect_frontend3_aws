@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 export default function SelectFilter() {
   const classes = useStyles();
 
-
+  const [filter,setFilter] =React.useState("")
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
   React.useEffect(() => {
@@ -39,12 +39,12 @@ export default function SelectFilter() {
           native
           size='small'
           labelWidth={labelWidth}
-      
+          onChange={(e)=>setFilter(e.target.value)}
         >
                 <option value=""></option>
-          <option value="packer"  >Packer</option>
-          <option value="dispacher">Dispacher</option>
-          <option value="driver">Driver</option>
+          <option value="Packer"  >Packer</option>
+          <option value="Dispacher">Dispacher</option>
+       
         </Select>
       </FormControl>
 

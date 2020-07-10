@@ -16,6 +16,8 @@ class Stock extends Model {
         product_replenishQty:"",
         product_replenishDate: "",
         product_expirationDate: "",
+        stock_Detail:"",
+        stock_Out:"",
         
 
     };
@@ -36,6 +38,8 @@ decorate(Stock, {
     product_replenishQty:observable,
     product_replenishDate: observable,
     product_expirationDate: observable,
+    stock_Detail:observable,
+    stock_Out:observable,
    
 
 });

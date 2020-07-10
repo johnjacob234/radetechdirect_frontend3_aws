@@ -1,20 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Check from '@material-ui/icons/Check';
-import SettingsIcon from '@material-ui/icons/Settings';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 import StepConnector from '@material-ui/core/StepConnector';
-import PhonelinkLockOutlinedIcon from '@material-ui/icons/PhonelinkLockOutlined';
-import NavigateBeforeOutlinedIcon from '@material-ui/icons/NavigateBeforeOutlined';
-import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
+import StepLabel from '@material-ui/core/StepLabel';
+import Stepper from '@material-ui/core/Stepper';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Check from '@material-ui/icons/Check';
 import PersonPinOutlinedIcon from '@material-ui/icons/PersonPinOutlined';
+import PhonelinkLockOutlinedIcon from '@material-ui/icons/PhonelinkLockOutlined';
 import StorefrontOutlinedIcon from '@material-ui/icons/StorefrontOutlined';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 
 

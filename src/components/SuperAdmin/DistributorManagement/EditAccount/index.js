@@ -5,11 +5,7 @@ import React, { Component } from 'react';
 
 
 
-// import {
-//   MuiPickersUtilsProvider,
-//   KeyboardTimePicker,
-//   KeyboardDatePicker,
-// } from '@material-ui/pickers';
+
 
 
 
@@ -33,8 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-//   var dateB = moment(account_birthday).format('YYYY MMMM Do ');
-// console.log(dateB);
+
   function getHash(input){
     var hash = 0, len = input.length;
     for (var i = 0; i < len; i++) {
@@ -69,54 +64,7 @@ class RegForm extends Component{
       
     return (
       <div style={{}}>
-      {/* <form className={classes.root} noValidate autoComplete="off" >
      
-
-  <Grid container direction="row" sm={12}
-    justify="flex-start"
-    alignItems="flex-start"
-    style={{marginTop:"30px"}}
-   >
-
-
-
-
-   <Grid item  sm={12}>
- <Grid container sm={12}>
-   <Grid item xs={12}>
-<TextField
-        id="outlined-secondary"
-     
-        defaultValue={distributor.distributor_address}
-        variant="outlined"
-        color="secondary"
-        style={{height:"50px",width:"97%"
-        }}
-        onChange={distributor_address=>{
-          distributor.setProperty("distributor_address", distributor_address.target.value)
-   
-
-     
-        
-        }}
-      /> 
- 
- </Grid>
-
-      </Grid>                                      
-   </Grid>
-
-
-
-
-  
-  
-  </Grid>
-  
-     
-     
-      
-      </form> */}
 
 
 <form className={classes.root} noValidate autoComplete="off" >

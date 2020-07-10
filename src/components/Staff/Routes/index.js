@@ -7,18 +7,35 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import logo from './../../Logo/logowhite.png'
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
-
+import Badge from '@material-ui/core/Badge';
 class DrawerList extends React.Component{
+       componentDidMount(){
 
+              let {staffStore:{getOrder}}=this.props;
+             
+              getOrder();
+          
+            }
 render(){
+       let {staffStore:{listOfOrder}}=this.props;
+let getuserId = JSON.parse(sessionStorage.getItem('userData'))
+
+let filterOrder = listOfOrder.filter(order =>{
+  
+
+       if(order.packer_ID === getuserId.account_ID && order.orderStatus ==='Packing' ? order.packer_ID === getuserId.account_ID && order.orderStatus ==='Packing' : order.dispatcher_ID === getuserId.account_ID && order.orderStatus ==='Dispatch'){
+         return order
+       }
+     
+     })
 
        function  logout() {
-              localStorage.clear();
+              sessionStorage.clear();
               window.location.href = '/';
           }
 //   let {startingStore:{ getProducts}}=this.props;
 
-
+let count =filterOrder.length
 return (
 
 
@@ -37,7 +54,7 @@ return (
 
          this.props.history.push("/Staff");
  
-  }}><ListAltIcon/></ListItemIcon>
+  }}><Badge color="secondary" badgeContent={count}><ListAltIcon/></Badge></ListItemIcon>
      <ListItemText style={{color:"white"}} onClick={()=>{
          
          this.props.history.push("/Staff");
@@ -102,4 +119,4 @@ return (
 
 
 }
-export default withRouter(inject("startingStore")(observer(DrawerList)));
+export default withRouter(inject("staffStore")(observer(DrawerList)));

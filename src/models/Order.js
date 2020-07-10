@@ -17,8 +17,11 @@ constructor(props){
  distributor_ID:"",
  packer_ID:"",
  dispatcher_ID:"",
-
-
+ orderReturnDate:"",
+ orderDateCompleted:"",
+ orderCustomerBalance:"",
+ orderDueDate :"",
+ orderTotalAmount:"",
 
 
  };
@@ -28,7 +31,7 @@ constructor(props){
 }
 decorate(Order,{
 
-    orderID:observable,
+    orderID:observable, 
     modeOfPayment:observable,
     orderDate:observable,
     orderItems:observable,
@@ -41,6 +44,11 @@ decorate(Order,{
     distributor_ID:observable,
     packer_ID:observable,
     dispatcher_ID:observable,
+    orderReturnDate:observable,
+    orderDateCompleted:observable,
+    orderCustomerBalance:observable,
+    orderDueDate :observable,
+    orderTotalAmount:observable,
 
 });
 

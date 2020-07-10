@@ -24,7 +24,7 @@ export default function LogoutButton() {
   let getId = JSON.parse(sessionStorage.getItem('userData'))
 
 function  logout() {
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = '/';
 }
 

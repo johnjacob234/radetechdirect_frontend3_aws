@@ -8,19 +8,49 @@ import { inject, observer } from 'mobx-react';
 import React from 'react';
 import RegistrationForm from './Form.js';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 class addCustomers extends React.Component {
   state = {  }
  
 
+  constructor(props) {
+    super(props);
+ 
+  
+    this.state = {
+        image: '',
+        submitted  : false,
+       
+        snackbaropen:false,
+        snackbaropenE:false,
+     
+        snackbarS:"Account Added!",
+        snackbarerror:"Error!",
+    }
+    this.addCustomer  = this.addCustomer.bind(this);
+  
+  
+  }
+  snackbarClose =(event)=>{
+    this.setState({snackbaropen:false});
+    this.setState({snackbaropenE:false});
+  }
 addCustomer = (e) => {
   let {startingStore:{addAccount,account}}=this.props;
   let getDisId = JSON.parse(sessionStorage.getItem('userData'))
   account.setProperty("distributor_ID", getDisId.distributor_ID)
   account.setProperty("account_accessType", "customer")
+  account.setProperty('account_status','active')
+    addAccount().then(res =>{
+   if (res != null){
+    this.setState({ snackbaropen: true });
+   }else{
+    this.setState({ snackbaropenE: true });
+   }
+
+    })
  
-    addAccount();
-    // addProductImg();
 this.setState({submitted: true })
 
   this.setState({ loading: true });
@@ -43,9 +73,22 @@ this.setState({submitted: true })
   const handleClose = () => {
     setOpen(false);
   };
-
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  } 
+  
   return (
     <div>
+      <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={this.state.snackbaropen} autoHideDuration={2000} onClose={this.snackbarClose}  >   
+       <Alert  severity="success">
+       {this.state.snackbarS }
+        </Alert></Snackbar>
+
+        <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={this.state.snackbaropenE} autoHideDuration={2000} onClose={this.snackbarClose}  >   
+       <Alert  severity="error">
+       {this.state.snackbarerror }
+        </Alert></Snackbar>
+
       <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{marginTop:"8px",backgroundColor:"#208769",color:"white"}}>
       < AddCircleOutlineOutlinedIcon /> <span style={{marginLeft:"5px"}}> Add Member</span>
       </Button>

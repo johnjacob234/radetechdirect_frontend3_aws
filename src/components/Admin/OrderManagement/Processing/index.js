@@ -1,25 +1,47 @@
 
-import React from 'react';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
+import Badge from '@material-ui/core/Badge';
+import Button from '@material-ui/core/Button';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
-import Button from '@material-ui/core/Button';
+import StepLabel from '@material-ui/core/StepLabel';
+import Stepper from '@material-ui/core/Stepper';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import PackGrid from './Packing'
-import clsx from 'clsx';
+import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
-import StepLabel from '@material-ui/core/StepLabel';
-import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
-import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
-import DeliveryGrid from './Delivery'
+import clsx from 'clsx';
+import { inject, observer } from 'mobx-react';
+import React from 'react';
+import DeliveryGrid from './Delivery';
+import PackGrid from './Packing';
+import TransferGrid from './Transfer';
+import { Grid } from '@material-ui/core';
 
-import CompletedGrid from './Completed'
+
+
+
+
+
+
+ class Stepsss extends React.Component {
+
+componentWillMount(){
+let {orderStore:{getOrder}}=this.props;
+getOrder();
+}
+  render() {
+    let {orderStore:{listOfOrder}}=this.props;
+
+    let packing = listOfOrder.filter(ord => ord.orderStatus === 'Packing').length;
+    let transfer = listOfOrder.filter(ord => ord.orderStatus === 'Transfer').length;
+    let dispatch = listOfOrder.filter(ord => ord.orderStatus === 'Dispatch').length;
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
+    border:'1px solid red'
   },
   button: {
     marginRight: theme.spacing(1),
@@ -33,8 +55,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
+
+
 function getSteps() {
-  return ['Packing', 'Delivery', 'Completed'];
+  return ['Packing', 'Transfer', 'Delivery'];
 }
 
 const useColorlibStepIconStyles = makeStyles({
@@ -65,9 +91,11 @@ function ColorlibStepIcon(props) {
   const { active, completed } = props;
 
   const icons = {
-    1: <ArchiveOutlinedIcon />,
-    2: < EmojiTransportationIcon/>,
-    3: < CheckCircleOutlinedIcon/>,
+    1:   <Badge badgeContent={packing} color="secondary">
+    <ArchiveOutlinedIcon /> 
+  </Badge>,
+    2: <Badge badgeContent={transfer} color="secondary"><  TransferWithinAStationIcon/></Badge> ,
+    3:<Badge badgeContent={dispatch} color="secondary"> < EmojiTransportationIcon/></Badge> ,
   };
 
   return (
@@ -82,26 +110,21 @@ function ColorlibStepIcon(props) {
   );
 }
 
-// ColorlibStepIcon.propTypes = {
-//   active: PropTypes.bool,
-//   completed: PropTypes.bool,
-//   icon: PropTypes.node,
-// };
 
 function getStepContent(step) {
   switch (step) {
     case 0:
       return <PackGrid/>;
     case 1:
-      return <  DeliveryGrid/>;
+      return < TransferGrid />;
     case 2:
-      return < CompletedGrid/>;
+      return <  DeliveryGrid/>;
     default:
       return 'Unknown step';
   }
 }
 
-export default function ProcessPage() {
+function ProcessPage() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
@@ -136,7 +159,9 @@ export default function ProcessPage() {
   };
 
   return (
-    <div className={classes.root}>
+    <React.Fragment>
+      <Grid container direction='row' lg={12} sm={12} xs={12}>
+    <Grid item  lg={12} sm={12} xs={12}>
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label}>
@@ -147,21 +172,22 @@ export default function ProcessPage() {
           </Step>
         ))}
       </Stepper>
-      <div>
-        {allStepsCompleted() ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset}>Reset</Button>
-          </div>
-        ) : (
-          <div>
+      </Grid>
+  
+          <Grid item  lg={12} sm={12} xs={12}>
             <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
      
-          </div>
-        )}
-      </div>
-    </div>
+          </Grid>
+      
+  
+    </Grid>
+    </React.Fragment>
   );
 }
+return (
+  <ProcessPage/>
+)
+}
+}
+
+export default inject('orderStore')(observer(Stepsss))

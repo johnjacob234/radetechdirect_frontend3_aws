@@ -23,7 +23,7 @@ class staffpage extends React.Component {
   state = {  }
 
   componentWillMount(){
-    let {startingStore:{staffAssigned}}=this.props
+    let {staffStore:{staffAssigned}}=this.props
     staffAssigned();
   }
   render() { 
@@ -76,29 +76,7 @@ function StaffGrid(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  // const drawer = (
-  //   <div>
-  //     <div className={classes.toolbar} />
-  //     <Divider />
-  //     <List>
-  //       {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-  //         <ListItem button key={text}>
-  //           <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-  //           <ListItemText primary={text} />
-  //         </ListItem>
-  //       ))}
-  //     </List>
-  //     <Divider />
-  //     <List>
-  //       {['All mail', 'Trash', 'Spam'].map((text, index) => (
-  //         <ListItem button key={text}>
-  //           <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-  //           <ListItemText primary={text} />
-  //         </ListItem>
-  //       ))}
-  //     </List>
-  //   </div>
-  // );
+
 
   return (
     <div className={classes.root}>
@@ -166,13 +144,7 @@ function StaffGrid(props) {
   );
 }
 
-// StaffGrid.propTypes = {
-//   /**
-//    * Injected by the documentation to work in an iframe.
-//    * You won't need it on your project.
-//    */
-//   container: PropTypes.any,
-// };
+
 
 
 return ( 
@@ -180,4 +152,4 @@ return (
  );
 }
 }
-export default withRouter(inject("startingStore")(observer(staffpage)));
+export default withRouter(inject("staffStore")(observer(staffpage)));

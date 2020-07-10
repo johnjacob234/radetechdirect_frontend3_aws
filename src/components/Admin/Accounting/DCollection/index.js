@@ -1,10 +1,49 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles,withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {inject,observer} from 'mobx-react'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+// import OrderTable from './ordertable.js'
+import AssignedTable from './assignedTable.js'
+
+class Dispatcher extends React.Component {
+  state = {  }
+
+
+  componentDidMount(){
+
+    let {startingStore:{getAccounts}}=this.props;
+    getAccounts();
+    
+
+  }
+  render() { 
+    let DisId = JSON.parse(sessionStorage.getItem('userData'))
+    let {startingStore:{listOfUsers}}=this.props;
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
 
 const ExpansionPanel = withStyles({
   root: {
@@ -47,62 +86,126 @@ const ExpansionPanelDetails = withStyles(theme => ({
   },
 }))(MuiExpansionPanelDetails);
 
-class dCollection extends React.Component {
-    state = {  }
-    render() { 
 
- function DCollection() {
-  const [expanded, setExpanded] = React.useState('panel1');
 
+
+
+ function DeliveryGrid() {
+  const classes = useStyles();
+  const [expanded, setExpanded] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleChange = panel => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
+
+
+
+let getdis = listOfUsers.filter(dis => {
+
+  if (dis.staff_Role === 'Dispatcher' && dis.distributor_ID === DisId.distributor_ID){
+    return dis
+  }
+
+})
+
+let dispatchers = getdis.map(mydis => {
+return(
+  <ExpansionPanel square expanded={expanded === 'panel1'} onChange={handleChange('panel1')} >
+  <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon />} aria-controls="panel1d-content" id="panel1d-header">
+    <Typography>{mydis.account_fName}</Typography>
+  </ExpansionPanelSummary>
+  <ExpansionPanelDetails>
+     <Grid container xs={12} sm={12}>
+       {/* 
+       <Button variant="outlined" size='small' style={{backgroundColor:"#208769",color:"white"}} onClick={handleClickOpen} startIcon={<AddCircleOutlineOutlinedIcon />}>
+        Add
+      </Button>
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+        maxWidth="xl"
+      >
+        <DialogTitle id="responsive-dialog-title">{"Orders to be Assign"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+           <OrderTable id={mydis.account_ID} orderId={mydis.order_ID}/>
+          
+
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          {/* <Button autoFocus onClick={handleClose} color="primary">
+            Disagree
+          </Button> */}
+          {/* <Button onClick={handleClose} style={{backgroundColor:"#FFA500",color:"white"}} autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+ */} 
+      
+<Grid item xs={12} sm={12} style={{textAlign:"right"}}>
+       {/* <AssignOrder accountId ={mydis.account_ID}/> */}
+        </Grid>
+       <Grid item xs={12} sm={12} style={{marginTop:"16px"}}>
+
+<AssignedTable myId={mydis.account_ID}/>
+       </Grid>
+       
+        </Grid>
+  </ExpansionPanelDetails>
+</ExpansionPanel>
+)
+})
+
+
+
+
+
+
+
+
+
   return (
-    <div>
-      <ExpansionPanel square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon />} aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Packer 1</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Packer 2</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel square expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>Packer 3</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+    <div className={classes.root} style={{height:"470px"}}>
+      <Grid container spacing={3} >
+  
+        <Grid item xs={12}>
+        <div>
+{dispatchers}
+      
+    </div>
+        </Grid>
+
+      </Grid>
+
+
+      
     </div>
   );
 }
-return (
-    <DCollection/>
-  );
+
+
+
+
+return ( 
+  <DeliveryGrid/>
+ );
 }
 }
 
-export default dCollection;
+export default inject("startingStore")(observer(Dispatcher));

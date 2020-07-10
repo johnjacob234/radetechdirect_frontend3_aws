@@ -1,8 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import {inject,observer} from 'mobx-react'
-import { lighten, makeStyles } from '@material-ui/core/styles';
+
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,28 +18,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { useTheme } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit';
 import ArchiveIcon from '@material-ui/icons/Archive';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Divider from '@material-ui/core/Divider'
-import DialogTitle from '@material-ui/core/DialogTitle';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import EditIcon from '@material-ui/icons/Edit';
+import { inject, observer } from 'mobx-react';
+import PropTypes from 'prop-types';
+import React from 'react';
+import EditForm from './../EditAccount';
 
-import EditForm from './../EditAccount'
+
 
 class DistributorsTable extends React.Component {
   constructor(props){
@@ -55,18 +49,9 @@ class DistributorsTable extends React.Component {
   render() { 
     let {startingStore:{listOfDistributors,distributor,editDistributor,archiveDistributor}}=this.props;
 
-
- 
-    let listOfDistributor = listOfDistributors.filter(distributors=> distributors.distributor_accessType === "distributor")
-
 function createData(name, tier, address, email, contact_no,date_registered,action) {
   return { name, tier, address, email, contact_no,date_registered,action };
-
-
-
 }
-
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -91,44 +76,45 @@ function stableSort(array, comparator) {
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-  return stabilizedThis.map(el => el[0]);
+  return stabilizedThis.map((el) => el[0]);
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Warehouse Name' },
-  { id: 'tier', numeric: false, disablePadding: false, label: 'Tier No.' },
-  { id: 'address', numeric: false, disablePadding: false, label: 'Address' },
-  { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
-  { id: 'contact_no', numeric: false, disablePadding: false, label: 'Contact No.' },
-  { id: 'date_registered', numeric: false, disablePadding: false, label: 'Date Registered' },
+  { id: 'name', numeric: false, disablePadding: false, label: 'Warehouse Name' },
+  { id: 'tier', numeric: true, disablePadding: false, label: 'Tier No.' },
+  { id: 'address', numeric: true, disablePadding: false, label: 'Address' },
+  { id: 'email', numeric: true, disablePadding: false, label: 'Email' },
+  { id: 'contact_no', numeric: true, disablePadding: false, label: 'Contact No.' },
+  { id: 'date_registered', numeric: true, disablePadding: false, label: 'Date Registered' },
   { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
 ];
 
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: '#208769',
+    color: theme.palette.common.white,
+  },
+
+}))(TableCell);
+
+
 function DistributorTableHead(props) {
   const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-  const createSortHandler = property => event => {
+  const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox" style={{backgroundColor:"#208769",color:"white"}}>
-          
-          {/* <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          /> */}
-        </TableCell>
-        {headCells.map(headCell => (
-          <TableCell
+       
+        {headCells.map((headCell) => (
+          <StyledTableCell
             key={headCell.id}
-            align="{headCell.numeric ? 'right' : 'left'}"
+            align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{backgroundColor:"#208769",fontWeight:"bold",color:"white"}}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -142,7 +128,7 @@ function DistributorTableHead(props) {
                 </span>
               ) : null}
             </TableSortLabel>
-          </TableCell>
+          </StyledTableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -159,68 +145,9 @@ DistributorTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles(theme => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
 
-const DistributorTableToolbar = props => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
 
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography className={classes.title} variant="h5" id="tableTitle">
-          My Distributors
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
-
-// DistributorTableToolbar.propTypes = {
-//   numSelected: PropTypes.number.isRequired,
-// };
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
@@ -229,7 +156,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: "100%",
+    minWidth: 750,
   },
   visuallyHidden: {
     border: 0,
@@ -243,16 +170,25 @@ const useStyles = makeStyles(theme => ({
     width: 1,
   },
 }));
-// ////////////////////////////////////////////////////
+
  function DistributorTable() {
   const classes = useStyles();
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('');
+  const [selected, setSelected] = React.useState([]);
+  const [page, setPage] = React.useState(0);
+  const [dense, setDense] = React.useState(true);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+//   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+
 
   const handleClickOpen = (distributors) => {
     setOpen(true);
-    console.log(distributor, "roawr")
+    
     distributor.setProperty("distributor_ID", distributors.distributor_ID)
     distributor.setProperty("distributor_fName", distributors.distributor_fName)
     distributor.setProperty("distributor_mName", distributors.distributor_mName)
@@ -294,30 +230,21 @@ const handleArchive = (dis) => {
 // }, 3000);
 };
 
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-
-  //table
-  let filterDis =listOfDistributors.filter(dis => dis.distributor_status === 'active')
-  let rows = filterDis.map(distributor => {
+  let rows = listOfDistributors.filter(dis => dis.distributor_status === 'active').map(distributor => {
     return(createData(distributor.distributor_warehouseName,distributor.distributor_tierNo,distributor.distributor_address,distributor.distributor_emailAddress,distributor.distributor_contactNo,distributor.distributor_dateRegistered,
     <div><IconButton  onClick={()=>{handleClickOpen(distributor)}}  size="medium" style={{backgroundColor:"#31AF91"}} > <EditIcon /> </IconButton> <IconButton onClick={()=>{handleArchive(distributor)}} size="medium" style={{backgroundColor:"#F8B701"}}> <ArchiveIcon /> </IconButton></div>  ))
-   
-   })
+    })
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = event => {
+  const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.name);
+      const newSelecteds = rows.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -348,75 +275,66 @@ const handleArchive = (dis) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const handleChangeDense = event => {
+  const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
 
-  const isSelected = name => selected.indexOf(name) !== -1;
+  const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <DistributorTableToolbar 
-        // numSelected={selected.length} 
-        />
+        
         <TableContainer>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
-            
           >
             <DistributorTableHead
               classes={classes}
-              // numSelected={selected.length}
+              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
-              
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  // const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={event => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
-                      // aria-checked={isItemSelected}
+                      aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.name}
-                      // selected={isItemSelected}
+                      selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        {/* <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        /> */}
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                      
+                      <TableCell component="th" id={labelId} scope="row" >
                         {row.name}
                       </TableCell>
-                      <TableCell align="left">{row.tier}</TableCell>
-                      <TableCell align="left">{row.address}</TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">{row.contact_no}</TableCell>
-                      <TableCell align="left">{row.date_registered}</TableCell>
-                      <TableCell align="left">{row.action}</TableCell>
+                      <TableCell align="right">{row.tier}</TableCell>
+                      <TableCell align="right">{row.address}</TableCell>
+                      <TableCell align="right">{row.email}</TableCell>
+                     <TableCell align="right">{row.contact_no}</TableCell>
+                       <TableCell align="right">{row.date_registered}</TableCell>
+                  <TableCell align="right">{row.action}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -442,8 +360,9 @@ const handleArchive = (dis) => {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       />
-       <Dialog
-        fullScreen={fullScreen}
+
+ <Dialog
+        
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
@@ -463,10 +382,10 @@ const handleArchive = (dis) => {
           </Button>
         </DialogActions>
       </Dialog>
-
     </div>
   );
 }
+
 return (  
   <DistributorTable/>
 );

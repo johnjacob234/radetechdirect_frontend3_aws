@@ -33,7 +33,7 @@ class CustProfile extends React.Component {
     getAccounts()
   }
   render() { 
-    let {startingStore:{listOfUsers}}=this.props
+    let {startingStore:{listOfUsers,account,editAccount}}=this.props
 
 function createData(id,name,pos,email,address,contactNo,birthday,dateRegistered,shopName,shopAddress){
   return {id,name,pos,email,address,contactNo,birthday,dateRegistered,shopName,shopAddress}
@@ -46,7 +46,7 @@ let accountinfo =filterUser.map(info=>{
   return(createData(
     info.account_ID,`${info.account_fName} ${info.account_mName} ${info.account_lName} ${info.account_suffix}`,`${info.account_accessType.charAt(0).toUpperCase()}${info.account_accessType.slice(1)}`,info.account_emailAddress,info.account_address,
     info.account_contactNo,info.account_birthday,info.account_dateRegistered,
-    info.account_shopName,info.account_shopAddress
+    info.account_storeName,info.account_address
 
   ))
   
@@ -93,6 +93,14 @@ function ListItemLink(props) {
   const handleClick = () => {
     setOpen(!open);
   };
+
+  
+  let deactivate = userdata =>{
+  
+    account.setProperty('account_ID',userdata.id)
+    account.setProperty('account_status','archived')
+    editAccount();
+  }
 
   return (
     <div className={classes.root}>
@@ -221,7 +229,7 @@ Voucher
           </Paper>
 
           <Grid container xs={12} sm={12} style={{marginTop:"20px"}}>
-              <Button variant='filled' style={{backgroundColor:"grey",color:"white",width:"100%"}}>Deactivate Account</Button>
+              <Button variant='filled' style={{backgroundColor:"grey",color:"white",width:"100%"}} onClick={()=>{deactivate(info)}}>Deactivate Account</Button>
           </Grid>
         </Grid>
 
@@ -239,7 +247,7 @@ Voucher
           <Typography variant='h6'>Transactions</Typography>
           </Grid>
           <Grid item  xs={12} sm={12} style={{marginTop:"16px"}}>
-            <TransactionTable/>
+            <TransactionTable account_ID={info.id}/>
           </Grid>
           </Grid>
         </Grid>

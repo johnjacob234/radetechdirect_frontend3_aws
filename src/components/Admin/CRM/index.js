@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component,Fragment} from 'react';
 import {withRouter} from 'react-router-dom'
 import {inject,observer} from 'mobx-react';
 
@@ -7,47 +7,43 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
 import CRMTab from './tab.js';
-
-class adDrawer extends React.Component{
+import RegisterDialog from './Customer/RegisterCustomer'
+class CRMGrid extends Component{
 
   componentDidMount() {
-    let {startingStore:{getAccounts }}=this.props;
-  
-  
-        getAccounts();  
-  
-    
+    let {crmStore:{getAccounts }}=this.props;
+        getAccounts();   
   }
 
 
 
-  state = {}
 render(){
   function CRM() {
 
-
-
   return (
+        <Fragment>
 
-        <div>
-
-      <Grid container direction="row">
+      <Grid container direction="row" lg={12} sm={12} xs={12}>
+        <Grid item lg={12} sm={12} xs={12}>
         <Typography variant="h5" >
            Customer Relationship Management
         </Typography>
-        
         </Grid>
+  
         <Divider style ={{marginBottom:"20px"}}/>
-
-        <Grid container sm={12} style={{marginTop:"1%"}}>
-          <Grid item sm={12}>
+<Grid item lg={12} sm={12} xs={12}>
+        <Grid container lg={12} sm={12} xs={12}   style={{marginTop:"1%"}}>
+          <Grid item  lg={12} sm={12} xs={12}  style={{textAlign:"right",paddingBottom:"10px"}} >
+          <RegisterDialog style={{float:"right"}} />
+          </Grid>
+          <Grid item  lg={12} sm={12} xs={12}>
         <CRMTab/>
         </Grid>
         </Grid >
-        
-       
+        </Grid>
+        </Grid>
   
-      </div>
+      </Fragment>
   );
 }
 return ( 
@@ -59,7 +55,7 @@ return (
 
 }
 }
-export default withRouter(inject("startingStore")(observer(adDrawer)));
+export default withRouter(inject("crmStore")(observer(CRMGrid)));
 
 
 

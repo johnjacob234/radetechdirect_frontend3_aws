@@ -28,6 +28,22 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     width: 200,
   },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  
+  },
+
+  search: {
+    // padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'right',
+    width: 350,
+    float:"right"
+  },
 }));
 
 export default function Filter() {
@@ -73,8 +89,8 @@ export default function Filter() {
         </Select>
       </FormControl>
       </Grid>
-<Grid item sm={2} >
-      <form className={classes.container} noValidate>
+<Grid item sm={1} >
+      {/* <form className={classes.container} noValidate>
       <TextField
         id="date"
         label="Birthday"
@@ -85,26 +101,26 @@ export default function Filter() {
           shrink: true,
         }}
       />
-    </form>
+    </form> */}
     </Grid>
-    <Grid item sm={4} >
-    <Paper component="form" style={{margin:"auto",height:"38px"}}>
-    
-    <InputBase 
-    type="search"
-    
-     fullWidth={false} 
-     style={{marginTop:"1.5px",
-     width:"80%",
-     marginLeft:"10px"}}
-      placeholder="Search "
-      inputProps={{ 'aria-label': 'search google maps' }}
-    />
-    <IconButton type="submit"  aria-label="search" style={{backgroundColor:"orange",borderRadius:"4px",height:"38px",float:"right"}}>
-      <  SearchIcon style={{color:"white",marginTop:'-15%',float:"right"}}/>
-    </IconButton>
-  
-  </Paper >
+    <Grid item sm={3} >
+    <Paper component="form" className={classes.search} >
+   
+   <InputBase
+     className={classes.input}
+     placeholder="Search Messages"
+     inputProps={{ 'aria-label': 'search customers' }}
+    //  onChange={(e)=>setFilter(e.target.value)}
+   />
+   <span style={{  backgroundColor:"#FFA500",borderRadius:"3px"}}>
+   <IconButton type="submit" className={classes.iconButton} aria-label="search">
+     <SearchIcon style={{color:"white"}}/>
+   </IconButton>
+   </span>
+   {/* <IconButton color="primary" className={classes.iconButton} aria-label="directions">
+     <DirectionsIcon />
+   </IconButton> */}
+ </Paper>
 
         </Grid>
        

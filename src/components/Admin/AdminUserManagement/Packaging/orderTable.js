@@ -29,13 +29,13 @@ class Ordertable extends React.Component {
     }
   }
   render() { 
-      let {myId}=this.props
+     
     const assign = (myorder) => {
       let {startingStore:{assignOrder,order}}=this.props;
     
  
       order.setProperty("orderID", myorder.orderID)
-      order.setProperty("packer_ID",myId)
+      order.setProperty("packer_ID",this.props.id)
       order.setProperty("orderStatus",'Packing')
  
   assignOrder(); 
@@ -69,7 +69,7 @@ let orders = listOfOrder.filter((order) => order.distributor_ID === getId.distri
 let rows = orders.map(orderss =>{
 return(createData(
 
-orderss.orderID,orderss.modeOfPayment,orderss.orderDate,orderss.paymentStatus,orderss.orderStatus,orderss.account_ID,
+orderss.orderID,orderss.modeOfPayment,orderss.orderDate,orderss.paymentStatus,orderss.orderStatus,<span> {listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,
 <div><IconButton  onClick={()=>{assign(orderss)}}  size="medium" style={{backgroundColor:"#31AF91"}} > <AssignmentReturnedOutlinedIcon /> </IconButton></div>
 
 
@@ -80,7 +80,7 @@ orderss.orderID,orderss.modeOfPayment,orderss.orderDate,orderss.paymentStatus,or
 
 
 })
-console.log(rows,"asdsad")
+
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
@@ -95,12 +95,12 @@ const useStyles = makeStyles({
       <Table className={classes.table} aria-label="customized table">
         <TableHead >
           <TableRow>
-            <StyledTableCell>Reference No.</StyledTableCell>
+            <StyledTableCell>Reference #</StyledTableCell>
             <StyledTableCell align="right">Payment Method</StyledTableCell>
             <StyledTableCell align="center">Date</StyledTableCell>
             <StyledTableCell align="right">Payment Status</StyledTableCell>
             <StyledTableCell align="right">Order Status</StyledTableCell>
-            <StyledTableCell align="center">Retail ID</StyledTableCell>
+            <StyledTableCell align="center">Customer</StyledTableCell>
             <StyledTableCell align="right">Assign</StyledTableCell>
           </TableRow>
         </TableHead>

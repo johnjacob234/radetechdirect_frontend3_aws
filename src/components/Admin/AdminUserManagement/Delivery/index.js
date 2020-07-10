@@ -19,6 +19,7 @@ import Button from '@material-ui/core/Button';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import OrderTable from './ordertable.js'
 import AssignedTable from './assignedTable.js'
+import AssignOrder from './addButton'
 class Dispatcher extends React.Component {
   state = {  }
 
@@ -31,7 +32,7 @@ class Dispatcher extends React.Component {
 
   }
   render() { 
- 
+    let DisId = JSON.parse(sessionStorage.getItem('userData'))
     let {startingStore:{listOfUsers}}=this.props;
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,7 +88,7 @@ const ExpansionPanelDetails = withStyles(theme => ({
 
  function DeliveryGrid() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState('panel1');
+  const [expanded, setExpanded] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -109,7 +110,7 @@ const ExpansionPanelDetails = withStyles(theme => ({
 
 let getdis = listOfUsers.filter(dis => {
 
-  if (dis.staff_Role === 'Dispatcher'){
+  if (dis.staff_Role === 'Dispatcher' && dis.distributor_ID === DisId.distributor_ID){
     return dis
   }
 
@@ -117,13 +118,13 @@ let getdis = listOfUsers.filter(dis => {
 
 let dispatchers = getdis.map(mydis => {
 return(
-  <ExpansionPanel square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+  <ExpansionPanel square expanded={expanded === 'panel1'} onChange={handleChange('panel1')} >
   <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon />} aria-controls="panel1d-content" id="panel1d-header">
     <Typography>{mydis.account_fName}</Typography>
   </ExpansionPanelSummary>
   <ExpansionPanelDetails>
      <Grid container xs={12} sm={12}>
-       <Grid item xs={12} sm={12} style={{textAlign:"right"}}>
+       {/* 
        <Button variant="outlined" size='small' style={{backgroundColor:"#208769",color:"white"}} onClick={handleClickOpen} startIcon={<AddCircleOutlineOutlinedIcon />}>
         Add
       </Button>
@@ -137,7 +138,7 @@ return(
         <DialogTitle id="responsive-dialog-title">{"Orders to be Assign"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-           <OrderTable id={mydis.account_ID}/>
+           <OrderTable id={mydis.account_ID} orderId={mydis.order_ID}/>
           
 
           </DialogContentText>
@@ -146,15 +147,17 @@ return(
           {/* <Button autoFocus onClick={handleClose} color="primary">
             Disagree
           </Button> */}
-          <Button onClick={handleClose} style={{backgroundColor:"#FFA500",color:"white"}} autoFocus>
+          {/* <Button onClick={handleClose} style={{backgroundColor:"#FFA500",color:"white"}} autoFocus>
             Close
           </Button>
         </DialogActions>
       </Dialog>
 
-
-       </Grid>
-       
+ */} 
+      
+<Grid item xs={12} sm={12} style={{textAlign:"right"}}>
+       <AssignOrder accountId ={mydis.account_ID}/>
+        </Grid>
        <Grid item xs={12} sm={12} style={{marginTop:"16px"}}>
 
 <AssignedTable myId={mydis.account_ID}/>
@@ -175,7 +178,7 @@ return(
 
 
   return (
-    <div className={classes.root} style={{height:"380px"}}>
+    <div className={classes.root} style={{height:"470px"}}>
       <Grid container spacing={3} >
         <Grid item sm={12}>
           <Grid container direction="row"> 

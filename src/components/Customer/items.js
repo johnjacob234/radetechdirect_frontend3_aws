@@ -35,7 +35,7 @@ class AllProd extends Component {
 
   render() { 
 
-    let {startingStore:{listofProducts,product}}= this.props;
+    let {customerStore:{listofProducts,product}}= this.props;
 
     const click = ()=>{
       console.log("clicked!!!")
@@ -104,4 +104,4 @@ return (
 }
 }
 
-export default inject("startingStore")(observer(AllProd));
+export default inject("customerStore")(observer(AllProd));

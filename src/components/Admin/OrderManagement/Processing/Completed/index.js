@@ -1,153 +1,233 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
-import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import { withStyles, makeStyles ,useTheme} from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
 
-import SearchIcon from '@material-ui/icons/Search';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import LastPageIcon from '@material-ui/icons/LastPage';
 import {inject,observer} from 'mobx-react'
 
+
 class Completed extends React.Component {
-  state = {  }
-  render() { 
+
+componentDidMount(){
+  let {orderStore:{getOrder,getAccounts}}=this.props;
+  getOrder();
+  getAccounts();
+} 
+
+  render() {
+    let {orderStore:{listOfOrder,listOfUsers}}=this.props;
 
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: '#208769',
+    color: theme.palette.common.white,
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
+
+
+
+
+const useStyles1 = makeStyles((theme) => ({
+  root: {
+    flexShrink: 0,
+    marginLeft: theme.spacing(2.5),
   },
 }));
 
+function TablePaginationActions(props) {
+  const classes = useStyles1();
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onChangePage } = props;
 
-let {startingStore:{listOfOrder}}=this.props;
-let getDis = JSON.parse(sessionStorage.getItem('userData'))
-let filpacking =listOfOrder.filter(order => order.orderStatus === 'Completed' && order.distributor_ID === getDis.distributor_ID)
+  const handleFirstPageButtonClick = (event) => {
+    onChangePage(event, 0);
+  };
 
+  const handleBackButtonClick = (event) => {
+    onChangePage(event, page - 1);
+  };
 
-let getorder =filpacking.map(orders =>{
+  const handleNextButtonClick = (event) => {
+    onChangePage(event, page + 1);
+  };
 
-  return(
-    <Grid item xs={12} sm={12}>
-    <Paper style={{padding:"12px"}}>
-    <Grid container direction="row" item xs={12} sm={12}>
-  <Grid item xs={6}  sm={6} alignItems="left">
-  <Typography style={{color:"#208769",textAlign:"left"}}>Reference # : {orders.orderID}</Typography>
-  <Typography  style={{textAlign:"left"}}>Customer name :{orders.account_ID}</Typography>
-   <Typography style={{textAlign:"left"}}>Address :</Typography>
-  </Grid>
- 
-  <Grid item xs={6} sm={6} stle={{border:"1px solid red"}}>
-  <Typography style={{textAlign:"left"}}>Date Ordered :{orders.orderDate}</Typography>
-  <Typography  style={{textAlign:"left"}}>In Charge : {orders.packer_ID}</Typography>
-   <Typography style={{textAlign:"left"}}>Anticipated Delivery Date/Time :</Typography>
-  </Grid>
-  </Grid>
-  </Paper>
-  </Grid>
-
-  )
-
-})
- function CompletedGrid() {
-  const classes = useStyles();
+  const handleLastPageButtonClick = (event) => {
+    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
 
   return (
     <div className={classes.root}>
-     <Grid container spacing={3} xs={12} sm={12}>
-      
-      <Grid item xs={6} sm={6}>
-        <Typography variant="h5"  style={{color:"#208769",float:"left",marginLeft:"5px"}}>Completed</Typography>
-      </Grid>
-      <Grid item xs={6} sm={6}>
-      <Paper component="form" style={{margin:"auto",height:"38px"}}>
-  
-  <InputBase 
-  type="search"
-  
-   fullWidth={false} 
-   style={{marginTop:"1.5px",
-   width:"80%",
-   marginLeft:"10px"}}
-    placeholder="Search "
-    inputProps={{ 'aria-label': 'search google maps' }}
-  />
-  <IconButton type="submit"  aria-label="search" style={{backgroundColor:"orange",borderRadius:"4px",height:"38px",float:"right"}}>
-    <  SearchIcon style={{color:"white",marginTop:'-15%',float:"right"}}/>
-  </IconButton>
-
-</Paper >
-      </Grid>
-   
-      {getorder}
-    
-      {/* <Grid item xs={12}>
-      <Paper className={classes.paper}>
-        <Grid container direction="row">
-      <Grid item  sm={6} alignItems="left">
-       <Typography style={{color:"#208769",textAlign:"left"}}>Reference # :</Typography>
-       <Typography  style={{textAlign:"left"}}>Customer name :</Typography>
-       <Typography style={{textAlign:"left"}}>Address :</Typography>
-      </Grid>
-     
-      <Grid item sm={6} stle={{border:"1px solid red"}}>
-      <Typography style={{textAlign:"left"}}>Date Ordered :</Typography>
-       <Typography  style={{textAlign:"left"}}>In Charge :</Typography>
-       <Typography style={{textAlign:"left"}}>Anticipated Delivery Date/Time :</Typography>
-      </Grid>
-      </Grid>
-      </Paper>
-      </Grid>
-      <Grid item xs={12}>
-      <Paper className={classes.paper}>
-        <Grid container direction="row">
-      <Grid item  sm={6} alignItems="left">
-       <Typography style={{color:"#208769",textAlign:"left"}}>Reference # :</Typography>
-       <Typography  style={{textAlign:"left"}}>Customer name :</Typography>
-       <Typography style={{textAlign:"left"}}>Address :</Typography>
-      </Grid>
-     
-      <Grid item sm={6} stle={{border:"1px solid red"}}>
-      <Typography style={{textAlign:"left"}}>Date Ordered :</Typography>
-       <Typography  style={{textAlign:"left"}}>In Charge :</Typography>
-       <Typography style={{textAlign:"left"}}>Anticipated Delivery Date/Time :</Typography>
-      </Grid>
-      </Grid>
-      </Paper>
-      </Grid>
-      <Grid item xs={12}>
-      <Paper className={classes.paper}>
-        <Grid container direction="row">
-      <Grid item  sm={6} alignItems="left">
-       <Typography style={{color:"#208769",textAlign:"left"}}>Reference # :</Typography>
-       <Typography  style={{textAlign:"left"}}>Customer name :</Typography>
-       <Typography style={{textAlign:"left"}}>Address :</Typography>
-      </Grid>
-     
-      <Grid item sm={6} stle={{border:"1px solid red"}}>
-      <Typography style={{textAlign:"left"}}>Date Ordered :</Typography>
-       <Typography  style={{textAlign:"left"}}>In Charge :</Typography>
-       <Typography style={{textAlign:"left"}}>Anticipated Delivery Date/Time :</Typography>
-      </Grid>
-      </Grid>
-      </Paper>
-      </Grid> */}
-    </Grid>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
     </div>
   );
 }
 
-return ( 
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onChangePage: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+};
 
-  <CompletedGrid/>
- );
+
+
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+
+let myId = JSON.parse(sessionStorage.getItem('userData'))
+
+let filOrder = listOfOrder.filter(orders => orders.orderStatus ==='Failed' && orders.distributor_ID === myId.distributor_ID)
+
+
+let rows = filOrder.map(order=> {
+
+  return(createData(
+  
+      order.orderID,order.orderDate,order.paymentStatus,<span > {listOfUsers.filter(accs => accs.account_ID === order.account_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,
+      <span > {listOfUsers.filter(accs => accs.account_ID === order.packer_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,<span > {listOfUsers.filter(accs => accs.account_ID === order.dispatcher_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,order.modeOfPayment,order.orderStatus
+  ))
+  })
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 700,
+  },
+});
+
+ function CompletedTable() {
+  const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  return (
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="customized table">
+        <TableHead>
+          <TableRow>
+            <StyledTableCell>Ref #</StyledTableCell>
+            <StyledTableCell align="left">Order Date</StyledTableCell>
+            <StyledTableCell align="left">Payment Status</StyledTableCell>
+            <StyledTableCell align="left">Customer</StyledTableCell>
+            <StyledTableCell align="left">Packer</StyledTableCell>
+            <StyledTableCell align="left">Dispatcher</StyledTableCell>
+            <StyledTableCell align="left">Payment Method</StyledTableCell>
+            <StyledTableCell align="left">Order Status</StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        {(rowsPerPage > 0
+            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : rows
+          ).map((row) => (
+            <StyledTableRow key={row.name}>
+              <StyledTableCell component="th" scope="row">
+                {row.name}
+              </StyledTableCell>
+              <StyledTableCell align="left">{row.calories}</StyledTableCell>
+              <StyledTableCell align="left">{row.fat}</StyledTableCell>
+              <StyledTableCell align="left">{row.carbs}</StyledTableCell>
+              <StyledTableCell align="left">{row.protein}</StyledTableCell>
+              <StyledTableCell align="left">{row.disp}</StyledTableCell>
+              <StyledTableCell align="left">{row.pmethod}</StyledTableCell>
+              <StyledTableCell align="left">{row.status}</StyledTableCell>
+            </StyledTableRow>
+          ))}
+
+{emptyRows > 0 && (
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          )}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+              colSpan={8}
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              SelectProps={{
+                inputProps: { 'aria-label': 'rows per page' },
+                native: true,
+              }}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+              ActionsComponent={TablePaginationActions}
+            />
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
+  );
+}
+
+
+return (
+<CompletedTable/>
+)
 }
 }
 
-export default inject('startingStore')(observer(Completed));
+export default inject('orderStore')(observer(Completed))

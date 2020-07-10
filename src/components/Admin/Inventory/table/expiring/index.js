@@ -1,8 +1,7 @@
-import React,{Component} from 'react';
-import {inject,observer} from 'mobx-react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,39 +10,66 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import PropTypes from 'prop-types';
+import React from 'react';
+import {inject,observer} from 'mobx-react'
+import moment from 'moment';
 
 
 
+ class ProdExpiry extends React.Component {
+  componentDidMount() {
+    
+    let {inventoryStore:{getProducts ,getStock}}=this.props;
+
+    getProducts();
+   getStock()
+
+  }
+
+  render() {
+    let getId = JSON.parse(sessionStorage.getItem('userData'))
+    let {inventoryStore:{product,editProduct,getStock ,listofProducts,stock,productStocks,addStock }}=this.props;
 
 
-
-class InventoryTable extends Component{
-  
-  render(){
-
-    let {startingStore:{listOfProducts }}=this.props;
-
-
-function createData(image, item, category, brand, quantity,uom,price) {
-  return { image, item, category, brand, quantity,uom,price };
+function createData(image, item, category, brand, uom, price, stocks,dayss, action) {
+  return { image, item, category, brand, uom, price, stocks,dayss, action };
 }
+let today = moment().format('MMM/DD/YYYY');
 
-let rows = listOfProducts.map(product => {
-  return(createData(product.product_Img ,product.product_Name,product.product_Category,product.product_Brand,product.product_Barcode,product.product_UoM,product.product_Price  ))
-  
-  })
+let filProds = listofProducts.filter(prod =>{ 
+  let a = moment(today).diff(prod.product_ExpirationDate,'days');
+  if(  a === 15 || a === 14|| a === 13 || a === 12||a === 11 || a === 10
+    || a === 9 || a === 8 || a === 7 || a === 6 || a === 5){
+   
+    // console.log( moment(today).diff(prod.product_ExpirationDate,'days'),'eday')
+    return prod
+  }else{
+    return null
+  }
+})
 
-function desc(a, b, orderBy) {
+let rows = filProds.map(product => {
+  return(createData(
+ 
+
+<img style={{width:"35px" , height:"35px"}} src={product.product_Img}></img>
+ ,product.product_Name,product.product_Category,product.product_Brand,
+product.product_UoM,<span>&#8369;{(product.product_Price).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>,
+
+productStocks.filter((stock) => stock.product_ID === product.product_ID)
+.reduce((sum, record) => sum + record.product_replenishQty , 0).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")  < 100 ? <span style={{color:"white",backgroundColor:"#FFA500",padding:"4px",borderRadius:"5px"}}> 
+{ productStocks.filter((stock) => stock.product_ID === product.product_ID)
+.reduce((sum, record) => sum + record.product_replenishQty , 0).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") } </span> :  
+<span style={{color:"white",backgroundColor:"#208769",padding:"4px",borderRadius:"5px"}}>{  productStocks.filter((stock) => stock.product_ID === product.product_ID)
+.reduce((sum, record) => sum + (record.product_replenishQty) , 0).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") } </span>,moment(today).diff(product.product_ExpirationDate,'days')
+
+  ))
+ 
+ })
+
+
+function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -53,49 +79,58 @@ function desc(a, b, orderBy) {
   return 0;
 }
 
-function stableSort(array, cmp) {
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
+    const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-  return stabilizedThis.map(el => el[0]);
-}
-
-function getSorting(order, orderBy) {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+  return stabilizedThis.map((el) => el[0]);
 }
 
 const headCells = [
-  { id: 'image', numeric: false, disablePadding: true, label: 'Image'},
-  { id: 'item', numeric: true, disablePadding: false, label: 'Item'},
-  { id: 'category', numeric: true, disablePadding: false, label: 'Category'},
-  { id: 'brand', numeric: true, disablePadding: false, label: 'Brand'},
-  { id: 'barcode', numeric: true, disablePadding: false, label: 'Barcode' },
+  { id: 'image', numeric: false, disablePadding: false, label: 'Image' },
+  { id: 'item', numeric: true, disablePadding: false, label: 'Item' },
+  { id: 'category', numeric: true, disablePadding: false, label: 'Category' },
+  { id: 'brand', numeric: true, disablePadding: false, label: 'Brand' },
   { id: 'uom', numeric: true, disablePadding: false, label: 'UoM' },
-  { id: 'price', numeric: true, disablePadding: false, label: 'Price'},
+  { id: 'price', numeric: true, disablePadding: false, label: 'Price' },
+  { id: 'stocks', numeric: true, disablePadding: false, label: 'Stocks' },
+  { id: 'dayss', numeric: true, disablePadding: false, label: 'Expired In' },
+  { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
+  
 ];
 
-function ExpiringTableHead(props) {
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: '#208769',
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+function ExpiryTableHead(props) {
+  
   const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-  const createSortHandler = property => event => {
+  const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
   return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
-        </TableCell>
-        {headCells.map(headCell => (
-          <TableCell
+    <TableHead >
+      <TableRow >
+   
+        {headCells.map((headCell) => (
+          <StyledTableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
@@ -113,14 +148,14 @@ function ExpiringTableHead(props) {
                 </span>
               ) : null}
             </TableSortLabel>
-          </TableCell>
+          </StyledTableCell>
         ))}
       </TableRow>
     </TableHead>
   );
 }
 
-ExpiringTableHead.propTypes = {
+ExpiryTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
@@ -130,68 +165,13 @@ ExpiringTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles(theme => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
 
-const ExpiringTableToolbar = props => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
 
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          Inventory
-        </Typography>
-      )}
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
 
-ExpiringTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
 
-const useStyles = makeStyles(theme => ({
+
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
@@ -200,7 +180,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 750,
+    minWidth: '100%',
   },
   visuallyHidden: {
     border: 0,
@@ -215,7 +195,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
- function ExpiringTable() {
+ function ExpiryTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -230,24 +210,21 @@ const useStyles = makeStyles(theme => ({
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = event => {
+  const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.item);
+      const newSelecteds = rows.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
- 
-
-
-  const handleClick = (event, item) => {
-    const selectedIndex = selected.indexOf(item);
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, item);
+      newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -266,23 +243,23 @@ const useStyles = makeStyles(theme => ({
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const handleChangeDense = event => {
+  const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
 
-  const isSelected = item => selected.indexOf(item) !== -1;
+  const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <ExpiringTableToolbar numSelected={selected.length} />
+       
         <TableContainer>
           <Table
             className={classes.table}
@@ -290,7 +267,7 @@ const useStyles = makeStyles(theme => ({
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
           >
-            <ExpiringTableHead
+            <ExpiryTableHead
               classes={classes}
               numSelected={selected.length}
               order={order}
@@ -300,37 +277,34 @@ const useStyles = makeStyles(theme => ({
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getSorting(order, orderBy))
+              {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.item);
+                  const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={event => handleClick(event, row.item)}
+                      // onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.item}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                 
+                      <TableCell component="th" id={labelId} scope="row">
                         {row.image}
                       </TableCell>
                       <TableCell align="right">{row.item}</TableCell>
                       <TableCell align="right">{row.category}</TableCell>
                       <TableCell align="right">{row.brand}</TableCell>
-                      <TableCell align="right">{row.barcode}</TableCell>
                       <TableCell align="right">{row.uom}</TableCell>
                       <TableCell align="right">{row.price}</TableCell>
+                      <TableCell align="right">{row.stocks}</TableCell>
+                      <TableCell align="right">{row.dayss}days</TableCell>
+                      <TableCell align="right">{row.action}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -359,14 +333,12 @@ const useStyles = makeStyles(theme => ({
     </div>
   );
 }
-return(
-
-<ExpiringTable></ExpiringTable>
 
 
-);
+return (
+ <ExpiryTable/>
+)
+}
+}
 
-  }}
-
-
-  export default inject("startingStore")(observer(InventoryTable));
+export default inject('inventoryStore')(observer(ProdExpiry))

@@ -84,9 +84,7 @@ class ExcelReader extends Component {
     } catch (err) {
       console.log(this.state.data, "wow");
     }
-    // } else {
-    // console.log("wow");
-    // }
+
   }
 
   render() {

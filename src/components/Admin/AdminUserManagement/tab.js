@@ -6,7 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import {Grid,Box} from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './../theme'
 
@@ -47,8 +47,8 @@ function a11yProps(index) {
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: "1220px",
-    height: "600px",
+    width: "100%",
+  
   },
 }));
 
@@ -67,6 +67,7 @@ export default function AUManagementTab() {
 
   return (
     <div className={classes.root}>
+      <Grid container lg={12} sm={12} xs={12}>
       <ThemeProvider theme={theme}>
       <AppBar position="static" color="default">
         <Tabs
@@ -89,13 +90,16 @@ export default function AUManagementTab() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
+          <Grid item lg={12} sm={12} xs={12} >
           <PackagingGrid/>
+          </Grid>
         </TabPanel>
      
         <TabPanel value={value} index={1} dir={theme.direction}>
           <DeliveryGrid/>
         </TabPanel>
       </SwipeableViews>
+      </Grid>
     </div>
   );
 }

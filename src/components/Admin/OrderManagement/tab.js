@@ -10,8 +10,9 @@ import Box from '@material-ui/core/Box';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './../theme'
 import ProcessPage from './Processing/index.js'
-import CompletedPage from './Completed/index.js'
-
+import CompletedPage from './Completed'
+import SummaryGrid from './Summary'
+import FailedGrid from './Failed'
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -45,7 +46,8 @@ function a11yProps(index) {
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: "100%",
+    width: '100%',
+    minWidth: '100%',
   },
 }));
 
@@ -72,13 +74,15 @@ export default function OrderTab() {
           indicatorColor="secondary"
           style={{color:"white",backgroundColor:"#208769"}}
           variant="fullWidth"
+          
           aria-label="full width tabs example"
         >
           <Tab label="Summary" {...a11yProps(0)} />
           <Tab label="Processing" {...a11yProps(1)} />
         
-     
-          <Tab label="Failed" {...a11yProps(2)} />
+       
+          <Tab label="Completed" {...a11yProps(2)} />
+          <Tab label="Failed" {...a11yProps(3)} />
         
         </Tabs>
       </AppBar>
@@ -89,14 +93,17 @@ export default function OrderTab() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <CompletedPage/>
+          <SummaryGrid/>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
          <ProcessPage/>
         </TabPanel>
- 
         <TabPanel value={value} index={2} dir={theme.direction}>
           <CompletedPage/>
+        </TabPanel>
+ 
+        <TabPanel value={value} index={3} dir={theme.direction}>
+          <FailedGrid/>
         </TabPanel>
       
       </SwipeableViews>

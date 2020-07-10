@@ -19,8 +19,8 @@ class Account extends Model {
         account_password: "",
         account_birthday:"",
         account_dateRegistered :"",
-        account_shopName :"",
-        account_shopAddress :"",
+        account_storeName :"",
+        account_storeAddress :"",
         staff_Role :"",
         account_accessType:"",
         account_status:"",
@@ -28,27 +28,7 @@ class Account extends Model {
     super({ ...defaults, ...props });
   }
 
-  // static get schema() {
-  //   return {
-  //     _id: Joi.string()
-  //       .hex()
-  //       .length(20),
-  //     firstName: Joi.string().required(),
-  //     lastName: Joi.string().required(),
-  //     email: Joi.email().required(),
-  //     password: Joi.string().required(),
-  //     phone: Joi.string().required(),
-  //     address: Joi.object().keys({
-  //       street: Joi.string(),
-  //       city: Joi.string(),
-  //       state: Joi.string(),
-  //       postalCode: Joi.number()
-  //     }),
-  //     date: Joi.date()
-  //       .iso()
-  //       .required()
-  //   };
-  // }
+
 }
 
 decorate(Account, {
@@ -66,8 +46,8 @@ decorate(Account, {
   account_password: observable,
   account_birthday:observable,
   account_dateRegistered :observable,
-  account_shopName :observable,
-  account_shopAddress :observable,
+  account_storeName :observable,
+  account_storeAddress :observable,
   staff_Role :observable,
   account_accessType:observable,
   account_status:observable,
