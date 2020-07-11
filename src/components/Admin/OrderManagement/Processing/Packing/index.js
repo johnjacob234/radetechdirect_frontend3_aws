@@ -27,21 +27,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  
-  },
 
-  search: {
-    display: 'flex',
-    alignItems: 'right',
-    width: 350,
-    float:"right"
-  },
 }));
 
 let {orderStore:{listOfOrder,listOfUsers}}=this.props;
@@ -50,19 +36,10 @@ let filpacking =listOfOrder.filter(order => order.orderStatus === 'Packing' && o
 
 
 
+let getorder =filpacking.map(orders =>{
 
 
- function PackGrid() {
-  const classes = useStyles();
-  const [filter,setFilter]= React.useState("")
-
-
-  let getorder =filpacking.map(orders =>{
-
-    if(filter.length !== 0){
-      if( orders.orderID.startsWith(filter) 
-      ){
-    return (
+  return(
       <Grid container lg={12} sm={12} xs={12} >
       <Grid item xs={12} sm={12}>
       <Paper style={{padding:"12px"}}>
@@ -82,35 +59,16 @@ let filpacking =listOfOrder.filter(order => order.orderStatus === 'Packing' && o
     </Paper>
     </Grid>
     </Grid>
-   )
-  }
-  else{
-    return null
-  }
-}
-return(
-    <Grid container lg={12} sm={12} xs={12} >
-    <Grid item xs={12} sm={12}>
-    <Paper style={{padding:"12px"}}>
-    <Grid container direction="row" item xs={12} sm={12}>
-  <Grid item xs={6}  sm={6} alignItems="left">
-  <Typography style={{textAlign:"left"}}>Reference # : <span style={{color:"#208769",fontWeight:"bold"}}> {orders.orderID}</span></Typography>
-  <Typography  style={{textAlign:"left"}}>Customer Name :<span style={{fontWeight:"bold"}}> {listOfUsers.filter(accs => accs.account_ID === orders.account_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span></Typography>
-   <Typography style={{textAlign:"left"}}>Address : <span style={{fontWeight:"bold"}}> {listOfUsers.filter(accs => accs.account_ID === orders.account_ID).map((account)=> {return `${account.account_address} `  } ) }</span></Typography>
-  </Grid>
- 
-  <Grid item xs={6} sm={6} >
-  <Typography style={{textAlign:"left"}}>Date Ordered : <span style={{fontWeight:"bold"}}>{orders.orderDate} </span></Typography>
-  <Typography  style={{textAlign:"left"}}>In Charge : <span style={{fontWeight:"bold"}}> {listOfUsers.filter(accs => accs.account_ID === orders.packer_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span></Typography>
-   <Typography style={{textAlign:"left"}}> Anticipated Transfer Time : <span style={{fontWeight:"bold"}}></span></Typography>
-  </Grid>
-  </Grid>
-  </Paper>
-  </Grid>
-  </Grid>
-  )
+    )
+    
+    })
   
-  })
+
+ function PackGrid() {
+  const classes = useStyles();
+
+
+
 
   return (
 
@@ -122,21 +80,7 @@ return(
       </Grid>
   
    <Grid item xs={3} sm={3}>
-   <Paper component="form" className={classes.search} >
-   
-   <InputBase
-     className={classes.input}
-     placeholder="Search Orders"
-     inputProps={{ 'aria-label': 'search orders' }}
-     onChange={(e)=>setFilter(e.target.value)}
-   />
-   <span style={{  backgroundColor:"#FFA500",borderRadius:"3px"}}>
-   <IconButton type="submit" className={classes.iconButton} aria-label="search">
-     <SearchIcon style={{color:"white"}}/>
-   </IconButton>
-   </span>
  
- </Paper>
       </Grid>
       {getorder}
      
