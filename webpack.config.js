@@ -1,15 +1,32 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const path = require('path');
 module.exports = {
-    mode: 'development',
+    mode: 'production',
+   devtool : 'source-map',
+   entry :'./src/index.jsx',
+   output : {
+	filename: 'main.js',
+	path : path.resolve(__dirname, 'dist')
+    },
     resolve: {
-		extensions: [ '.js', '.jsx', 'png' ]
+		extensions: [ '.js', '.jsx', 'png','css' ]
 	},
 	module: {
+
 		rules: [
 			{
 				test: /\.jsx?$/,
-				loader: 'babel-loader'
+				loader: 'babel-loader',
+				query: {compact: false}
+			},
+			{
+				test: /\.js$/,
+				loader: 'babel-loader',
+				query: {compact: false},
+				exclude:path.resolve(__dirname, "node_modules")
+	
 			},
 			{
 				test: /\.css$/,
@@ -22,8 +39,18 @@ module.exports = {
 		]
 	},
     plugins: [new HtmlWebpackPlugin({
-        template: './src/index.html'
-    })],
+	filename : 'index.html',
+	inject : true,
+        template: path.resolve(__dirname, 'src' , 'index.html')
+    }),
+	new  CopyWebpackPlugin({
+	patterns :[
+	{from :'./src/ttech.png'}]
+	}),
+	new  CleanWebpackPlugin()
+]
+,
+
     devServer: {
         historyApiFallback: true,
         port: 9000

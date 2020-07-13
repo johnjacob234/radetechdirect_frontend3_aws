@@ -396,7 +396,7 @@ addtoCart = () => {
               this.api.accessdistributor(this.token.access_Token)
               .then(resp => {        
           
-
+		console.log(resp.data,"listofdis");
                   sessionStorage.setItem("distData",JSON.stringify(resp.data[0]));
             
            
