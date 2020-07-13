@@ -1,35 +1,63 @@
-import { Dialog, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Fab from '@material-ui/core/Fab';
-import { ThemeProvider } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
-import { inject, observer } from 'mobx-react';
-import React from 'react';
-import theme from './../../../theme';
+import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { Divider, Paper } from '@material-ui/core/';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import MuiAlert from '@material-ui/lab/Alert';
-
-
-
-class AddStore extends React.Component {
+import { inject, observer } from 'mobx-react';
+import moment from 'moment';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import logo from './../../Logo/logowhite.png';
+import AddDist from './addDistributor';
+class MyDistributor extends React.Component {
 
   
+  componentDidMount(){
+    let {customerStore:{ getMembership,getToken}}=this.props;
+    
+    getToken();
+    getMembership();
+  }
+
+  
+ 
+  
+   state = {
+      
+       
+        snackbaropen:false,
+      
+       
+        snackbarerror:"Incorrect access code",
+    }
+  
+    
+  
+  
+
+  render() {
+    const {snackbaropen,snackbarerror}=this.state;
+  
+    let {customerStore:{accessDistributor,token,distributor,cLogs,addcLogs,listOfMembership}}=this.props;
+    let getId = JSON.parse(sessionStorage.getItem('userData'))
+
+    
+    function Alert(props) {
+      return <MuiAlert elevation={6} variant="filled" {...props} />;
+    } 
 
 
-
-    render() {
-   
-        let myId =JSON.parse(sessionStorage.getItem('userData'))
- let {customerStore:{addMembership,membership,listOfToken,listOfMembership }}=this.props;
-
- function getHash(input){
-    var hash = 0, len = input.length;
-    for (var i = 0; i < len; i++) {
+       let date = new Date();
+  function getHash (input)  {
+    let hash = 0, len = input.length;
+    for (let i = 0; i < len; i++) {
       hash  = ((hash << 5) - hash) + input.charCodeAt(i);
       hash |= 0; // to 32bit integer
     }
@@ -38,133 +66,152 @@ class AddStore extends React.Component {
   
     return hash;
   }
-  let date =new Date();
 
-
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  } 
-
-
-function FormDialog() {
- 
-  const [open, setOpen] = React.useState(false);
-  const [Sopen, SsetOpen] = React.useState(false);
-  const [Mopen, MsetOpen] = React.useState(false);
-  const [tknn, settknn] = React.useState("");
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-
-
-
-  const submit = () => {
-    let filtkn = listOfToken.filter(tkns => tkns.access_Token === tknn).length;
-  let filmember =listOfMembership.filter(memb => memb.account_ID === myId.account_ID && memb.access_Token === tknn).length;
-
-   
- 
-   
-    if (filtkn != 0 && filmember === 0){
-      let disID = listOfToken.filter(tkns => tkns.access_Token === tknn).map( dis=>{
-        return dis.distributor_ID}
-  
-      );
-      let disWH = listOfToken.filter(tkns => tkns.access_Token === tknn).map( dis=>{
-        return dis.distributor_wHouse
-      } );
-
-      membership.setProperty('access_Token',tknn)
-      membership.setProperty('distributor_ID',disID[0])
-      membership.setProperty('distributor_wHouse',disWH[0])
-      membership.setProperty('membership_ID',`${disID[0]}-${ Math.floor(1000 + Math.random() * 9000)}`)
-      membership.setProperty('account_ID',myId.account_ID)
-      setTimeout(()=>{
-        addMembership();
-      },500)
-     
-    }else if (filmember !=0){
-      // setOpen(false);
-      MsetOpen(true);
-    }else{
-      // setOpen(false);
-      SsetOpen(true);
-    }
-   
-
-    
-        // addMembership();
-  
-     
-  };
-
-  let  snackbarClose =(event)=>{
-    SsetOpen(false);
-    MsetOpen(false);
+  let  snackbarClose =()=>{
+    this.setState({snackbaropen:false});
   }
 
+  let accessD =(distD)=>{
+    token.setProperty("access_Token",distD.access_Token.toString())
 
 
+
+    accessDistributor().then(res =>{
+console.log(res,'ress')
+
+    if (res === undefined){
+      
+      setTimeout(() => {
+        this.setState({ snackbaropen: true });
+      //   openNotification();
+        // this.props.history.push("/Customer")
+      }, 500);
+
+ 
+    }
+    else{
+      cLogs.setProperty("log_ID",`${date.getFullYear()}-${getHash(date.getDay())}-${ Math.floor(1000 + Math.random() * 9000)}`)
+      cLogs.setProperty("account_ID",getId.account_ID)
+      cLogs.setProperty("distributor_ID",res.distributor_ID)
+      cLogs.setProperty("log_activity","Access Store")
+      cLogs.setProperty("log_Date",moment().format('MMM/DD/YYYY,h:mm:ssa'))
+      setTimeout(() => {
+      addcLogs();
+      distributor.setProperty("distributor_ID",res.distributor_ID)
+      this.props.history.push("/Customer/Home" )
+    }, 500);
+
+
+ 
+    }
+   })
+
+  }
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    // padding: theme.spacing(2),
+    marginTop:'16px',
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
+
+
+let getDist = listOfMembership.filter(ace => ace.account_ID === getId.account_ID).map(dist =>{
   return (
-    <div>
-      <Snackbar anchorOrigin={{vertical:'center',horizontal:'center'}}    open={Sopen} autoHideDuration={2000} onClose={snackbarClose}    >   
+<React.Fragment key={dist.membership_ID}>
+<Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={snackbaropen} autoHideDuration={2000} onClose={snackbarClose}  >   
     <Alert  severity="error">
-    Incorrect access code!
+     {snackbarerror}
       </Alert></Snackbar>
-
-      <Snackbar anchorOrigin={{vertical:'center',horizontal:'center'}}    open={Mopen} autoHideDuration={2000} onClose={snackbarClose}   >   
-    <Alert  severity="warning">
-    Already a Member!
-      </Alert></Snackbar>
-
-        <ThemeProvider theme={theme}>
-          
+<ListItem button onClick={()=>accessD(dist)}>
+        <ListItemText secondary={dist.distributor_wHouse} />
+        <ListItemSecondaryAction>
+                  <IconButton onClick={()=>accessD(dist)}  edge="end" aria-label="icon">
+                    <ArrowForwardIosIcon />
+                   
+                  </IconButton>
+                </ListItemSecondaryAction>
+      </ListItem>
+      <Divider />
+</React.Fragment>
     
-      <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
-        <AddIcon />
-      </Fab>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" style={{backgroundColor:"#208769"}} ><Typography style={{color:"white"}}>Add Store</Typography> </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please enter the access token here.
-          </DialogContentText>
-          <form autoComplete='off'>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Access Token"
-            type="email"
-            fullWidth
-            
-            onChange={(e)=>settknn(e.target.value)}
-          />
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary" variant='contained' style={{color:"white"}}>
-            Cancel
-          </Button>
-          <Button onClick={submit} color="primary" variant='contained'>
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
-      </ThemeProvider>
+  )
+})
+
+function DistGrid() {
+  const classes = useStyles();
+
+
+
+
+
+
+
+
+  
+  return (
+
+
+    <div className={classes.root}>
+  
+
+<AppBar position="fixed" style={{backgroundColor:"#208769"}}>
+        <Toolbar style={{textAlign:"center"}}>
+            <img src={logo} style={{height:"120px",margin:"auto"}}></img>
+        </Toolbar>
+      </AppBar>
+      <Toolbar />
+                <Grid container direction="row" sm={10} xs={11} justify='center' alignItems='center' style={{marginTop:"95px"}}>
+    <Grid item sm={12} xs={12} style={{textAlign:"center"}} justify='center'>
+<Paper style={{marginLeft:'20px'}}>
+    <Grid container sm={12} >
+       <Grid item  sm={1} xs={1} style={{backgroundColor:"#208769",paddingRight:"10px"}}></Grid>
+       <Grid item sm={10} xs={10} style={{paddingTop:"10px",paddingBottom:"10px",marginleft:"15px"}}><Typography variant="p" style={{fontWeight:"bold",width:"98%"}}>&nbsp;&nbsp;Access Distributor</Typography> </Grid>
+      
+       </Grid>
+       </Paper>
+    </Grid>
+    </Grid>
+
+
+
+      <Grid container direction="row" justify="center" alignItems="center">
+                     <Grid item xs={10} sm={4}>
+          <Paper className={classes.paper}>
+          <List component="nav" aria-label="main mailbox folders" style={{backgroundColor:"#208769",color:"white"}}>
+        <ListItem button>
+       
+          <ListItemText  primary="My Distributor" />
+        </ListItem>
+   
+      </List>
+      <Divider />
+      <List component="nav" aria-label="secondary mailbox folders">
+       {getDist}
+      </List>
+          </Paper>
+        </Grid>
+        </Grid>
+               <div style={{margin:0, top: 'auto',right: 20,bottom: 70,left: 'auto',position: 'fixed'}}>
+   <AddDist />
+    </div>
+   <Grid  item lg={12} sm={12} xs={12} style={{bottom: 0,position: 'absolute',border:'1px solid white',width:'100%'}}>
+<Paper className={classes.paper}><Typography variant='subtitle2'> &copy; TradeTech 2020</Typography></Paper>
+   </Grid>
     </div>
   );
 }
 
+
 return (
-<FormDialog/>
+  <DistGrid/>
 )
 }
 }
 
-export default inject('customerStore')(observer(AddStore))
+export default withRouter(inject('customerStore')(observer(MyDistributor)))
