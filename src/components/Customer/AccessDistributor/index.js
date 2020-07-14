@@ -58,6 +58,7 @@ class MyDistributor extends React.Component {
 			this.setState({ snackbaropen: false });
 		};
     		let accessD = (distD) => {
+			console.log(distD,"distD in accessD");
 			token.setProperty('access_Token', distD.access_Token.toString());
 
 			accessDistributor().then((res) => {
@@ -88,6 +89,7 @@ class MyDistributor extends React.Component {
     let getDis = this.state.listOfMembership.filter((ace) => ace.account_ID === getId.account_ID)
 
 		let getDist = getDis.map((dist) => {
+				console.log(distD,"distD in getDist");
 			return (
 				<React.Fragment key={dist.membership_ID}>
 					<Snackbar
