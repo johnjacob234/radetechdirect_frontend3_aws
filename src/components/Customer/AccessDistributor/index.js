@@ -21,12 +21,12 @@ class MyDistributor extends React.Component {
 		let { customerStore: { getMembership, getToken } } = this.props;
 
 		getToken();
-		getMembership().then(res => this.setState({"membershipArray": res}));
+		getMembership().then(res => this.setState({"listOfMembership": res}));
 	}
 
 	state = {
 		snackbaropen: false,
-    membershipArray : [],
+    listOfMembership : [],
 		snackbarerror: 'Incorrect access code'
 	};
 
@@ -58,7 +58,7 @@ class MyDistributor extends React.Component {
 			this.setState({ snackbaropen: false });
 		};
     
-    let getDis = this.state.membershipArray.filter((ace) => ace.account_ID === getId.account_ID)
+    let getDis = this.state.listOfMembership.filter((ace) => ace.account_ID === getId.account_ID)
 
 		let getDist = getDis.map((dist) => {
 			return (
