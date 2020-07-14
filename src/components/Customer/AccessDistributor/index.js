@@ -57,34 +57,7 @@ class MyDistributor extends React.Component {
 		let snackbarClose = () => {
 			this.setState({ snackbaropen: false });
 		};
-    
-    let getDis = this.state.listOfMembership.filter((ace) => ace.account_ID === getId.account_ID)
-
-		let getDist = getDis.map((dist) => {
-			return (
-				<React.Fragment key={dist.membership_ID}>
-					<Snackbar
-						anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-						open={snackbaropen}
-						autoHideDuration={2000}
-						onClose={snackbarClose}
-					>
-						<Alert severity="error">{snackbarerror}</Alert>
-					</Snackbar>
-					<ListItem button onClick={() => accessD(dist)}>
-						<ListItemText secondary={dist.distributor_wHouse} />
-						<ListItemSecondaryAction>
-							<IconButton onClick={() => accessD(dist)} edge="end" aria-label="icon">
-								<ArrowForwardIosIcon />
-							</IconButton>
-						</ListItemSecondaryAction>
-					</ListItem>
-					<Divider />
-				</React.Fragment>
-			);
-		});
-
-		let accessD = (distD) => {
+    		let accessD = (distD) => {
 			token.setProperty('access_Token', distD.access_Token.toString());
 
 			accessDistributor().then((res) => {
@@ -112,6 +85,33 @@ class MyDistributor extends React.Component {
 				}
 			});
 		};
+    let getDis = this.state.listOfMembership.filter((ace) => ace.account_ID === getId.account_ID)
+
+		let getDist = getDis.map((dist) => {
+			return (
+				<React.Fragment key={dist.membership_ID}>
+					<Snackbar
+						anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+						open={snackbaropen}
+						autoHideDuration={2000}
+						onClose={snackbarClose}
+					>
+						<Alert severity="error">{snackbarerror}</Alert>
+					</Snackbar>
+					<ListItem button onClick={() => accessD(dist)}>
+						<ListItemText secondary={dist.distributor_wHouse} />
+						<ListItemSecondaryAction>
+							<IconButton onClick={() => accessD(dist)} edge="end" aria-label="icon">
+								<ArrowForwardIosIcon />
+							</IconButton>
+						</ListItemSecondaryAction>
+					</ListItem>
+					<Divider />
+				</React.Fragment>
+			);
+		});
+
+
 
 		const useStyles = makeStyles((theme) => ({
 			root: {
