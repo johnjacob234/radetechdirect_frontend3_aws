@@ -85,6 +85,9 @@ class MyDistributor extends React.Component {
 		});
 
 		let accessD = (distD) => {
+			let {
+			customerStore: { accessDistributor, token, distributor, cLogs, addcLogs, listOfMembership }
+		} = this.props;
 			token.setProperty('access_Token', distD.access_Token.toString());
 
 			accessDistributor().then((res) => {
