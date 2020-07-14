@@ -58,8 +58,8 @@ class MyDistributor extends React.Component {
 			this.setState({ snackbaropen: false });
 		};
     		let accessD = (distD) => {
-			console.log(distD,"distD in accessD");
-			token.setProperty('access_Token', distD.access_Token.toString());
+			console.log(distD.access_Token,"distD in accessD");
+			token.setProperty('access_Token', distD.access_Token);
 
 			accessDistributor().then((res) => {
 
