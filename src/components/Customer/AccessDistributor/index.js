@@ -89,7 +89,7 @@ class MyDistributor extends React.Component {
     let getDis = this.state.listOfMembership.filter((ace) => ace.account_ID === getId.account_ID)
 
 		let getDist = getDis.map((dist) => {
-				console.log(distD,"distD in getDist");
+				console.log(dist,"dist in getDist");
 			return (
 				<React.Fragment key={dist.membership_ID}>
 					<Snackbar
