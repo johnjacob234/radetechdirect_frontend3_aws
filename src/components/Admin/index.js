@@ -9,7 +9,7 @@ import QuestionAnswerOutlinedIcon from '@material-ui/icons/QuestionAnswerOutline
 import clsx from 'clsx';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
+import { HashRouter as Router, Route, Switch, withRouter } from "react-router-dom";
 import OptionButton from './toolbar';
 import Accounting from './Accounting';
 import AdminUserManagement from './AdminUserManagement';
