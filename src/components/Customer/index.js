@@ -1,7 +1,7 @@
 import { Grid,CssBaseline } from '@material-ui/core';
 import { inject, observer } from "mobx-react";
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
+import { HashRouter  as Router, Route, Switch, withRouter } from "react-router-dom";
 import AccountSetting from './AccountSettings';
 import CheckOutGrid from './CheckOut';
 import Footer from './Footer';
