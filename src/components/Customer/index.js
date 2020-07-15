@@ -41,7 +41,6 @@ import CustomizedSteppers from './Stepper';
 </div>
      
 
-<Switch>
       {/* <Route  path="/AccessDistributor" render={()=><AccessD/>}/> */}
       <Route path="/Customer/Register" render={()=><Register/>}/>
     <Route exact path="/Customer/Home" render={()=><Home/>}/>
@@ -60,7 +59,7 @@ import CustomizedSteppers from './Stepper';
      
       {/*<Route  path="/Admin/AdminUserManagement" render={()=><AdminUserManagement/>}/> */}
       
-  </Switch>
+
 
 
 
