@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import DrawerList from './Routes';
 import {inject,observer} from 'mobx-react'
-import {BrowserRouter as Router,Route,Switch,withRouter} from 'react-router-dom';
+import {HashRouter  as Router,Route,Switch,withRouter} from 'react-router-dom';
 
 import MyOrders from './MyOrder'
 import MyProfile from './MyProfile'
