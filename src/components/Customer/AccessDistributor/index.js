@@ -23,7 +23,7 @@ class MyDistributor extends React.Component {
     let {customerStore:{ getMembership,getToken}}=this.props;
     
     getToken();
-    getMembership();
+    getMembership().then(res => this.setState(){"listOfMember" : res});
   }
 
   
@@ -33,7 +33,7 @@ class MyDistributor extends React.Component {
       
        
         snackbaropen:false,
-      
+        listOfMember: [],
        
         snackbarerror:"Incorrect access code",
     }
@@ -120,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-let getDist = listOfMembership.filter(ace => ace.account_ID === getId.account_ID).map(dist =>{
+let getDist = this.state.listOfMember.filter(ace => ace.account_ID === getId.account_ID).map(dist =>{
   return (
 <React.Fragment key={dist.membership_ID}>
 <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={snackbaropen} autoHideDuration={2000} onClose={snackbarClose}  >   
