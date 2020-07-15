@@ -1,6 +1,6 @@
 import axios from "axios";
 import { action, observable, decorate, computed } from "mobx";
-import config 'config';
+import config from 'config';
 // import multer from 'multer'
 
 class Api {
