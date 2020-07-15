@@ -3,16 +3,16 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
 
 // Pages init
-import DistGrid from './Customer';
-import Login from './Admin/Login';
-import CustLogin from './Customer/Login';
-import AdminDrawer from './Admin';
-import StaffGrid from './Staff';
-import ManagerGrid from './Manager';
-import Register from './Customer/RegisterS/UserForm';
-import SupAdminDrawer from './SuperAdmin';
-import MiniDrawer from './SuperAdmin/drawer.js';
-import AccessDist from './Customer/AccessDistributor';
+import DistGrid from '../components/Customer';
+import Login from '../components/Admin/Login';
+import CustLogin from '../components/Customer/Login';
+import AdminDrawer from '../components/Admin';
+import StaffGrid from '../components/Staff';
+import ManagerGrid from '../components/Manager';
+import Register from '../components/Customer/RegisterS/UserForm';
+import SupAdminDrawer from '../components/SuperAdmin';
+import MiniDrawer from '../components/SuperAdmin/drawer.js';
+import AccessDist from '../components/Customer/AccessDistributor';
 
 class App extends React.Component {
 	constructor(props) {
