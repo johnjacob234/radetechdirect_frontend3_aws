@@ -6,7 +6,7 @@ import config from 'config';
 class Api {
   api = axios.create({
     // baseURL: "https://1487a803d130.ngrok.io",
-    baseURL: `${config.baseUrl}/`
+    baseURL: `${config.apiUrl}/`
   });
 
   getUsers = () => {
