@@ -7,6 +7,7 @@ class Token extends Model {
     const defaults = {
        
         distributor_ID:"",
+        distributor_wHouse:"",
         access_Token :"",
 
     };
@@ -19,6 +20,7 @@ class Token extends Model {
 decorate(Token, {
     
     distributor_ID:observable,
+    distributor_wHouse:observable,
     access_Token:observable,
 
 });

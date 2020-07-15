@@ -80,6 +80,7 @@ getDistributors = () => {
         }
 
         addStock = () => {
+          console.log(this.listofProducts,'proo')
             let getId = JSON.parse(sessionStorage.getItem('userData'))
             let dis = this.listofProducts.filter(data=> {
               if (data.product_ID === this.product.product_ID){

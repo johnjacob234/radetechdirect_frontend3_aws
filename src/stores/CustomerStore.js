@@ -214,6 +214,26 @@ class CustomerStore {
               })
             }
 
+            addStockC = () => {
+            console.log(this.product.product_ID,'dds')
+            console.log(this.listofProducts,'prod')
+            
+              let dis = this.listofProducts.filter(data=> {
+                
+               if( this.product.product_ID.length )
+                if (data.product_ID === this.product.product_ID){
+                    return data
+                }
+              })
+        console.log(dis,'dis')
+           
+              this.api.addstock(this.stock , dis._id)
+              .then(resp => {
+           
+                this.listofProducts=resp.data
+              })
+            }
+
 
             getStock = () => { 
                 return new Promise((resolve, reject) => {   
@@ -396,7 +416,7 @@ addtoCart = () => {
               this.api.accessdistributor(this.token.access_Token)
               .then(resp => {        
           
-		console.log(resp.data,"listofdis");
+
                   sessionStorage.setItem("distData",JSON.stringify(resp.data[0]));
             
            
@@ -658,6 +678,7 @@ listOfMembership:observable,
   editProduct:action,
   getDistributors:action,
   addStock:action,
+  addStockC:action,
   getStock:action,
   addtoCart:action,
   editCart:action,

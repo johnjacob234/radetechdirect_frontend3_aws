@@ -275,6 +275,27 @@ else {
                     })
               }
 
+              getOrderD = () => {
+           
+                return new Promise ((resolve,reject) =>{
+                  let getuserId = JSON.parse(sessionStorage.getItem('userData'))
+                  
+                  
+                  this.api.getorder(this.order.account_ID ? this.order.account_ID  : getuserId.distributor_ID)
+                  .then(resp =>{
+                    this.listOfOrder =resp.data
+      
+                    if (resp.data !== false){
+                      resolve(resp.data);
+                 
+                    }
+                    else{
+                      resolve(false);
+                    }
+                  });
+                } )
+         
+              }
         
       
 }

@@ -1,10 +1,12 @@
 import axios from "axios";
 import { action, observable, decorate, computed } from "mobx";
-import config from 'config'
+
+// import multer from 'multer'
 
 class Api {
   api = axios.create({
-    baseURL: `${config.apiUrl}`
+    // baseURL: "https://1487a803d130.ngrok.io",
+    baseURL: "http://192.168.86.103:5000/"
   });
 
   getUsers = () => {
@@ -73,7 +75,7 @@ class Api {
 
   }
 
-  loginaccount = data => {
+  loginaccount = async data => {
     return this.api.post("accounts/login" , {
       mode: 'cors',
       data: data
@@ -127,6 +129,7 @@ class Api {
 
 
   addstock = (data ,product_ID)=>{
+    console.log(product_ID,'idd')
     return this.api.post(`stock/${product_ID}`,{
     mode:'cors',
     data:data,

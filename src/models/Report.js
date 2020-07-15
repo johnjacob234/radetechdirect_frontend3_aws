@@ -12,6 +12,7 @@ constructor(props){
  report_Detail:"",
  report_Note:"",
  report_Date:"",
+ report_Sender:"",
  report_Status:"",
 
  };
@@ -29,6 +30,7 @@ decorate(Report,{
     report_Detail:observable,
     report_Note:observable,
     report_Date:observable,  
+    report_Sender:observable,
     report_Status:observable,
  
 

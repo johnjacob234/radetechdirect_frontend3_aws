@@ -7,6 +7,7 @@ class RetailMembership extends Model {
     const defaults = {
         membership_ID:"",
         distributor_ID:"",
+        distributor_wHouse:"",
         account_ID:"",
         access_Token :"",
 
@@ -20,6 +21,7 @@ class RetailMembership extends Model {
 decorate(RetailMembership, {
     membership_ID:observable,
     distributor_ID:observable,
+    distributor_wHouse:observable,
     account_ID:observable,
     access_Token:observable,
 
