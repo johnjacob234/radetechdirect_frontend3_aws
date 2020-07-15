@@ -32,7 +32,7 @@ class App extends React.Component {
 							<Route path="/Login" component={CustLogin} />
 							<Route path="/Register" component={Register} />
 							<Route path="/AccessDistributor" component={AccessDist} />
-							<Route path="/Customer" component={DistGrid} />
+							<Route path="/Customer/Home" component={DistGrid} />
 							<Route path="/Drawer" render={() => <MiniDrawer />} />
 							<Route path="/Staff" component={StaffGrid} />
 							<Route path="/Manager" component={ManagerGrid} />
