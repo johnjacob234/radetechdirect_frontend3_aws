@@ -31,14 +31,14 @@ class Restock extends React.Component {
  
     let {inventoryStore:{stock,productStocks }}=this.props;
 
-function createData(name, uom, brand, replenishQty, date,expiration) {
-  return { name, uom, brand, replenishQty, date,expiration };
+function createData(prodID,name, uom, brand, replenishQty, date,expiration) {
+  return { prodID,name, uom, brand, replenishQty, date,expiration };
 }
 
 let rows =  productStocks.map(stock => {
   return(createData(
 
-stock.product_Name,stock.product_UoM,stock.product_Brand,stock.product_replenishQty,stock.product_replenishDate,stock.product_expirationDate ))
+stock.stock_ID, stock.product_Name,stock.product_UoM,stock.product_Brand,stock.product_replenishQty,stock.product_replenishDate,stock.product_expirationDate ))
  
  })
 
@@ -168,7 +168,7 @@ function RestockTable() {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -247,17 +247,17 @@ function RestockTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.prodID);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.prodID)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.prodID}
                       selected={isItemSelected}
                     >
                     

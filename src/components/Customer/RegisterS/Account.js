@@ -4,10 +4,29 @@ import {Grid,Typography,Paper,Toolbar,AppBar} from '@material-ui/core';
 import React, { Component } from 'react';
 import ThirdStep from './ThirdStep'
 import logo from './../../Logo/logowhite.png'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { Link, withRouter } from 'react-router-dom';
  class Account extends Component {
+    state = { 
+      snackbaropen:false,
+        snackbarerror:"The specified passwords do not match",
+    }
+
+    snackbarClose =(event)=>{
+        this.setState({snackbaropen:false});
+      }
+
      continue = e =>{
+
          e.preventDefault();
-         this.props.nextStep();
+       
+         if(this.props.values.password === this.props.values.confPassword){
+            this.props.nextStep();
+         }else{
+            this.setState({ snackbaropen: true });
+         }
+        
      }
      back = e =>{
         e.preventDefault();
@@ -16,9 +35,16 @@ import logo from './../../Logo/logowhite.png'
        
     render() {
         const {values,handleChange} =this.props;
+        function Alert(props) {
+            return <MuiAlert elevation={6} variant="filled" {...props} />;
+          } 
       
         return (
             <div >
+                <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={this.state.snackbaropen} autoHideDuration={2000} onClose={this.snackbarClose}  >   
+       <Alert  severity="error">
+       {this.state.snackbarerror }
+        </Alert></Snackbar>
                 <React.Fragment>
                 <AppBar position="fixed" style={{backgroundColor:"#208769"}}>
         <Toolbar style={{textAlign:"center"}}>
@@ -26,7 +52,8 @@ import logo from './../../Logo/logowhite.png'
         </Toolbar>
       </AppBar>
       <Toolbar />
-      <Grid container direction="row" sm={10} xs={11} justify='center' alignItems='center' style={{marginTop:"95px"}}>
+   
+      <Grid container direction="row" sm={10} xs={11} justify='center' alignItems='center' style={{marginTop:"20%"}}>
     <Grid item sm={12} xs={12} style={{textAlign:"center"}} justify='center' alignItems='center'>
 <Paper style={{marginLeft:'20px'}}>
     <Grid container sm={12} >
@@ -70,6 +97,16 @@ import logo from './../../Logo/logowhite.png'
                 onChange={handleChange('password')}
                 defaultValue={values.password}
                 />
+                   <br/>
+                <TextField 
+                id="outlined-basic" 
+                label="Confirm password" 
+                style={{marginBottom:"8px"}}
+                variant="outlined" 
+                type='password'
+                onChange={handleChange('confPassword')}
+                defaultValue={values.confPassword}
+                />
             </Paper>
             </Grid>
             <Grid item sm={12} xs={12} direction='row' >
@@ -93,6 +130,8 @@ import logo from './../../Logo/logowhite.png'
                 </Grid>
                 </form>
                 </React.Fragment>
+
+                <Grid container sm={12} xs={12} style={{marginTop:"16px"}} alignItems='center'><Grid item xs={12} sm={12} style={{textAlign:'center',marginRight:'5px'}}><Typography variant='captiontext' >Have already an account? <Link to='/Login'> Login Here</Link></Typography></Grid>  </Grid>
             </div>
         )
     }
@@ -105,4 +144,4 @@ const style ={
         backgroundColor:"#208769"
     }
 } 
-export default Account
+export default withRouter(Account)

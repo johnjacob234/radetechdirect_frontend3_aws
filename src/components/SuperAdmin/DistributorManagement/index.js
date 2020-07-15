@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import DestributorTabs from './tab.js';
-
+import Register from './AddDestributor'
 class adDrawer extends Component{
 
 render(){
@@ -17,15 +17,19 @@ render(){
   <Grid container lg={12} sm={12} xs={12}>
     
 
-      <Grid container direction="row" lg={12} sm={12} xs={12}>
+      <Grid item sm={12} xs={12}>
         <Typography variant="h5" >
            Distributor Management
         </Typography>
         
         </Grid>
         <Divider style ={{marginBottom:"5px"}}/>
-
-        <Grid container style={{marginTop:"1%"}} lg={12} sm={12} xs={12}>
+<Grid item sm={12} xs={12} >
+  <div style={{float:'right'}}>
+<Register/>
+</div>
+</Grid>
+        <Grid item style={{marginTop:"1%"}}  sm={12} xs={12}>
         <DestributorTabs/>
         </Grid >
         

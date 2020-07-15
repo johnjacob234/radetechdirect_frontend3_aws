@@ -60,7 +60,7 @@ function createData(ref, date, action) {
 let {staffStore:{listOfOrder,order,getOrderD}}=this.props;
 let myId =JSON.parse(sessionStorage.getItem('userData'))
 let filterComplete =listOfOrder.filter(order => {
-   if(order.orderStatus === 'Completed' && order.dispatcher_ID === myId.account_ID || order.orderStatus ==='Completed' && order.packer_ID === myId.account_ID || order.orderStatus ==='Transfer' && order.packer_ID === myId.account_ID) {
+   if(order.orderStatus === 'Completed' && order.dispatcher_ID === myId.account_ID || order.orderStatus != 'Pending' && order.packer_ID === myId.account_ID ) {
        return order
    }
 
@@ -150,7 +150,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
         <TableHead>
           <TableRow>
             <StyledTableCell align="center">Ref #</StyledTableCell>
-            <StyledTableCell align="center">Date</StyledTableCell>
+            <StyledTableCell align="left">Date</StyledTableCell>
             <StyledTableCell align="center">Action</StyledTableCell>
        
           </TableRow>
@@ -161,7 +161,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
               <StyledTableCell component="th" scope="row" align="left">
                 {row.ref}
               </StyledTableCell>
-              <StyledTableCell align="center">{row.date}</StyledTableCell>
+              <StyledTableCell align="left">{row.date}</StyledTableCell>
               <StyledTableCell align="center">{row.action}</StyledTableCell>
     
             </StyledTableRow>

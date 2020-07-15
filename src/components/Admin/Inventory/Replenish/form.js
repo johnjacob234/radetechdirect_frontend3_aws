@@ -1,5 +1,5 @@
 import MomentUtils from '@date-io/moment';
-import { TextField, Typography } from '@material-ui/core';
+import { TextField, Typography ,ThemeProvider} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import Resizer from 'react-image-file-resizer';
 
 
-
+import theme from './../../../theme'
 
 
 
@@ -184,7 +184,7 @@ class ReplenishForm extends Component{
 
      </Grid>
      </Grid>
-<Typography variant="h6" style={{color:"#208769"}}> Basic Info</Typography>
+{/* <Typography variant="h6" style={{color:"#208769"}}> Basic Info</Typography>
 
       <Grid container direction="row" sm={12} >
           <Grid item  xs={6} style={{margin:"5px"}}>
@@ -197,8 +197,8 @@ class ReplenishForm extends Component{
      style={{width:"98%",color:"black"}}
 
      
-     /></Grid>
-     <Grid item  xs={5} style={{margin:"5px"}}>
+     /></Grid> */}
+     {/* <Grid item  xs={5} style={{margin:"5px"}}> */}
        {/* <TextField 
      id="outlined-basic" 
      label="Category" 
@@ -206,7 +206,7 @@ class ReplenishForm extends Component{
      onChange={product_Category=>{product.setProperty("product_Category", product_Category.target.value)}}
      /> */}
      
-     
+{/*      
      <TextField 
      disabled
      id="outlined-basic" 
@@ -218,7 +218,7 @@ class ReplenishForm extends Component{
      />
      </Grid>
 
-     <Grid item xs={6} style={{margin:"5px"}}>
+     <Grid item xs={6} style={{margin:"5px"}}> */}
        
        {/* <TextField 
      id="outlined-basic"
@@ -229,7 +229,7 @@ class ReplenishForm extends Component{
      /> */}
      
   
-     </Grid>
+     {/* </Grid>
      <Grid xs={5} item style={{margin:"5px"}}>
        
      <TextField 
@@ -243,7 +243,7 @@ class ReplenishForm extends Component{
      />
      </Grid>
 
-     </Grid>
+     </Grid> */}
 
 
 
@@ -260,7 +260,7 @@ class ReplenishForm extends Component{
           <Grid xs={6} item style={{margin:"5px"}}>
 
      </Grid>
-     <Grid xs={5} item style={{margin:"5px"}}>
+     {/* <Grid xs={5} item style={{margin:"5px"}}>
      <TextField 
      disabled
      id="outlined-basic" 
@@ -270,16 +270,16 @@ class ReplenishForm extends Component{
      defaultValue={product.product_Brand}
      
      />
-     </Grid>
+     </Grid> */}
 
      <Grid xs={6} item style={{margin:"5px"}}>
      <TextField 
      disabled
      id="outlined-basic" 
      style={{width:"98%"}}
-     label="Stocks" 
+     label="Available Stocks" 
      variant="outlined"
-     defaultValue={product.product_Stock}
+     defaultValue={product.product_Stocks}
      
      />
      </Grid>
@@ -289,12 +289,14 @@ class ReplenishForm extends Component{
      id="outlined-basic" 
      style={{width:"98%"}}
      label="Replenish Qty" 
+     autoFocus
      variant="outlined"
      onChange={
       product_Stocks=>{
         let {inventoryStore:{listOfProducts}}=this.props;
 
         stock.setProperty("product_replenishQty", product_Stocks.target.value)
+        stock.setProperty("stock_Detail", 'stockIn')
         // product.setProperty("product_Stocks",product_Stocks.target.value + product.product_Stocks.target.value)
         // product.setProperty("product_Stocks", products.product_Stocks + product_Stocks.target.value)
       stock.setProperty('stock_ID',`${getHash(product_Stocks.target.value)}-${ Math.floor(1000 + Math.random() * 9000)}` )
@@ -313,6 +315,7 @@ class ReplenishForm extends Component{
      variant="outlined" 
      onChange={product_DateReceived=>{product.setProperty("product_DateReceived", product_DateReceived.target.value)}}
      /> */}
+    <ThemeProvider theme={theme}>
          <MuiPickersUtilsProvider utils={MomentUtils} >
     
 
@@ -321,15 +324,16 @@ class ReplenishForm extends Component{
       id="dReceive"
       label="Date Received"
     value ={selectedDate}
-      
+      color='primary'
       onChange={handleReceived}
       KeyboardButtonProps={{
         'aria-label': 'change date',
       }}
     />
 
-  
+
 </MuiPickersUtilsProvider>
+</ThemeProvider>
      </Grid>
      <Grid xs={5} item style={{margin:"5px"}}>
      {/* <TextField 
@@ -339,7 +343,7 @@ class ReplenishForm extends Component{
      variant="outlined"
      onChange={product_ExpirationDate=>{product.setProperty("product_ExpirationDate", product_ExpirationDate.target.value)}}
      /> */}
-    
+    <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={MomentUtils} >
     
 
@@ -348,7 +352,7 @@ class ReplenishForm extends Component{
       id="dExpiration"
       label="Expiration Date"
   value={exselectedDate}
-     
+     color='primary'
       onChange={handleExpiration}
       KeyboardButtonProps={{
         'aria-label': 'change date',
@@ -357,6 +361,7 @@ class ReplenishForm extends Component{
 
   
 </MuiPickersUtilsProvider>
+</ThemeProvider>
      </Grid>
      </Grid>
      

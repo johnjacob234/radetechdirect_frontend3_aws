@@ -92,7 +92,7 @@ function RegisterDistributor() {
  
   return (
     <div>
-      <Snackbar open={openS} autoHideDuration={500} anchorOrigin={{vertical:'top',horizontal:'center'}} onClose={handleCloseS}>
+      <Snackbar open={openS} autoHideDuration={1500} anchorOrigin={{vertical:'top',horizontal:'center'}} onClose={handleCloseS}>
         <Alert onClose={handleCloseS} severity="success">
           Distributor Successfully Added!
         </Alert>

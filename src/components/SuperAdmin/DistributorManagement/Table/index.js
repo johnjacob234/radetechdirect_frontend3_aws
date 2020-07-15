@@ -4,6 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import IconButton from '@material-ui/core/IconButton';
@@ -25,8 +26,8 @@ import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import EditForm from './../EditAccount';
-
-
+import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 class DistributorsTable extends React.Component {
   constructor(props){
@@ -170,7 +171,11 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
 }));
+let filter =this.props.mysearch;
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
  function DistributorTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -181,6 +186,8 @@ const useStyles = makeStyles((theme) => ({
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [open, setOpen] = React.useState(false);
+  const [openD, setOpenD] = React.useState(false);
+  const [openS, setOpenS] = React.useState(false);
   const theme = useTheme();
 //   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -207,28 +214,34 @@ const useStyles = makeStyles((theme) => ({
 
   const handleClose = () => {
     setOpen(false);
+    setOpenD(false);
   };
 
   const handleOk = () => {
    
     editDistributor();
-
+    setOpenS(true)
 
  // setTimeout(() => {
  //   this.setState({ loading: false, visible: false });
  // }, 3000);
 };
 
+
 const handleArchive = (dis) => {
+  
   distributor.setProperty("distributor_ID", dis.distributor_ID)
    distributor.setProperty("distributor_status",'archived')
-  archiveDistributor();
-
+  
+   setOpenD(true);
 
 // setTimeout(() => {
 //   this.setState({ loading: false, visible: false });
 // }, 3000);
 };
+let deactivate =()=>{
+  archiveDistributor();
+}
 
 
   let rows = listOfDistributors.filter(dis => dis.distributor_status === 'active').map(distributor => {
@@ -290,6 +303,11 @@ const handleArchive = (dis) => {
 
   return (
     <div className={classes.root}>
+               <Snackbar open={openS} autoHideDuration={2000}  anchorOrigin={{vertical:'center',horizontal:'center'}}>
+        <Alert  severity="success">
+        Edit successful!
+        </Alert>
+      </Snackbar>
       <Paper className={classes.paper}>
         
         <TableContainer>
@@ -314,7 +332,9 @@ const handleArchive = (dis) => {
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
+                  if(filter.length !== 0){
+                    if( row.tier.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) || row.address.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) || row.email.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) || row.date_registered.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) ||  row.name.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase())){
+                     
                   return (
                     <TableRow
                       hover
@@ -336,6 +356,36 @@ const handleArchive = (dis) => {
                        <TableCell align="right">{row.date_registered}</TableCell>
                   <TableCell align="right">{row.action}</TableCell>
                     </TableRow>
+         );
+
+        }
+        else{
+          return null
+       
+      }
+
+        }
+        return (
+          <TableRow
+          hover
+          onClick={(event) => handleClick(event, row.name)}
+          role="checkbox"
+          aria-checked={isItemSelected}
+          tabIndex={-1}
+          key={row.name}
+          selected={isItemSelected}
+        >
+          
+          <TableCell component="th" id={labelId} scope="row" >
+            {row.name}
+          </TableCell>
+          <TableCell align="right">{row.tier}</TableCell>
+          <TableCell align="right">{row.address}</TableCell>
+          <TableCell align="right">{row.email}</TableCell>
+         <TableCell align="right">{row.contact_no}</TableCell>
+           <TableCell align="right">{row.date_registered}</TableCell>
+      <TableCell align="right">{row.action}</TableCell>
+        </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
@@ -373,15 +423,39 @@ const handleArchive = (dis) => {
        <EditForm/>
         </DialogContent>
         <DialogActions>
-        <Button autoFocus  style={{backgroundColor:"#208769",color:"white"}} onClick={()=> {handleOk()}} >
-          <span style={{paddingLeft:"8px",paddingRight:"8px"}}>  Submit</span>
+        <Button autoFocus   variant='contained' onClick={()=> {handleOk()}} style={{backgroundColor:"#208769",color:"white"}}>
+           Submit
           </Button>
     
-          <Button onClick={handleClose}  autoFocus style={{backgroundColor:"#F8B701",color:"white"}}>
-          <span style={{paddingLeft:"8px",paddingRight:"8px"}}>  Close</span>
+          <Button onClick={handleClose}   variant='contained' style={{backgroundColor:"#F8B701",color:"white"}}>
+         Close
           </Button>
         </DialogActions>
       </Dialog>
+
+
+      <Dialog
+        open={openD}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+  
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Deactivate this account?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}   variant='contained' style={{backgroundColor:"#F8B701",color:"white"}}>
+            Cancel
+          </Button>
+          <Button onClick={deactivate}  autoFocus variant='contained' style={{backgroundColor:"#208769",color:"white"}}>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   );
 }

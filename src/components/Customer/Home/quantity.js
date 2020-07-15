@@ -30,7 +30,7 @@ class Quantity extends React.Component {
    
     let total = this.props.price * this.state.counter
     cart.setProperty("product_TotalAmount",total)
-    console.log(this.state.counter,total);
+    
     return (
       <div>
     <Typography variant='p'><span>Total : </span>&#8369; {total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}.00</Typography>

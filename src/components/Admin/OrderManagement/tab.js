@@ -13,6 +13,7 @@ import ProcessPage from './Processing/index.js'
 import CompletedPage from './Completed'
 import SummaryGrid from './Summary'
 import FailedGrid from './Failed'
+import { Grid } from '@material-ui/core';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -66,6 +67,7 @@ export default function OrderTab() {
 
   return (
     <div className={classes.root}>
+      <Grid container lg={12} sm={12} xs={12}>
       <ThemeProvider theme={theme}>
       <AppBar position="static" color="default">
         <Tabs
@@ -93,20 +95,29 @@ export default function OrderTab() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
+          <Grid item sm={12} xs={12}>
           <SummaryGrid/>
+          </Grid>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
+        <Grid item sm={12} xs={12}>
          <ProcessPage/>
+         </Grid>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
+        <Grid item sm={12} xs={12}>
           <CompletedPage/>
+          </Grid>
         </TabPanel>
  
         <TabPanel value={value} index={3} dir={theme.direction}>
+        <Grid item sm={12} xs={12}>
           <FailedGrid/>
+          </Grid>
         </TabPanel>
       
       </SwipeableViews>
+      </Grid>
     </div>
   );
 }

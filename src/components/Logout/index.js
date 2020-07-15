@@ -17,7 +17,7 @@ class Options extends React.Component {
   render() { 
 
     const settings =()=>{
-      this.props.history.push("Admin/Setting");
+      this.props.history.push("/SuperAdmin/Setting");
     }
 
 const useStyles = makeStyles(theme => ({
@@ -95,7 +95,7 @@ function  logout() {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                     <MenuItem onClick={settings}>Setting</MenuItem>
                     <MenuItem onClick={logout}>Logout</MenuItem>
                   </MenuList>

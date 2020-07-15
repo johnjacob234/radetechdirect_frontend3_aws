@@ -5,21 +5,48 @@ import React, { Component } from 'react';
 import SecondStep from './SecondStep'
 import logo from './../../Logo/logowhite.png'
 import Address from './Address'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { Link, withRouter } from 'react-router-dom';
  class FormPersonalDetails extends Component {
+    state = {
+ 
+       
+        snackbaropen:false,
+      
+     
+        snackbarerror:"Fill out all fields.",
+    }
      continue = e =>{
          e.preventDefault();
+         if(this.props.values.shopName,this.props.values.shopAddress != ''){
          this.props.nextStep();
+        }else{
+            this.setState({ snackbaropen: true });
+        }
      }
      back = e =>{
         e.preventDefault();
         this.props.prevStep();
     }
+
+    snackbarClose =()=>{
+        this.setState({snackbaropen:false});
+      }
        
     render() {
         const {values,handleChange} =this.props;
-      
+        function Alert(props) {
+            return <MuiAlert elevation={6} variant="filled" {...props} />;
+          } 
         return (
             <div >
+
+<Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={this.state.snackbaropen} autoHideDuration={2000} onClose={this.snackbarClose}  >   
+       <Alert  severity="warning">
+       {this.state.snackbarerror }
+        </Alert></Snackbar>
+
                 <React.Fragment>
                 <AppBar position="fixed" style={{backgroundColor:"#208769"}}>
         <Toolbar style={{textAlign:"center"}}>
@@ -27,7 +54,8 @@ import Address from './Address'
         </Toolbar>
       </AppBar>
       <Toolbar />
-      <Grid container direction="row" sm={10} xs={11} justify='center' alignItems='center' style={{marginTop:"95px"}}>
+     
+      <Grid container direction="row" sm={10} xs={11} justify='center' alignItems='center'  style={{marginTop:"20%"}}>
     <Grid item sm={12} xs={12} style={{textAlign:"center"}} justify='center' alignItems='center'>
 <Paper style={{marginLeft:'20px'}}>
     <Grid container sm={12} >
@@ -55,6 +83,7 @@ import Address from './Address'
                 <TextField 
                 id="outlined-basic" 
                 label="Store Name" 
+                required
                 variant="outlined" 
                 style={{marginBottom:"8px"}}
                 onChange={handleChange('shopName')}
@@ -64,6 +93,8 @@ import Address from './Address'
                 <TextField 
                 id="outlined-basic" 
                 label="Store Address" 
+
+                required
                 variant="outlined" 
                 style={{marginBottom:"8px"}}
                 onChange={handleChange('shopAddress')}
@@ -93,6 +124,7 @@ import Address from './Address'
                 </Grid>
                 </form>
                 </React.Fragment>
+                <Grid container sm={12} xs={12} style={{marginTop:"16px"}} alignItems='center'><Grid item xs={12} sm={12} style={{textAlign:'center',marginRight:'5px'}}><Typography variant='captiontext' >Have already an account? <Link to='/Login'> Login Here</Link></Typography></Grid>  </Grid>
             </div>
         )
     }
@@ -106,4 +138,4 @@ const style ={
     }
 
 } 
-export default FormPersonalDetails
+export default withRouter(FormPersonalDetails)

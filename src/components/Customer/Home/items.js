@@ -51,11 +51,13 @@ const useStyles = makeStyles(theme => ({
 
 }));
 class AllProd extends Component {
- 
+
+    
+
   componentDidMount(){
    
     let {customerStore:{getProducts}}=this.props;
-   
+  
     getProducts();
     
   }
@@ -66,12 +68,14 @@ constructor(props){
     open:'',
     price_total:'',
     addCartItem:'',
-
+    listOfCart:[],
         
     snackbaropen:false,
     snackbaropenE:false,
     snackbar:"Item added to your cart.",
     snackbarE:"Incorrect username or password.",
+    snackbaropenC:'',
+    snackbarC:"Item already on cart.",
 
   }
  
@@ -79,7 +83,7 @@ constructor(props){
 
 }
 
-snackbarClose =(event)=>{
+snackbarClose =()=>{
   this.setState({snackbaropen:false});
 }
 
@@ -99,12 +103,18 @@ handleClose =()=>{
   render() { 
     let getId = JSON.parse(sessionStorage.getItem('userData'))
     let getdist = JSON.parse(sessionStorage.getItem('distData'))
-    let {customerStore:{addtoCart,cart}}=this.props;
+
+
+    let {customerStore:{addtoCart,cart,listOfCart}}=this.props;
     function Alert(props) {
       return <MuiAlert elevation={6} variant="filled" {...props} />;
     } 
     let addCart =(prod)=>{
-    
+  
+      let filcart = listOfCart.filter(itm => itm.product_ID === prod.product_ID).length;
+  
+
+     if(filcart === 0){
       this.setState({
         addCartItem:prod.product_Price
       });
@@ -128,11 +138,25 @@ handleClose =()=>{
       cart.setProperty("product_ExpirationDate",prod.product_ExpirationDate)
       cart.setProperty("product_Remarks",prod.product_Remarks)
       cart.setProperty("product_TransactionDate",moment().format('MMM/DD/YYYY,h:mm:ssa'))
+     }else{
+      this.setState({
+      snackbaropenC:true,
+    });
+setTimeout(()=>{
+  this.setState({
+  
+    snackbaropenC:false,
+  });
+},1000)
+
+     }
+
+
       
     
     }
     let submitItem =()=>{
-
+ 
      
 addtoCart();
 
@@ -226,12 +250,10 @@ setTimeout(() => {
   <Typography style={{textAlign:"right",fontSize:'11px',}}>{product.product_UoM} </Typography>
   </Grid>
 
-  <Grid item xs={7}>
+  <Grid item xs={12}>
   <Typography style={{textAlign:"left",fontSize:'11px',}}>VAR:{product.product_Variant} </Typography>
   </Grid>
-  <Grid item xs={5}>
-  <Typography style={{textAlign:"right",fontSize:'11px',}}>{product.product_Packaging} </Typography>
-  </Grid>
+
   
   
   </Grid>
@@ -286,6 +308,12 @@ setTimeout(() => {
        {this.state.snackbarE }
         </Alert></Snackbar>
 
+
+        <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}} style={{position:'fixed'}}   open={this.state.snackbaropenC} autoHideDuration={2000} onClose={this.snackbarClose}  >   
+       <Alert onClose={this.snackbarClose}  severity="warning">
+       {this.state.snackbarC }
+        </Alert></Snackbar>
+
   <Card style={{minHeight:"100%"}}>
   <ThemeProvider theme={theme}>
   <CardHeader
@@ -316,12 +344,10 @@ setTimeout(() => {
   <Grid item xs={6}>
   <Typography style={{textAlign:"right",fontSize:'11px',}}>{product.product_UoM} </Typography>
   </Grid>
-  <Grid item xs={7}>
+  <Grid item xs={12}>
   <Typography style={{textAlign:"left",fontSize:'11px',}}>VAR:{product.product_Variant} </Typography>
   </Grid>
-  <Grid item xs={5}>
-  <Typography style={{textAlign:"right",fontSize:'11px',}}>{product.product_Packaging} </Typography>
-  </Grid>
+
   
   </Grid>
   </CardContent>

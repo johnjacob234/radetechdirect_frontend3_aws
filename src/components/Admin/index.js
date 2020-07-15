@@ -245,7 +245,7 @@ const useStyles = makeStyles(theme => ({
                  >
           <Grid >
            
-             <IconButton style={{backgroundColor:"#1E7A60",marginRight:"12px",height:'43px'}} 
+             <IconButton style={{backgroundColor:"#1E7A60",marginRight:"8px",height:'43px'}} 
               // onClick={handleClick}
              >
   <NotificationsOutlinedIcon style={{color:"white",fontSize:"18px"}}/>
@@ -265,12 +265,12 @@ const useStyles = makeStyles(theme => ({
       </List>
       </StyledMenu> */}
 
-<IconButton style={{backgroundColor:"#1E7A60"}}>
+<IconButton style={{marginRight:"8px",backgroundColor:"#1E7A60"}}>
   <QuestionAnswerOutlinedIcon style={{color:"white",fontSize:"18px"}}/>
 </IconButton>
-<IconButton style={{marginRight:"0px",backgroundColor:"#208769"}}>
+{/* <IconButton style={{marginRight:"0px",backgroundColor:"#208769"}}>
 <Avatar src={pr} > </Avatar>
-</IconButton>
+</IconButton> */}
 
 <OptionButton/>
 

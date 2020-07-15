@@ -20,22 +20,28 @@ componentDidMount(){
   let{reportStore:{getProducts,getOrder,getCart}}=this.props;
   getProducts();
   getOrder();
-  getCart();
+  getCart().then(res => this.setState({"listOfCart": res}));
 }
 
+state = {
+ 
+  listOfCart : [],
+ 
+};
+
   render() {
-    let{reportStore:{listofProducts,listOfOrder,listOfCart}}=this.props;
+    let{reportStore:{listofProducts,listOfCart}}=this.props;
 
 function createData(name, qty, price, total) {
   return { name, qty, price, total };
 }
-
-
+console.log(this.state.listOfCart)
+console.log(listOfCart,'asd')
 let rows = listofProducts.map(prods => {
   return (createData(
 
-prods.product_Name,Number(`${listOfCart.filter((total) => total.product_Name === prods.product_Name)
-  .reduce((sum, record) => Number(sum) + Number(record.product_Quantity), 0)}`),Number( `${prods.product_Price}`),Number(`${listOfCart.filter((total) => total.product_ID === prods.product_ID)
+prods.product_Name,`${this.state.listOfCart.filter((total) => total.product_Name === prods.product_Name)
+  .reduce((sum, record) => Number(sum) + Number(record.product_Quantity), 0)}`,Number( `${prods.product_Price}`),Number(`${this.state.listOfCart.filter((total) => total.product_ID === prods.product_ID)
     .reduce((sum, record) => Number(sum) + Number(record.product_TotalAmount)
     , 0)}`)
   ))
@@ -165,7 +171,7 @@ let filter =this.props.mysearch;
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {

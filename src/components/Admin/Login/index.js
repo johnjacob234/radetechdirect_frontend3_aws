@@ -1,6 +1,6 @@
 import React from 'react';
 import {inject,observer} from 'mobx-react'
-import { Paper,  Grid, TextField, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Paper,  Grid, TextField, Button, FormControlLabel, Checkbox,CssBaseline } from '@material-ui/core';
 import { Face, Fingerprint } from '@material-ui/icons'
 import logogreen from './../../Logo/logogreen.png'
 import img from './loginBackground.jpg'
@@ -149,7 +149,9 @@ class Login extends React.Component {
         } 
         
         return (
-       
+       <div>
+         <CssBaseline />
+      
 
 
 <div style={{backgroundImage:`url(${img})`,height:'100vh',backgroundSize:"cover",backgroundAttachment:"fixed",backgroundPosition:"center",backgroundRepeat:"no-repeat",textAlign:"center"}}>
@@ -217,7 +219,7 @@ class Login extends React.Component {
                         </Paper>
                         </Grid>
             
-   
+                        </div>
 </div>
         );
     }

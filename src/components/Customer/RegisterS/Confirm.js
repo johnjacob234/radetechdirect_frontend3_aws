@@ -88,7 +88,7 @@ import theme from './../../theme'
         this.props.prevStep();
     }
     render() {
-        const {values:{fName,mName,lName, suffix, emailAddress,contactNo,shopName,shopAddress,username,password}} =this.props;
+        const {values:{fName,mName,lName, suffix, emailAddress,contactNo,shopName,shopAddress,username,address}} =this.props;
         console.log(this.continue,'continue')
         return (
             <div >
@@ -145,13 +145,13 @@ import theme from './../../theme'
                <Paper style={{paddingTop:"16px",paddingBottom:"8px"}}>
                <List>
         <ListItem><Typography><span style={{fontWeight:"bold"}}> Name : </span>{fName} {mName} {lName} {suffix}</Typography></ListItem>
-        
+        <ListItem><Typography><span style={{fontWeight:"bold"}}>Home Address: </span>{address}</Typography></ListItem>
         <ListItem><Typography><span style={{fontWeight:"bold"}}>Email : </span>{emailAddress}</Typography></ListItem>
         <ListItem><Typography><span style={{fontWeight:"bold"}}>Contact No : </span>{contactNo}</Typography></ListItem>
         <ListItem><Typography><span style={{fontWeight:"bold"}}>Shop Name: </span>{shopName}</Typography></ListItem>
         <ListItem><Typography><span style={{fontWeight:"bold"}}>Shop Address: </span>{shopAddress}</Typography></ListItem>
         <ListItem><Typography><span style={{fontWeight:"bold"}}>Username:</span> {username}</Typography></ListItem>
-        <ListItem><Typography><span style={{fontWeight:"bold"}}>Password:</span> {password}</Typography></ListItem>
+       
                </List>
                </Paper>
                </Grid>

@@ -6,6 +6,23 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import MaterialUIPickers from './DatePicker'
 import SbCTable from './table'
+import {inject,observer} from 'mobx-react'
+
+
+
+
+ class SBItem extends React.Component {
+
+  componentWillMount(){
+    let{reportStore:{getProducts,getOrder,getCart}}=this.props;
+    getProducts();
+    getOrder();
+    getCart();
+  }
+
+  render() {
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -32,8 +49,7 @@ const useStyles = makeStyles((theme) => ({
     float:"right"
   },
 }));
-
-export default function CenteredGrid() {
+function CenteredGrid() {
   const classes = useStyles();
   const [filter,setFilter]= React.useState("");
   return (
@@ -84,3 +100,11 @@ export default function CenteredGrid() {
     </div>
   );
 }
+
+return (
+ <CenteredGrid/>
+)
+}
+}
+
+export default inject('reportStore')(observer(SBItem))

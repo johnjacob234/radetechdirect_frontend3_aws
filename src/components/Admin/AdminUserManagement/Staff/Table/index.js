@@ -20,8 +20,8 @@ class StaffList extends React.Component {
 let {employeeStore:{listOfUsers}}=this.props;
 let disId = JSON.parse(sessionStorage.getItem('userData'));
 
-function createData(name,contract, role, mobileNo, email, status) {
-  return { name,contract, role, mobileNo, email, status };
+function createData(name,contract, role, email, mobileNo, status) {
+  return { name,contract, role, email, mobileNo, status };
 }
 
 
@@ -31,7 +31,7 @@ let rows =filterStaff.map(staff => {
 
 return(createData(
 
-`${staff.account_fName} ${staff.account_mName} ${staff.account_lName}`,staff.account_contract,staff.staff_Role,staff.account_contactNo,staff.account_emailAddress,staff.account_status
+`${staff.account_fName} ${staff.account_mName} ${staff.account_lName}`,staff.account_contract,staff.staff_Role,staff.account_emailAddress,staff.account_contactNo,staff.account_status
 
 
 
@@ -72,10 +72,11 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
-  { id: 'contract', numeric: true, disablePadding: false, label: 'Contract' },
-  { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
+  { id: 'contract', numeric: false, disablePadding: false, label: 'Contract' },
+  { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
+  { id: 'email', numeric: false, disablePadding: false, label: 'Email ' },
   { id: 'mobileNo', numeric: true, disablePadding: false, label: 'Mobile No' },
-  { id: 'email', numeric: true, disablePadding: false, label: 'Email ' },
+ 
   { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
 ];
 
@@ -287,8 +288,9 @@ function StaffTable() {
                       </TableCell>
                       <TableCell align="right">{row.contract}</TableCell>
                       <TableCell align="right">{row.role}</TableCell>
+                      <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="right">{row.mobileNo}</TableCell>
-                      <TableCell align="right">{row.email}</TableCell>
+                      
                       <TableCell align="right">{row.status}</TableCell>
                     </TableRow>
                  );
@@ -314,10 +316,11 @@ function StaffTable() {
                   <TableCell component="th" id={labelId} scope="row">
                     {row.name}
                   </TableCell>
-                  <TableCell align="right">{row.contract}</TableCell>
-                  <TableCell align="right">{row.role}</TableCell>
+                  <TableCell align="left">{row.contract}</TableCell>
+                  <TableCell align="left">{row.role}</TableCell>
+                  <TableCell align="left">{row.email}</TableCell>
                   <TableCell align="right">{row.mobileNo}</TableCell>
-                  <TableCell align="right">{row.email}</TableCell>
+                  
                   <TableCell align="right">{row.status}</TableCell>
                 </TableRow>
                   );

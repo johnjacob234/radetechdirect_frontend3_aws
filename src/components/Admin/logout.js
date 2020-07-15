@@ -90,7 +90,7 @@ function setting(){
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                     <MenuItem onClick={setting}>Setting</MenuItem>
                     <MenuItem onClick={logout}>Logout</MenuItem>
                   </MenuList>

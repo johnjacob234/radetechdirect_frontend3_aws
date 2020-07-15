@@ -142,7 +142,7 @@ class RegForm extends Component{
         onChange={distributor_warehouseName=>{
           distributor.setProperty("distributor_warehouseName", distributor_warehouseName.target.value)
           distributor.setProperty("distributor_accessType", "distributor")
-          distributor.setProperty('distributor_ID',`${date.getFullYear()}-${getHash(distributor_warehouseName.target.value)}-${ Math.floor(1000 + Math.random() * 9000)}` )
+          distributor.setProperty('distributor_ID',`${getHash(distributor_warehouseName.target.value)}-${ Math.floor(1000 + Math.random() * 9000)}` )
           distributor.setProperty("distributor_dateRegistered",moment().format('MMM/DD/YYYY') )
          
 

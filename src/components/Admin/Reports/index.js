@@ -102,7 +102,7 @@ function ReportGrid() {
         </ListItemLink>
         </Link>
         <Divider />
-        <Link to='/Admin/OFByItem'>
+        {/* <Link to='/Admin/OFByItem'>
         <ListItemLink >
         <ListItemText  style={{color:"#F7A31C"}}>Order Fulfillment by Item </ListItemText>
           <ListItemSecondaryAction>
@@ -113,7 +113,7 @@ function ReportGrid() {
                   </ListItemSecondaryAction>
         </ListItemLink>
         </Link>
-        <Divider />
+        <Divider /> */}
         <Link to='/Admin/SalesReturn'>
         <ListItemLink >
         <ListItemText  style={{color:"#F7A31C"}}>Sales Return History </ListItemText>
@@ -140,6 +140,77 @@ function ReportGrid() {
       </List>
           </Paper>
         </Grid>
+  
+        <Grid item xs={12} sm={4}>
+        <Paper className={classes.paper}>
+          <List component="nav" aria-label="main mailbox folders" style={{backgroundColor:"#208769",color:"white",fontWeight:"bold"}}>
+        <ListItem button >
+          <ListItemIcon>
+            <PaymentIcon style={{color:"white"}}/>
+          </ListItemIcon>
+          <ListItemText primary="Payments & Receivables" />
+        </ListItem>
+   
+      </List>
+      <Divider />
+      
+      <List component="nav" aria-label="secondary mailbox folders">
+ 
+        <Link to='/Admin/Invoice'>
+        <ListItemLink >
+        <ListItemText  style={{color:"#F7A31C"}}>Invoice Details </ListItemText>
+          <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="icon">
+                      <ArrowForwardIosIcon />
+                     
+                    </IconButton>
+                  </ListItemSecondaryAction>
+        </ListItemLink>
+        </Link>
+        <Divider />
+        <Link to='/Admin/SalesOrder'>
+        <ListItemLink >
+        <ListItemText  style={{color:"#F7A31C"}}>Sales Order Details </ListItemText>
+          <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="icon">
+                      <ArrowForwardIosIcon />
+                     
+                    </IconButton>
+                  </ListItemSecondaryAction>
+        </ListItemLink>
+        </Link>
+        <Divider />
+        <Link to='/Admin/PaymentReceived'>
+      
+        <ListItem button>
+        <ListItemText  style={{color:"#F7A31C"}}>Payments Received </ListItemText>
+          <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="icon">
+                      <ArrowForwardIosIcon />
+                     
+                    </IconButton>
+                  </ListItemSecondaryAction>
+        </ListItem>
+        </Link>
+        <Divider />
+        <Link to='/Admin/CustBalance'>
+        <ListItem button>
+        <ListItemText  style={{color:"#F7A31C"}}>Customer Balances </ListItemText>
+          <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="icon">
+                      <ArrowForwardIosIcon />
+                     
+                    </IconButton>
+                  </ListItemSecondaryAction>
+        </ListItem>
+        </Link>
+        
+      </List>
+          </Paper>
+        </Grid>
+
+
+
         <Grid item xs={12} sm={4}>
         <Paper className={classes.paper}>
           <List component="nav" aria-label="main mailbox folders" style={{backgroundColor:"#208769",color:"white",fontWeight:"bold"}}>
@@ -177,8 +248,8 @@ function ReportGrid() {
                   </ListItemSecondaryAction>
         </ListItemLink>
         </Link>
-        <Divider />
-        <Link to='/Admin/ProdSales'>
+        {/* <Divider /> */}
+        {/* <Link to='/Admin/ProdSales'>
         <ListItemLink >
         <ListItemText  style={{color:"#F7A31C"}}>Product Sales Report</ListItemText>
           <ListItemSecondaryAction>
@@ -189,8 +260,8 @@ function ReportGrid() {
                   </ListItemSecondaryAction>
         </ListItemLink>
         </Link>
-        <Divider />
-        <Link to='/Admin/StockSummary'>
+        <Divider /> */}
+        {/* <Link to='/Admin/StockSummary'>
         <ListItemLink >
         <ListItemText  style={{color:"#F7A31C"}}>Stock Summary Report </ListItemText>
           <ListItemSecondaryAction>
@@ -200,77 +271,10 @@ function ReportGrid() {
                     </IconButton>
                   </ListItemSecondaryAction>
         </ListItemLink>
-        </Link>
+        </Link> */}
       </List>
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={4}>
-        <Paper className={classes.paper}>
-          <List component="nav" aria-label="main mailbox folders" style={{backgroundColor:"#208769",color:"white",fontWeight:"bold"}}>
-        <ListItem button >
-          <ListItemIcon>
-            <PaymentIcon style={{color:"white"}}/>
-          </ListItemIcon>
-          <ListItemText primary="Payments & Receivables" />
-        </ListItem>
-   
-      </List>
-      <Divider />
-      
-      <List component="nav" aria-label="secondary mailbox folders">
-      <Link to='/Admin/CustBalance'>
-        <ListItem button>
-        <ListItemText  style={{color:"#F7A31C"}}>Customer Balances </ListItemText>
-          <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="icon">
-                      <ArrowForwardIosIcon />
-                     
-                    </IconButton>
-                  </ListItemSecondaryAction>
-        </ListItem>
-        </Link>
-        <Divider />
-        <Link to='/Admin/Invoice'>
-        <ListItemLink >
-        <ListItemText  style={{color:"#F7A31C"}}>Invoice Details </ListItemText>
-          <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="icon">
-                      <ArrowForwardIosIcon />
-                     
-                    </IconButton>
-                  </ListItemSecondaryAction>
-        </ListItemLink>
-        </Link>
-        <Divider />
-        <Link to='/Admin/SalesOrder'>
-        <ListItemLink >
-        <ListItemText  style={{color:"#F7A31C"}}>Sales Order Details </ListItemText>
-          <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="icon">
-                      <ArrowForwardIosIcon />
-                     
-                    </IconButton>
-                  </ListItemSecondaryAction>
-        </ListItemLink>
-        </Link>
-        <Divider />
-        <Link to='/Admin/PaymentReceived'>
-      
-        <ListItem button>
-        <ListItemText  style={{color:"#F7A31C"}}>Payments Received </ListItemText>
-          <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="icon">
-                      <ArrowForwardIosIcon />
-                     
-                    </IconButton>
-                  </ListItemSecondaryAction>
-        </ListItem>
-        </Link>
-      </List>
-          </Paper>
-        </Grid>
-
-
         
         </Grid>
       </Grid>

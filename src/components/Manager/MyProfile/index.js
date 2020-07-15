@@ -104,52 +104,57 @@ function Alert(props) {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12}>
         <Typography variant="h6"> My Profile</Typography> 
-        <Divider style={{marginTop:"10px"}} />
+        <Divider style={{marginTop:"25px"}} />
         </Grid>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={6} sm={6}>
           <Paper className={classes.paper}>
-            <Typography variant="h6" style={{marginBottom:"16px"}}>Personal Information </Typography>
-            <Grid container direction="row" alignItems="center" justify="center" sm={12} xs={12}>
-              <Grid item xs={12} sm={12}>
-                <Grid container direction='row' alignItems='center' justify='center' sm={12} xs={12}>
-              <Grid item sm={6} xs={6}>
+            <Typography variant="h6" style={{marginBottom:"25px"}}>Personal Information </Typography>
+            <Grid container direction="row"  sm={12} xs={12}>
+
+
+              <Grid item xs={12} sm={12} >
+
+                <Grid container sm={12} xs={12}>
+              <Grid item sm={3} xs={3} >
           <TextField id="outlined-basic" label="First Name"  
           defaultValue={row.fname} variant="outlined" 
-          size="small" 
+           
           style={{marginBottom:"8px",marginRight:"8px"}}
           onChange={account_fName=>{
             account.setProperty("account_fName",account_fName.target.value)
           }}
           />
           </Grid>
-          <Grid item sm={6} xs={6}>
+
+          <Grid item sm={3} xs={3}>
           <TextField id="outlined-basic" label="Middle Name"  
           defaultValue={row.mname} variant="outlined" 
-          size="small"
-          style={{marginBottom:"8px"}}
+          
+          style={{marginBottom:"8px",marginRight:"8px"}}
           onChange={account_mName=>{
             account.setPropert("account_mName",account_mName.target.value)
           }}
           />
           </Grid>
      
-          </Grid>
-          <Grid container direction='row' alignItems='center' justify='center' sm={12} xs={12}>
+        
+
+
   
-          <Grid item sm={6} xs={6}>
+          <Grid item sm={3} xs={3}>
           <TextField id="outlined-basic" label="Last Name"  
           defaultValue={row.lname} variant="outlined" 
-          size="small"
+          
           style={{marginBottom:"8px",marginRight:"8px"}}
           onChange={account_lName=>{
             account.setProperty("account_lName",account_lName.target.value)
           }}
           />
           </Grid>
-          <Grid item sm={6} xs={6}>
+          <Grid item sm={3} xs={3}>
           <TextField id="outlined-basic" label="Suffix"  
           defaultValue={row.suffix} variant="outlined" 
-          size="small"
+          
           style={{marginBottom:"8px"}}
           onChange={account_suffix=>{
             account.setProperty('account_suffix',account_suffix.target.value)
@@ -159,53 +164,63 @@ function Alert(props) {
           </Grid>
 
           </Grid>
+
+
+
           <Grid item sm={12} xs={12}> 
+          <Grid container direction='row'  sm={12} xs={12}>
+          <Grid item sm={6} xs={6}> 
           <TextField id="outlined-basic" label="Address"  
           defaultValue={row.address} variant="outlined" 
-          size="small"
-          style={{marginBottom:"8px",width:"100%"}}
+          
+          style={{marginBottom:"8px",width:"98%",marginRight:"8px"}}
           onChange={account_address =>{
             account.setProperty('account_address',account_address.target.value)
           }}
           />
-          </Grid>
-
-          <Grid item sm={12} xs={12}> 
+            </Grid>
+        <Grid item sm={6} xs={6}> 
           <TextField id="outlined-basic" label="Email Address"  
           defaultValue={row.emailAddress} variant="outlined" 
-          size="small"
+          
           style={{marginBottom:"8px",width:"100%"}}
           onChange={account_emailAddress=>{
             account.setProperty('account_emailAddress',account_emailAddress.target.value)
           }}
           />
+            </Grid>
           </Grid>
-          <Typography variant="h6" style={{marginBottom:"16px"}}>Account Details </Typography>
+          </Grid>
+          <Typography variant="h6" style={{marginBottom:"20px"}}>Account Details </Typography>
           <Grid item sm={12} xs={12}>    
+          <Grid container direction='row'  sm={12} xs={12}>
+          <Grid item sm={6} xs={6}> 
           <TextField id="outlined-basic" label="Username"  
           defaultValue={row.username} variant="outlined" 
-          size="small"
-          style={{marginBottom:"8px",width:"100%"}}
+          
+          style={{marginBottom:"8px",width:"98%",marginRight:"8px"}}
           onChange={account_username=>{
             account.setProperty('account_username',account_username.target.value)
 
           }}
           />
-          </Grid>
+         </Grid>
           
-          <Grid item sm={12} xs={12}> 
+          <Grid item sm={6} xs={6}> 
+         
           <TextField id="outlined-basic" label="Password"  
           defaultValue={row.password} variant="outlined" 
-          size="small"
+          
           type='password'
           style={{marginBottom:"8px",width:"100%"}}
           onChange={account_password=>{
             account.setProperty('account_password',account_password.target.value)
           }}
           />
+            </Grid>
           </Grid>
-
-          <Grid item sm={12} xs={12}>
+          </Grid>
+          <Grid item sm={12} xs={12}  style={{marginTop:'18px'}}>
           <Button variant="contained" startIcon={<UpdateIcon/>} style={{backgroundColor:"#208769",color:"white"}} onClick={()=>{update(row)}}>
           Update
         </Button>

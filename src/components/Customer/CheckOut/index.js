@@ -22,12 +22,13 @@ class CheckOut extends React.Component {
     state = {  }
 
     componentDidMount(){
-      let {customerStore:{getAccounts,getCart}}=this.props;
+      let {customerStore:{getAccounts,getCart,getProducts}}=this.props;
       getCart();
       getAccounts();
+      getProducts()
     }
     render() { 
-let {customerStore:{listOfUsers,addOrder,order,listOfCart,addNotif,notif,addStock}}=this.props;
+let {customerStore:{listOfUsers,addOrder,order,listOfCart,addNotif,notif,addStockC,stock,product,editProduct,listofProducts}}=this.props;
 
     let date = new Date();
     function getHash(input){
@@ -89,6 +90,11 @@ let getitem =cartFiler.map(item => {
   )
 })
 
+let getprc =cartFiler.map(item => { 
+  return (item.product_Price
+  )
+})
+
 let getq =cartFiler.map(item => { 
   return (item.product_Quantity
   )
@@ -126,13 +132,21 @@ let acID = this.props.location.state.account_id;
     });
   };
 
+
+  let getitemID =cartFiler.map(item => { 
+    return item.product_ID
+    
+  })
+console.log(getitemID,'cart')
   let placeOrder = ()=>{
+
      
     order.setProperty('orderID',`${getHash(date.getFullYear())}-${ Math.floor(1000 + Math.random() * 9000)}`)
     order.setProperty('account_ID',acID)
     order.setProperty('modeOfPayment','Cash On Delivery')
     order.setProperty('orderDate',moment().format('MMM/DD/YYYY,h:mm:ssa'))
     order.setProperty('orderItems',getitem)
+    order.setProperty('orderPrice',getprc)
     order.setProperty('order_Quantity',getq)
     order.setProperty('orderStatus','Pending')
     order.setProperty('paymentStatus','Pending')
@@ -149,13 +163,18 @@ let acID = this.props.location.state.account_id;
     notif.setProperty('notif_date',moment().format('MMM/DD/YYYY,h:mm:ssa'))
     notif.setProperty('notif_status','unread')
     
-   
+  //   stock.setProperty('stock_ID',`${ Math.floor(1000 + Math.random() * 9000)}` )
+  //   stock.setProperty("product_ID", getitemID)
+  //   stock.setProperty("stock_Detail", 'stockOut')
+  //   stock.setProperty("stock_Out", getq)
 
-
+  // product.setProperty('product_ID',getitemID)
+  // product.setProperty('product_Stocks',getq)
 
 addNotif();
     addOrder();
-    // addSto ck();
+    // addStockC();
+    // editProduct();
      setOpen(true);
 }
 const handleClose = () => {
@@ -318,7 +337,7 @@ const handleClose = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        {/* <DialogTitle id="alert-dialog-title">{""}</DialogTitle> */}
+      
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
            <span style={{fontWeight:'bold'}}>Your order has been placed!</span>
@@ -326,10 +345,10 @@ const handleClose = () => {
         </DialogContent> 
         <DialogActions>
           <ThemeProvider theme={theme}>
-          <Button onClick={track} color="primary">
+          <Button onClick={track} color="primary" variant='outlined' size='small'>
             Track Order
           </Button>
-          <Button onClick={handleClose} color="secondary" autoFocus>
+          <Button onClick={handleClose} color="secondary" autoFocus variant='outlined' size='small'>
             Close
           </Button>
           </ThemeProvider>

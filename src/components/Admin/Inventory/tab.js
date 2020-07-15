@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import theme from './../theme';
-import RestockTable from './Restock/table';
+import RestockTable from './Restock';
 import EnhancedTable from './table';
 import ExpiringTable from './table/expiring';
 
@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     width: "100%",
+    minWidth:1250
   },
   paper: {
     padding: theme.spacing(2),

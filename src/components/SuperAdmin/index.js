@@ -9,12 +9,14 @@ import clsx from 'clsx';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
+// import SuperAdminDashboard from './Dashboard'; 
 import LogoutButton from './../Logout';
-import pr from '../Admin/pr.png';
+import pr from './../pr.png';
 import DashboardGrid from './Dashboard';
 import DistributorManagement from './DistributorManagement';
 import DrawerList from './DrawerRouter';
 import IssuesGrid from './Issues';
+import SettingGrid from './Setting'
 class adDrawer extends Component{
 
   state = {}
@@ -139,15 +141,13 @@ const useStyles = makeStyles(theme => ({
                  >
           <Grid >
            
-             <IconButton style={{backgroundColor:"#1E7A60",marginRight:"12px"}}>
+             <IconButton style={{backgroundColor:"#1E7A60",marginRight:"10px"}}>
   <NotificationsOutlinedIcon style={{color:"white",fontSize:"18px"}}/>
 </IconButton>
-<IconButton style={{backgroundColor:"#1E7A60"}}>
+<IconButton style={{backgroundColor:"#1E7A60",marginRight:"10px"}}>
   <QuestionAnswerOutlinedIcon style={{color:"white",fontSize:"18px"}}/>
 </IconButton>
-<IconButton style={{marginRight:"0px",backgroundColor:"#208769"}}>
-<Avatar src={pr} > </Avatar>
-</IconButton>
+
 
 <LogoutButton/>
 
@@ -194,7 +194,7 @@ const useStyles = makeStyles(theme => ({
       <Route exact path="/SuperAdmin" render={()=><DashboardGrid/>}/>
       <Route path="/SuperAdmin/DistributorManagement" render={()=><DistributorManagement/>}/>
       <Route path="/SuperAdmin/Issues" render={()=><IssuesGrid/>}/>
-     
+      <Route path="/SuperAdmin/Setting" render={()=><SettingGrid/>}/>
       
       
   </Switch>

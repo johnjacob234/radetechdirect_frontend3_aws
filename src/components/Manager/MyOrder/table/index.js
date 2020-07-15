@@ -28,17 +28,26 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Lists from './Stafflist';
 
-
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Items from './Items'
 
 
  class MyOrders extends React.Component {
+
     componentDidMount(){
 
         let {managerStore:{getAccounts,getOrder}}=this.props;
         getAccounts();
-        getOrder();
+        getOrder().then(res => this.setState({"listOfOrder": res}));
     
       }
+      state={
+        listOfUsers:[],
+        listOfOrder:[],
+       }
       render() { 
      
       
@@ -51,7 +60,7 @@ import Lists from './Stafflist';
             return { ref, customer,mname,lname, date, orderStat,items,assign };
           }
 
-          let orders = listOfOrder.filter((order) => {
+          let orders = this.state.listOfOrder.filter((order) => {
   
   
             // order.distributor_ID === getId.distributor_ID && order.orderStatus === 'Pending'
@@ -244,6 +253,9 @@ function Alert(props) {
   const [open, setOpen] = React.useState(false);
   const [opens, setOpens] = React.useState(false);
   const [openD, setOpenD] = React.useState(false);
+
+  const [Iopen, IsetOpen] = React.useState(false);
+
   const handleClose = (event, reason) => {
     setOpenD(false)
     if (reason === 'clickaway') {
@@ -251,6 +263,7 @@ function Alert(props) {
     }
 
     setOpen(false);
+    IsetOpen(false);
   };
 
   const assign = (myorder) => {
@@ -303,11 +316,19 @@ if (myorder.distributor_ID === getId.distributor_ID && myorder.orderStatus === '
 
   } 
 
+  let items =(itms)=>{
+    order.setProperty('orderItems',itms.orderItems)
+    order.setProperty('order_Quantity',itms.order_Quantity)
+    IsetOpen(true)
+
+
+  }
+
   let rows = orders.map(orderss =>{
     let count = orderss.orderItems.length;
     return(createData(
     
-    orderss.orderID,`${listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_fName}`  } ) }`,`${listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_mName}`  } ) }`,`${listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_lName}`  } ) }`,orderss.orderDate,orderss.orderStatus,<div><IconButton   size="medium" style={{backgroundColor:"#31AF91"}} > <Badge color="secondary" badgeContent={count} > <ListAltIcon /> </Badge></IconButton> </div>,
+    orderss.orderID,`${listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_fName}`  } ) }`,`${listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_mName}`  } ) }`,`${listOfUsers.filter(accs => accs.account_ID === orderss.account_ID).map((account)=> {return `${account.account_lName}`  } ) }`,orderss.orderDate,orderss.orderStatus,<div><IconButton onClick={()=>items(orderss)}  size="medium" style={{backgroundColor:"#31AF91"}} > <Badge color="secondary" badgeContent={count} > <ListAltIcon /> </Badge></IconButton> </div>,
     <div><IconButton  onClick={()=>{assign(orderss)}}  size="medium" style={{backgroundColor:"#31AF91"}} > <AssignmentReturnedOutlinedIcon /> </IconButton></div>
     
     
@@ -467,9 +488,28 @@ if (myorder.distributor_ID === getId.distributor_ID && myorder.orderStatus === '
 <Lists/>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="secondary" variant='contained' size='small'>
+          <Button autoFocus onClick={handleClose} style={{ backgroundColor:'#F7A31C',color:'white'}} variant='contained' size='small'>
            Close
           </Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={Iopen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle variant='subtitle2'>Items</DialogTitle>
+        <DialogContent>
+       <Items />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} style={{backgroundColor:'#F7A31C',color:'white'}} variant='contained' size='small'>
+            Close
+          </Button>
+         
         </DialogActions>
       </Dialog>
 

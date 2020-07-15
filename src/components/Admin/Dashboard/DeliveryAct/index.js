@@ -78,7 +78,7 @@ export default function FullWidthTabs() {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Weakly" {...a11yProps(0)} />
+          <Tab label="Weekly" {...a11yProps(0)} />
           <Tab label="Monthly" {...a11yProps(1)} />
           <Tab label="Yearly" {...a11yProps(2)} />
         </Tabs>

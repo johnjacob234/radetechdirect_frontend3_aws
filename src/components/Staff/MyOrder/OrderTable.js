@@ -118,7 +118,7 @@ const useStyles = makeStyles({
           <StyledTableRow key={item}>
 
         
-        <StyledTableCell align="center">{item}  </StyledTableCell>
+        <StyledTableCell align="left">{item}  </StyledTableCell>
        
   
         <StyledTableCell align="right">{qtys}</StyledTableCell>

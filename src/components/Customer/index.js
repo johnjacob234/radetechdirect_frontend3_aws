@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid,CssBaseline } from '@material-ui/core';
 import { inject, observer } from "mobx-react";
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
@@ -30,6 +30,7 @@ import CustomizedSteppers from './Stepper';
     return (
       <Router>
       <div >
+        <CssBaseline/>
         <Grid>
        <Header/>
        </Grid>

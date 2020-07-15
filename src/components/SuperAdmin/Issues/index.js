@@ -27,7 +27,7 @@ componentDidMount(){
                 <Grid container spacing={3} lg={12} md={12} xs={12}>
                   <Grid item lg={12} md={12} xs={12}>
                   <Typography variant="h5" >
-           Issues
+           Help/Support
         </Typography>
         <Divider/>
                   </Grid>

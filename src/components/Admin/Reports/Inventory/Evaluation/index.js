@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
       <Grid container spacing={3} xs={12} sm={12} style={{marginTop:"10px"}}>
       
         <Grid item xs={12} sm={12}>
-          <Paper className={classes.paper}>
+          
             <Grid container xs={12} sm={12}>
             <Grid item sm={12} style={{width:'100%',marginBottom:"16px"}}>
    <Paper className={classes.paper}>
@@ -70,9 +70,7 @@ const useStyles = makeStyles((theme) => ({
      <SearchIcon style={{color:"white"}}/>
    </IconButton>
    </span>
-   {/* <IconButton color="primary" className={classes.iconButton} aria-label="directions">
-     <DirectionsIcon />
-   </IconButton> */}
+
  </Paper>
  </Grid>
   
@@ -87,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
               <SbCTable mysearch={filter}/>
             </Grid>
             </Grid>
-          </Paper>
+         
         </Grid>
         
       </Grid>

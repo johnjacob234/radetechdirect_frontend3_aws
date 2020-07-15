@@ -41,7 +41,8 @@ getOrder();
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    border:'1px solid red'
+ 
+    minWidth:1200
   },
   button: {
     marginRight: theme.spacing(1),
@@ -159,9 +160,10 @@ function ProcessPage() {
   };
 
   return (
-    <React.Fragment>
+    <React.Fragment >
+      <div  className={classes.root}>
       <Grid container direction='row' lg={12} sm={12} xs={12}>
-    <Grid item  lg={12} sm={12} xs={12}>
+    <Grid item  sm={12} xs={12}>
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label}>
@@ -173,14 +175,14 @@ function ProcessPage() {
         ))}
       </Stepper>
       </Grid>
-  
-          <Grid item  lg={12} sm={12} xs={12}>
+     
+          <Grid item  sm={12} xs={12}>
             <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
      
           </Grid>
-      
+          </Grid>
   
-    </Grid>
+          </div>
     </React.Fragment>
   );
 }

@@ -24,7 +24,7 @@ import ReplenishTable from './Replenishment'
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-
+import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 class AdDashboard extends Component{
 
 
@@ -159,8 +159,8 @@ const useStyles = makeStyles(theme => ({
    }
 }));
 
-
-let filactivecust = listOfUsers.filter(account => account.distributor_ID === getId.distributor_ID).length;
+let filinactivecust = listOfUsers.filter(account => account.distributor_ID === getId.distributor_ID && account.account_status === 'archived').length;
+let filactivecust = listOfUsers.filter(account => account.distributor_ID === getId.distributor_ID && account.account_status === 'active').length;
 
 let filorder = listOfOrder.filter(order => order.distributor_ID === getId.distributor_ID).length;
 
@@ -375,11 +375,11 @@ let salesYTD =  listOfOrder.map(product => {
         <Card className={classes.card2}>
       <CardContent>
         <Typography className={classes.title}  gutterBottom style={{float:"right"}}>
-          New Customers
+        Inactive Customers
         </Typography>
         <Typography variant="h5"  style={{textAlign:"left"}} >
-       <PersonAddOutlinedIcon style={{fontSize:"3.5em",color:"white"}}/>
-      <span style={{textAlign:"right",color:"white"}}> 500</span>
+       <PersonAddDisabledIcon style={{fontSize:"3.5em",color:"white"}}/>
+      <span style={{textAlign:"right",color:"white"}}>  {filinactivecust.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>
         </Typography>
        
         <Typography variant="body2" component="p">
@@ -406,7 +406,7 @@ let salesYTD =  listOfOrder.map(product => {
             <CardContent>
               <Grid container>
                 <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Sales Statistics</Typography>
+              <Typography variant="h5" style={{color :"grey"}}>Total Sales</Typography>
               </Grid>
               <Grid xs={6}> 
              {/* tab */}
@@ -555,7 +555,7 @@ let salesYTD =  listOfOrder.map(product => {
             <CardContent>
               <Grid container>
                 <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}>Replenishment</Typography>
+              <Typography variant="h5" style={{color :"grey"}}>Available Inventory</Typography>
               </Grid>
               <Grid xs={6}> 
            
@@ -586,55 +586,7 @@ let salesYTD =  listOfOrder.map(product => {
             </CardContent>
           </Card>
         </Grid>
-        {/* <Grid item xs={9}>
-        <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}>Products for Packing</Typography>
-              </Grid>
-              <Grid xs={6}> 
-           
-              </Grid>
-              </Grid>
-              <Divider/>
-            </CardContent>
 
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-        <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Deliver Activities</Typography>
-              </Grid>
-          
-              </Grid>
-             
-            </CardContent>
-            <Divider/>
-            <CardContent>
-         
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={9}>
-        <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}>Products for Transfer</Typography>
-              </Grid>
-              <Grid xs={6}> 
-           
-              </Grid>
-              </Grid>
-              <Divider/>
-            </CardContent>
-
-          </Card>
-        </Grid> */}
       </Grid>
     </div>
         

@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Typography,Paper, Button,ThemeProvider} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import {withRouter} from 'react-router-dom'
+import {withRouter,Link} from 'react-router-dom'
 import theme from './../../theme'
 
 class MyAccount extends React.Component {
@@ -20,6 +20,12 @@ class MyAccount extends React.Component {
       setTimeout(()=>{
         this.props.history.push("/Customer/MyFavorites");
       },500)
+     
+    }
+    let  myDis =()=>{
+      setTimeout(()=>{
+        this.props.history.push("/AccessDistributor");
+      },1000)
      
     }
 
@@ -90,6 +96,11 @@ const useStyles = makeStyles((theme) => ({
             </Button>
           {/* </Paper> */}
         </Grid>
+        {/* <Grid item  xs={12} sm={6}>
+              <Button variant='contained' color ='primary' style={{width:"100%"}} onClick={myDis}>
+          <Typography>My Distributors</Typography>
+          </Button>
+        </Grid> */}
         <Grid item xs={12} sm={6}>
         <Button variant='contained' color ='primary' style={{width:"100%"}} onClick={myfavorites}>
           <Typography>My Favorites</Typography>

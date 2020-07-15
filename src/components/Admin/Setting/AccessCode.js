@@ -22,7 +22,7 @@ class accessCode extends React.Component {
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 600,
   },
 });
 

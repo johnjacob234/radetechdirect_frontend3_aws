@@ -16,6 +16,7 @@ import Account from './Account'
         contactNo:'',
         username:'',
         password:'',
+        confPassword:'',
         shopName:'',
         shopAddress:'',
     
@@ -45,10 +46,10 @@ import Account from './Account'
     render() {
         const {step}=this.state;
         const {
-            fName, mName, lName, suffix, address, emailAddress, contactNo, username, password, shopName,shopAddress
+            fName, mName, lName, suffix, address, emailAddress, contactNo, username, password,confPassword, shopName,shopAddress
             }=this.state;
         const values ={
-          fName, mName, lName, suffix, address, emailAddress, contactNo, username, password, shopName,shopAddress
+          fName, mName, lName, suffix, address, emailAddress, contactNo, username, password,confPassword, shopName,shopAddress
         }
 
     switch(step){

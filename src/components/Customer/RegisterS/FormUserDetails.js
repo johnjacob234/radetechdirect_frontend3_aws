@@ -6,17 +6,50 @@ import {Grid,Paper,TextField,AppBar,Toolbar} from '@material-ui/core';
 import logo from './../../Logo/logowhite.png'
 import FirstStep from './FirstStep'
 import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { Link, withRouter } from 'react-router-dom';
  class FormUserDetails extends Component {
+
+      
+    state = {
+ 
+       
+        snackbaropen:false,
+      
+     
+        snackbarerror:"Fill out all fields.",
+    }
+
      continue = e =>{
+       
          e.preventDefault();
+         if(this.props.values.fName,this.props.values.mName,this.props.values.lName,this.props.values.address,this.props.values.emailAddress,this.props.values.contactNo != ''){
          this.props.nextStep();
+        }else{
+            this.setState({ snackbaropen: true });
+        }
      }
+
+     
+  snackbarClose =(event)=>{
+    this.setState({snackbaropen:false});
+  }
+
      
     render() {
         const {values,handleChange} =this.props;
-   
+        function Alert(props) {
+            return <MuiAlert elevation={6} variant="filled" {...props} />;
+          } 
         return (
             <div >
+                
+<Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={this.state.snackbaropen} autoHideDuration={2000} onClose={this.snackbarClose}  >   
+       <Alert  severity="warning">
+       {this.state.snackbarerror }
+        </Alert></Snackbar>
+        
                 <React.Fragment>
                 <AppBar position="fixed" style={{backgroundColor:"#208769"}}>
                {/* <Button style={{width:'100px',fontSize:''}}> <span style={{color:'white',textAlign:'right',marginRight:'8px',marginTop:'5px',textDecoration:'underlined'}}>Login account?</span></Button> */}
@@ -25,7 +58,8 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
         </Toolbar>
       </AppBar>
       <Toolbar />
-                <Grid container direction="row" sm={10} xs={11} justify='center' alignItems='center' style={{marginTop:"95px"}}>
+    
+                <Grid container direction="row" sm={10} xs={11} justify='center' alignItems='center' style={{marginTop:"20%"}}>
     <Grid item sm={12} xs={12} style={{textAlign:"center"}} justify='center' alignItems='center'>
 <Paper style={{marginLeft:'20px'}}>
     <Grid container sm={12} >
@@ -42,6 +76,7 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
               <Grid container direction='row' 
               alignItems='center' 
               justify='center'
+
               sm={12} xm={12} 
               style={{marginTop:"16px",textAlign:"center"}}> 
               
@@ -56,7 +91,7 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
                 id="outlined-basic" 
                 label="First Name" 
                 variant="outlined" 
-                
+                  required
                 style={{marginBottom:"8px"}}
                 onChange={handleChange('fName')}
                 defaultValue={values.fName}
@@ -65,6 +100,7 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
                 <TextField 
                 id="outlined-basic" 
                 label="Middle Name" 
+                required
                 variant="outlined" 
                 style={{marginBottom:"8px"}}
                 onChange={handleChange('mName')}
@@ -74,6 +110,7 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
                 <TextField 
                 id="outlined-basic" 
                 label="Last Name" 
+                required
                 variant="outlined" 
                 style={{marginBottom:"8px"}}
                 onChange={handleChange('lName')}
@@ -88,7 +125,7 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
                 onChange={handleChange('suffix')}
                 defaultValue={values.suffix}
                 /> */}
-         <FormControl variant="outlined" style={{width:"59%",marginBottom:"8px"}}>
+         <FormControl variant="outlined" style={{maxWidth:"222px", width:'100%',marginBottom:"8px"}}>
           <InputLabel  >
             Suffix
           </InputLabel>
@@ -113,9 +150,10 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
         <br/>
                 <TextField 
                 id="outlined-basic" 
-                label="Contact No" 
+                label="Contact number" 
                 variant="outlined" 
-                inputProps={{maxLength:11}}
+                required
+               type='number'
                 style={{marginBottom:"8px"}}
                 onChange={handleChange('contactNo')}
                 defaultValue={values.contactNo}
@@ -126,7 +164,7 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
                 id="outlined-basic" 
                 label="Home Address" 
                 variant="outlined" 
-           
+                required
                 style={{marginBottom:"8px"}}
                 onChange={handleChange('address')}
                 defaultValue={values.address}
@@ -134,9 +172,10 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
                 <br/>
                  <TextField 
                 id="outlined-basic" 
-                label="email Address" 
+                label="Email address" 
                 variant="outlined" 
-                type='Email'
+                required
+                type='email'
                 style={{marginBottom:"8px"}}
                 onChange={handleChange('emailAddress')}
                 defaultValue={values.emailAddress}
@@ -160,6 +199,7 @@ import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
                 </form>
         
                 </React.Fragment>
+                <Grid container sm={12} xs={12} style={{marginTop:"16px"}} alignItems='center'><Grid item xs={12} sm={12} style={{textAlign:'center',marginRight:'5px'}}><Typography variant='captiontext' >Have already an account? <Link to='/Login'> Login Here</Link></Typography></Grid>  </Grid>
             </div>
         )
     }
@@ -172,4 +212,4 @@ const style ={
         backgroundColor:"#208769"
     }
 } 
-export default FormUserDetails
+export default withRouter(FormUserDetails)

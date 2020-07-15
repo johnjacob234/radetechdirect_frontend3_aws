@@ -72,7 +72,7 @@ const useStyles = makeStyles({
         <TableHead>
           <TableRow>
             <StyledTableCell>Item</StyledTableCell>
-            <StyledTableCell align="right">Quantity</StyledTableCell>
+            <StyledTableCell align="right">Qty</StyledTableCell>
           
        
           </TableRow>

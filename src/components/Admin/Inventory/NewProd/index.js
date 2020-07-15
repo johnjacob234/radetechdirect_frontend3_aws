@@ -173,10 +173,12 @@ class addProducts extends Component{
     product.setProperty("distributor_ID", getDisId.distributor_ID)
     product.setProperty("product_Status", 'active')
 
-  
+  setTimeout(()=>{
+
+ 
       this.setState({ snackbaropen: true });
 
-   
+    },1500)
  
    
      
@@ -209,7 +211,7 @@ class addProducts extends Component{
         </Alert></Snackbar>
     
             <Button variant="outlined" size='small'  onClick={handleClickOpen} style={{margin:"8px",backgroundColor:"#208769",color:"white"}}>
-            <AddCircleOutlineIcon/> <span style={{marginLeft:"5px"}}>Add</span> 
+            <AddCircleOutlineIcon/> <span style={{marginLeft:"5px"}}>Add Item</span> 
         </Button>
 
         <Dialog

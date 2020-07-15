@@ -309,8 +309,9 @@ const handleDelete = (del) => {
   //  setTimeout(() => {
   //  this.setState({ loading: false, visible: false });
   deleteCart();
+  //  setTimeout(() => {
   setOpens(true);
-//  }, 3000);
+//  }, 2000);
 
  
 }

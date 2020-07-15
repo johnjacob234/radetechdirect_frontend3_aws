@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import {inject,observer} from 'mobx-react'
-import { Paper,  Grid, TextField, Button, FormControlLabel, Checkbox ,Box,Typography} from '@material-ui/core';
+import { Paper,  Grid, TextField, Button, FormControlLabel, Checkbox ,Box,Typography,CssBaseline} from '@material-ui/core';
 import { Face, Fingerprint } from '@material-ui/icons'
 import logogreen from './../../Logo/logogreen.png'
 import img from './loginBackground.jpg'
@@ -94,6 +94,7 @@ function LoginPage(){
 
 return(
 <React.Fragment>
+  <CssBaseline/>
 <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={openS} autoHideDuration={2000} onClose={snackbarClose}  >   
        <Alert  severity="error">
        {errormsg }

@@ -140,7 +140,7 @@ function FormDialog() {
             margin="dense"
             id="name"
             label="Access Token"
-            type="email"
+         
             fullWidth
             
             onChange={(e)=>settknn(e.target.value)}

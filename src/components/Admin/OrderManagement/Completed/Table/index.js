@@ -28,8 +28,8 @@ class Completed extends React.Component {
     render() {
       let {orderStore:{listOfOrder,listOfUsers}}=this.props;
 
-function createData(ref,date, paystat, cust, pack, dist, paymethod, orderstat) {
-  return { ref,date, paystat, cust, pack, dist, paymethod, orderstat };
+function createData(ref,date, dateCompleted, paystat, cust, pack, dist, paymethod) {
+  return { ref,date, dateCompleted, paystat, cust, pack, dist, paymethod };
 }
 
 let myId = JSON.parse(sessionStorage.getItem('userData'))
@@ -41,8 +41,8 @@ let rows = filOrder.map(order=> {
 
   return(createData(
   
-      order.orderID,order.orderDate,order.paymentStatus,<span > {listOfUsers.filter(accs => accs.account_ID === order.account_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,
-      <span > {listOfUsers.filter(accs => accs.account_ID === order.packer_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,<span > {listOfUsers.filter(accs => accs.account_ID === order.dispatcher_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,order.modeOfPayment,order.orderStatus
+      order.orderID,order.orderDate,order.orderDateCompleted,order.paymentStatus,<span > {listOfUsers.filter(accs => accs.account_ID === order.account_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,
+      <span > {listOfUsers.filter(accs => accs.account_ID === order.packer_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,<span > {listOfUsers.filter(accs => accs.account_ID === order.dispatcher_ID).map((account)=> {return `${account.account_fName} ${account.account_mName} ${account.account_lName}`  } ) }</span>,order.modeOfPayment
   ))
   })
 
@@ -74,13 +74,14 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'ref', numeric: false, disablePadding: false, label: 'Ref' },
-  { id: 'date', numeric: true, disablePadding: false, label: 'Date' },
+  { id: 'date', numeric: true, disablePadding: false, label: 'Order Date' },
+  { id: 'dateCompleted', numeric: true, disablePadding: false, label: 'Date Completed' },
   { id: 'paystat', numeric: true, disablePadding: false, label: 'Payment Status' },
   { id: 'cust', numeric: true, disablePadding: false, label: 'Customer' },
   { id: 'pack', numeric: true, disablePadding: false, label: 'Packer' },
   { id: 'dist', numeric: true, disablePadding: false, label: 'Dispatcher' },
   { id: 'paymethod', numeric: true, disablePadding: false, label: 'Payment Method' },
-  { id: 'orderstat', numeric: true, disablePadding: false, label: 'Order Status' },
+ 
   
 ];
 
@@ -189,7 +190,7 @@ let filter =this.props.mysearch;
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -274,6 +275,7 @@ let filter =this.props.mysearch;
                   if(filter.length !== 0){
                     if( row.ref.startsWith(filter) || 
                     row.date.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) ||
+                    row.dateCompleted.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) ||
                     row.paystat.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase())){
                   return (
                     <TableRow
@@ -290,12 +292,13 @@ let filter =this.props.mysearch;
                         {row.ref}
                       </TableCell>
                       <TableCell align="right">{row.date}</TableCell>
+                      <TableCell align="right">{row.dateCompleted}</TableCell>
                       <TableCell align="right">{row.paystat}</TableCell>
                       <TableCell align="right">{row.cust}</TableCell>
                       <TableCell align="right">{row.pack}</TableCell>
                       <TableCell align="right">{row.dist}</TableCell>
                       <TableCell align="right">{row.paymethod}</TableCell>
-                      <TableCell align="right">{row.orderstat}</TableCell>
+                      
                     </TableRow>
                      )
                     }
@@ -318,12 +321,13 @@ let filter =this.props.mysearch;
                       {row.ref}
                     </TableCell>
                     <TableCell align="right">{row.date}</TableCell>
+                    <TableCell align="right">{row.dateCompleted}</TableCell>
                     <TableCell align="right">{row.paystat}</TableCell>
                     <TableCell align="right">{row.cust}</TableCell>
                     <TableCell align="right">{row.pack}</TableCell>
                     <TableCell align="right">{row.dist}</TableCell>
                     <TableCell align="right">{row.paymethod}</TableCell>
-                    <TableCell align="right">{row.orderstat}</TableCell>
+                    
                   </TableRow>
                   );
                 })}

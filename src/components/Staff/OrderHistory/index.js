@@ -19,14 +19,13 @@ export default function OrderHistory() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Grid container  sm={12} xs={12}>
+    <div className={classes.root} >
+      <Grid container  sm={12} xs={12} >
         <Grid item  sm={12}  xs={12}>
         <Typography variant='h6'> Order History</Typography> 
         
-        <Divider style={{marginTop:"10px",marginBottom:"10px"}} />
         </Grid>
-        <Grid item xs={12} sm={12} alignItems='center' justify='center'>
+        <Grid item xs={12} sm={12} alignItems='center' justify='center' >
           <OrderHistoryTab/>
         </Grid>
      

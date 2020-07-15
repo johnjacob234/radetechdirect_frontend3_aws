@@ -13,8 +13,9 @@ import DashGrid from './OrderDashboard'
 
 class adDrawer extends Component{
 
-
-  state = {}
+  componentDidMount(){
+    let {orderStore:{getOrder,getAccounts}}=this.props;
+  }
 render(){
   function OrderManagement() {
 
@@ -47,7 +48,7 @@ return (
 
 }
 }
-export default withRouter(adDrawer);
+export default withRouter(inject('orderStore')(observer(adDrawer)));
 
 
 

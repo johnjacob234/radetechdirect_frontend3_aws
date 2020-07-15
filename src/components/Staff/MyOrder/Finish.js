@@ -153,7 +153,7 @@ function Finish() {
           <DialogContentText>
            Amount Due: &#8369;{tAmount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
           </DialogContentText>
-          <Button ></Button>
+   
           <TextField
             autoFocus
             

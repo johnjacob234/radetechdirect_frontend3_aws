@@ -203,8 +203,7 @@ function CLogTable() {
 
   const filter = mysearch();
   const reports =accounts =>{
-   
-  console.log(accounts)
+
    
     report.setProperty('report_ID',`${getHash(date.getFullYear())}-${ Math.floor(1000 + Math.random() * 9000)}`)
    
@@ -212,7 +211,7 @@ function CLogTable() {
  
     report.setProperty('report_Type','Account Report')
     report.setProperty('report_Detail','Access store without permission')
-    report.setProperty('report_Note',)
+    report.setProperty('report_Sender',disID.distributor_ID)
     report.setProperty('report_Date',moment().format('MMM/DD/YYYY,hh:mm:ssa'))
     report.setProperty('report_Status','Pending')
     report.setProperty('account_ID',accounts.account_ID)
@@ -242,7 +241,7 @@ function CLogTable() {
 
 
   let rows = listOfClogs.map(clogs => {
-    let clog = listOfClogs.filter((cl) => cl.account_ID === clogs.account_ID)
+    // let clog = listOfClogs.filter((cl) => cl.account_ID === clogs.account_ID)
     return(createData(
   
      

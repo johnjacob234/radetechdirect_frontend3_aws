@@ -61,7 +61,7 @@ function getStepContent(step) {
     case 0:
       return `Preparing your order.`;
     case 1:
-      return 'Your Order is on its way!';
+      return 'Your order is on its way!';
     case 2:
       return `Thank you for shopping at TradeTech!`;
      

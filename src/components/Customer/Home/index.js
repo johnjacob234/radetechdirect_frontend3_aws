@@ -25,12 +25,12 @@ const styles={
     this.setState({ selected: event.target.value, name: event.target.name});
   };
 
-  componentDidMount() {
-    let {customerStore:{getProducts,getDistributors,product }}=this.props;
+  componentWillMount() {
+    let {customerStore:{getProducts,getDistributors, getCart }}=this.props;
   
         getDistributors();
+        getCart();
         
-        // product.setProperty('distributor_ID',this.props.location.state.id)
         getProducts();  
        
     
@@ -41,9 +41,7 @@ const styles={
     return (
       
       <div >
-        {/* <Grid>
-       <Header/>
-       </Grid> */}
+       
       <Grid style={styles}>
         
       <CenteredTabs />
@@ -53,7 +51,7 @@ const styles={
    
 
   <Grid maxWidth="100" >
-{/* < Footer /> */}
+
 </Grid>  
 </div>
      

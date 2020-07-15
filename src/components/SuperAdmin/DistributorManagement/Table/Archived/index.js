@@ -1,8 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import {inject,observer} from 'mobx-react'
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,20 +16,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { useTheme } from '@material-ui/core/styles';
-
-
 import UnarchiveIcon from '@material-ui/icons/Unarchive';
+import { inject, observer } from 'mobx-react';
+import PropTypes from 'prop-types';
+import React from 'react';
+
+
+
 
 
 
@@ -89,13 +87,13 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Warehouse Name' },
-  { id: 'tier', numeric: false, disablePadding: false, label: 'Tier No.' },
-  { id: 'address', numeric: false, disablePadding: false, label: 'Address' },
-  { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
-  { id: 'contact_no', numeric: false, disablePadding: false, label: 'Contact No.' },
-  { id: 'date_registered', numeric: false, disablePadding: false, label: 'Date Registered' },
-  { id: 'action', numeric: true, disablePadding: false, label: 'Restore Account' },
+  { id: 'name', numeric: false, disablePadding: false, label: 'Warehouse Name' },
+  { id: 'tier', numeric: true, disablePadding: false, label: 'Tier No.' },
+  { id: 'address', numeric:true, disablePadding: false, label: 'Address' },
+  { id: 'email', numeric: true, disablePadding: false, label: 'Email' },
+  { id: 'contact_no', numeric: true, disablePadding: false, label: 'Contact No.' },
+  { id: 'date_registered', numeric: true, disablePadding: false, label: 'Date Registered' },
+  { id: 'action', numeric: true, disablePadding:false, label: 'Restore' },
 ];
 
 function ArchivedDisTableHead(props) {
@@ -107,15 +105,7 @@ function ArchivedDisTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox" style={{backgroundColor:"#208769",color:"white"}}>
-          
-          {/* <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          /> */}
-        </TableCell>
+  
         {headCells.map(headCell => (
           <TableCell
             key={headCell.id}
@@ -153,66 +143,6 @@ ArchivedDisTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles(theme => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
-
-const ArchivedDisTableToolbar = props => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography className={classes.title} variant="h5" id="tableTitle">
-          My Distributors
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
-
-// ArchivedDisTableToolbar.propTypes = {
-//   numSelected: PropTypes.number.isRequired,
-// };
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -237,6 +167,7 @@ const useStyles = makeStyles(theme => ({
     width: 1,
   },
 }));
+let filter=this.props.mysearch;
 // ////////////////////////////////////////////////////
  function ArchivedDisTable() {
   const classes = useStyles();
@@ -244,20 +175,26 @@ const useStyles = makeStyles(theme => ({
   const theme = useTheme();
 
 
-
+  const handleClose = () => {
+    setOpen(false);
+  };
 
 
 
 const handleArchive = (dis) => {
   distributor.setProperty("distributor_ID", dis.distributor_ID)
    distributor.setProperty("distributor_status",'active')
-  archiveDistributor();
+   setOpen(true);
 
 
 // setTimeout(() => {
 //   this.setState({ loading: false, visible: false });
 // }, 3000);
 };
+
+let restore =()=>{
+  archiveDistributor();
+}
 
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -271,7 +208,7 @@ const handleArchive = (dis) => {
   let filterDis =listOfDistributors.filter(dis => dis.distributor_status === 'archived')
   let rows = filterDis.map(distributor => {
     return(createData(distributor.distributor_warehouseName,distributor.distributor_tierNo,distributor.distributor_address,distributor.distributor_emailAddress,distributor.distributor_contactNo,distributor.distributor_dateRegistered,
-    <div> <IconButton onClick={()=>{handleArchive(distributor)}} size="medium" style={{backgroundColor:"#F8B701"}}> <UnarchiveIcon /> </IconButton></div>  ))
+    <div style={{textAlign:'left'}}> <IconButton onClick={()=>{handleArchive(distributor)}} size="medium" style={{backgroundColor:"#F8B701"}}> <UnarchiveIcon /> </IconButton></div>  ))
    
    })
   const handleRequestSort = (event, property) => {
@@ -329,9 +266,7 @@ const handleArchive = (dis) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <ArchivedDisTableToolbar 
-        // numSelected={selected.length} 
-        />
+       
         <TableContainer>
           <Table
             className={classes.table}
@@ -356,7 +291,9 @@ const handleArchive = (dis) => {
                 .map((row, index) => {
                   // const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
+                  if(filter.length !== 0){
+                    if( row.tier.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) || row.address.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) || row.email.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) || row.date_registered.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase()) ||  row.name.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase())){
+                     
                   return (
                     <TableRow
                       hover
@@ -367,22 +304,48 @@ const handleArchive = (dis) => {
                       key={row.name}
                       // selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        {/* <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        /> */}
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                  
+                      <TableCell component="th" id={labelId} scope="row" >
                         {row.name}
                       </TableCell>
-                      <TableCell align="left">{row.tier}</TableCell>
-                      <TableCell align="left">{row.address}</TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">{row.contact_no}</TableCell>
-                      <TableCell align="left">{row.date_registered}</TableCell>
-                      <TableCell align="center">{row.action}</TableCell>
+                      <TableCell align="right">{row.tier}</TableCell>
+                      <TableCell align="right">{row.address}</TableCell>
+                      <TableCell align="right">{row.email}</TableCell>
+                      <TableCell align="right">{row.contact_no}</TableCell>
+                      <TableCell align="right">{row.date_registered}</TableCell>
+                      <TableCell align="right">{row.action}</TableCell>
                     </TableRow>
+
+);
+
+}
+else{
+  return null
+
+}
+
+}
+return (
+  <TableRow
+  hover
+  onClick={event => handleClick(event, row.name)}
+  role="checkbox"
+  // aria-checked={isItemSelected}
+  tabIndex={-1}
+  key={row.name}
+  // selected={isItemSelected}
+>
+
+  <TableCell component="th" id={labelId} scope="row" >
+    {row.name}
+  </TableCell>
+  <TableCell align="left">{row.tier}</TableCell>
+  <TableCell align="left">{row.address}</TableCell>
+  <TableCell align="left">{row.email}</TableCell>
+  <TableCell align="left">{row.contact_no}</TableCell>
+  <TableCell align="left">{row.date_registered}</TableCell>
+  <TableCell align="center">{row.action}</TableCell>
+</TableRow>
                   );
                 })}
               {emptyRows > 0 && (
@@ -408,6 +371,27 @@ const handleArchive = (dis) => {
         label="Dense padding"
       />
 
+<Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Restore this account?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} variant='contained' style={{backgroundColor:"#F8B701",color:"white"}}>
+            Close
+          </Button>
+          <Button onClick={restore}  autoFocus autoFocus variant='contained' style={{backgroundColor:"#208769",color:"white"}}>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
 
     </div>
   );

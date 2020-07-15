@@ -24,14 +24,13 @@ import IconButton from '@material-ui/core/IconButton';
 import ReplenishForm from './../Replenish/form.js';
 import EditForm from './EditForm.js';
 class InventoryTable extends React.Component{
+
   constructor(props){
     super(props)
     this.state = {
       listofProducts : []
     }
   }
-
-  
   componentDidMount() {
     
     let {inventoryStore:{getProducts,getStock }}=this.props;
@@ -45,10 +44,11 @@ class InventoryTable extends React.Component{
 
 
 
+
   render(){
-    let getStateProd = this.state.listofProducts;
+    
     let getId = JSON.parse(sessionStorage.getItem('userData'))
-    let {inventoryStore:{product,editProduct,getStock ,listofProducts,stock,productStocks,addStock }}=this.props;
+    let {inventoryStore:{product,editProduct,getStock ,listofProducts,stock,productStocks,addStock,getProducts }}=this.props;
 
 
 
@@ -91,9 +91,9 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'image', numeric: false, disablePadding: false, label: 'Image' },
-  { id: 'item', numeric: true, disablePadding: false, label: 'Item' },
-  { id: 'category', numeric: true, disablePadding: false, label: 'Category' },
-  { id: 'brand', numeric: true, disablePadding: false, label: 'Brand' },
+  { id: 'item', numeric: false, disablePadding: false, label: 'Item' },
+  { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
+  { id: 'brand', numeric: false, disablePadding: false, label: 'Brand' },
   { id: 'uom', numeric: true, disablePadding: false, label: 'UoM' },
   { id: 'price', numeric: true, disablePadding: false, label: 'Price' },
   { id: 'stocks', numeric: true, disablePadding: false, label: 'Stocks' },
@@ -195,9 +195,9 @@ let filter =this.props.mysearch;
   const [orderBy, setOrderBy] = React.useState('item');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
- 
+  const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [openReplenish, setOpenReplenish] = React.useState(false);
 
@@ -223,6 +223,8 @@ let filter =this.props.mysearch;
         product.setProperty("product_DateReceived", prods.product_DateReceived)
         product.setProperty("product_ExpirationDate", prods.product_ExpirationDate)
         product.setProperty("product_Remarks", prods.product_Remarks)
+        product.setProperty("product_Packaging", prods.product_Packaging)
+        product.setProperty("product_Variant", prods.product_Variant)
         
       };  
     
@@ -234,12 +236,13 @@ let filter =this.props.mysearch;
               setOpenReplenish(true);
             
               product.setProperty("product_ID", products.product_ID)
-    
+              product.setProperty("product_Stocks", products.product_Stocks)
               product.setProperty("product_Name", products.product_Name)
               product.setProperty("product_Category", products.product_Category)
               product.setProperty("product_UoM", products.product_UoM)
               // product.setProperty("product_Stocks", products.product_Stocks)
               product.setProperty("product_Brand", products.product_Brand)
+              
               product.setProperty("product_Barcode",products.product_Barcode)
     
               
@@ -256,7 +259,7 @@ let filter =this.props.mysearch;
     
     };
     const handleOkReplenish = () => {
-      console.log(getId.distributor_ID,'sadsa')
+    
       stock.setProperty("product_ID", product.product_ID)
       stock.setProperty("distributor_ID",getId.distributor_ID)
       stock.setProperty("product_Name",product.product_Name)
@@ -264,9 +267,12 @@ let filter =this.props.mysearch;
       stock.setProperty("product_UoM",product.product_UoM)
       stock.setProperty("product_Barcode",product.product_Barcode)
       stock.setProperty("product_Brand",product.product_Brand)
-      addStock();
+    
+      
       setTimeout(() => {
-        getStock()
+        addStock();
+        getProducts();
+        setLoading(true)
       }, 1000);
     
     };
@@ -274,7 +280,7 @@ let filter =this.props.mysearch;
     
 
 
-  let rows =  getStateProd.map(product => {
+  let rows =  listofProducts.map(product => {
     return(createData(
    
   
@@ -282,13 +288,15 @@ let filter =this.props.mysearch;
    ,product.product_Name,product.product_Category,product.product_Brand,
   product.product_UoM,Number(product.product_Price),
   
-  `${productStocks.filter((stock) => stock.product_ID === product.product_ID)
-  .reduce((sum, record) => Number(sum) + Number(record.product_replenishQty) , 0)+ Number(product.product_Stocks)}`  
-  < 100 ? <span style={{color:"white",backgroundColor:"#FFA500",padding:"4px",borderRadius:"5px"}}> 
-  { productStocks.filter((stock) => stock.product_ID === product.product_ID)
-  .reduce((sum, record) => Number(sum) + Number(record.product_replenishQty)  , 0)+ Number(product.product_Stocks) } </span> :  
-  <span style={{color:"white",backgroundColor:"#208769",padding:"4px",borderRadius:"5px"}}>{  productStocks.filter((stock) => stock.product_ID === product.product_ID)
-  .reduce((sum, record) => Number(sum) + Number(record.product_replenishQty) , 0)+ Number(product.product_Stocks) } </span>
+  // `${productStocks.filter((stock) => stock.product_ID === product.product_ID)
+  // .reduce((sum, record) => Number(sum) + Number(record.product_replenishQty) , 0)+ Number(product.product_Stocks)}`  
+  // < 100 ? <span style={{color:"white",backgroundColor:"#FFA500",padding:"4px",borderRadius:"5px"}}> 
+  // { productStocks.filter((stock) => stock.product_ID === product.product_ID)
+  // .reduce((sum, record) => Number(sum) + Number(record.product_replenishQty)  , 0)+ Number(product.product_Stocks) } </span> :  
+  // <span style={{color:"white",backgroundColor:"#208769",padding:"4px",borderRadius:"5px"}}>{  productStocks.filter((stock) => stock.product_ID === product.product_ID)
+  // .reduce((sum, record) => Number(sum) + Number(record.product_replenishQty) , 0)+ 
+  Number(product.product_Stocks) 
+  // } </span>
   
   ,<div><IconButton  onClick={()=>{handleClickOpen(product)}}  size="medium" style={{backgroundColor:"#31AF91"}} > <EditIcon /> </IconButton> <IconButton onClick={()=>{handleReplenish(product)}} size="medium" style={{backgroundColor:"#F8B701"}}> <AddToPhotosIcon /> </IconButton></div>  ))
    
@@ -389,9 +397,9 @@ let filter =this.props.mysearch;
                       <TableCell component="th" id={labelId} scope="row">
                         {row.image}
                       </TableCell>
-                      <TableCell align="right">{row.item}</TableCell>
-                      <TableCell align="right">{row.category}</TableCell>
-                      <TableCell align="right">{row.brand}</TableCell>
+                      <TableCell align="left">{row.item}</TableCell>
+                      <TableCell align="left">{row.category}</TableCell>
+                      <TableCell align="left">{row.brand}</TableCell>
                       <TableCell align="right">{row.uom}</TableCell>
                       <TableCell align="right">&#8369;{row.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</TableCell>
                       <TableCell align="right">{row.stocks}</TableCell>
@@ -417,9 +425,9 @@ let filter =this.props.mysearch;
                 <TableCell component="th" id={labelId} scope="row">
                   {row.image}
                 </TableCell>
-                <TableCell align="right">{row.item}</TableCell>
-                <TableCell align="right">{row.category}</TableCell>
-                <TableCell align="right">{row.brand}</TableCell>
+                <TableCell align="left">{row.item}</TableCell>
+                <TableCell align="left">{row.category}</TableCell>
+                <TableCell align="left">{row.brand}</TableCell>
                 <TableCell align="right">{row.uom}</TableCell>
                 <TableCell align="right">&#8369;{row.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</TableCell>
                 <TableCell align="right">{row.stocks}</TableCell>

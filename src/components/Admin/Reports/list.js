@@ -113,62 +113,7 @@ const useStyles = makeStyles((theme) => ({
       </List>
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={4}>
-        <Paper className={classes.paper}>
-          <List component="nav" aria-label="main mailbox folders" style={{backgroundColor:"#208769",color:"white",fontWeight:"bold"}}>
-        <ListItem button>
-          <ListItemIcon>
-            <HomeWorkIcon style={{color:"white"}} />
-          </ListItemIcon>
-          <ListItemText primary="Inventory" />
-        </ListItem>
-   
-      </List>
-      <Divider />
-      <List component="nav" aria-label="secondary mailbox folders" >
-        <ListItem button>
-          <ListItemText primary="Inventory Summary" />
-          <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="icon">
-                      <ArrowForwardIosIcon />
-                     
-                    </IconButton>
-                  </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-        <ListItemLink href="#simple-list">
-          <ListItemText primary="Evaluation Report" />
-          <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="icon">
-                      <ArrowForwardIosIcon />
-                     
-                    </IconButton>
-                  </ListItemSecondaryAction>
-        </ListItemLink>
-        <Divider />
-        <ListItemLink href="#simple-list">
-          <ListItemText primary="Product Sales Report" />
-          <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="icon">
-                      <ArrowForwardIosIcon />
-                     
-                    </IconButton>
-                  </ListItemSecondaryAction>
-        </ListItemLink>
-        <Divider />
-        <ListItemLink href="#simple-list">
-          <ListItemText primary="Stock Summary Report" />
-          <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="icon">
-                      <ArrowForwardIosIcon />
-                     
-                    </IconButton>
-                  </ListItemSecondaryAction>
-        </ListItemLink>
-   
-      </List>
-          </Paper>
-        </Grid>
+       
         <Grid item xs={12} sm={4}>
         <Paper className={classes.paper}>
           <List component="nav" aria-label="main mailbox folders" style={{backgroundColor:"#208769",color:"white",fontWeight:"bold"}}>
@@ -226,6 +171,62 @@ const useStyles = makeStyles((theme) => ({
       </List>
           </Paper>
         </Grid> 
+        <Grid item xs={12} sm={4}>
+        <Paper className={classes.paper}>
+          <List component="nav" aria-label="main mailbox folders" style={{backgroundColor:"#208769",color:"white",fontWeight:"bold"}}>
+        <ListItem button>
+          <ListItemIcon>
+            <HomeWorkIcon style={{color:"white"}} />
+          </ListItemIcon>
+          <ListItemText primary="Inventory" />
+        </ListItem>
+   
+      </List>
+      <Divider />
+      <List component="nav" aria-label="secondary mailbox folders" >
+        <ListItem button>
+          <ListItemText primary="Inventory Summary" />
+          <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="icon">
+                      <ArrowForwardIosIcon />
+                     
+                    </IconButton>
+                  </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+        <ListItemLink href="#simple-list">
+          <ListItemText primary="Evaluation Report" />
+          <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="icon">
+                      <ArrowForwardIosIcon />
+                     
+                    </IconButton>
+                  </ListItemSecondaryAction>
+        </ListItemLink>
+        <Divider />
+        <ListItemLink href="#simple-list">
+          <ListItemText primary="Product Sales Report" />
+          <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="icon">
+                      <ArrowForwardIosIcon />
+                     
+                    </IconButton>
+                  </ListItemSecondaryAction>
+        </ListItemLink>
+        <Divider />
+        <ListItemLink href="#simple-list">
+          <ListItemText primary="Stock Summary Report" />
+          <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="icon">
+                      <ArrowForwardIosIcon />
+                     
+                    </IconButton>
+                  </ListItemSecondaryAction>
+        </ListItemLink>
+   
+      </List>
+          </Paper>
+        </Grid>
             </div>
         )
     } 

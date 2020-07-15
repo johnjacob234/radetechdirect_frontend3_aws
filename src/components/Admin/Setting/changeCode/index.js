@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-import AutorenewIcon from '@material-ui/icons/Autorenew';
+import AddIcon from '@material-ui/icons/Add';
 import {inject,observer} from 'mobx-react'
 class Change extends React.Component {
     state = {  }
@@ -37,10 +37,10 @@ const changecode =()=>{
         variant="contained"
         style={{backgroundColor:'#FFA500',color:'white'}}
         className={classes.button}
-        startIcon={<AutorenewIcon />}
+        startIcon={<AddIcon />}
         onClick={()=>changecode()}
       >
-        New Access Code
+        Generate Access Code
       </Button>
 
     </div>

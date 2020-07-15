@@ -38,7 +38,7 @@ function IssuesGrid() {
     <div className={classes.root}>
       <Grid container style={{marginBottom:"10px"}} lg={12} sm={12} xs={12}>
         <Grid item lg={12} sm={12} xs={12}>
-      <Typography variant='h6'>Issues</Typography>
+      <Typography variant='h6'>Help/Support</Typography>
       </Grid>
       <Divider/>
     

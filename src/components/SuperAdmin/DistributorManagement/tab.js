@@ -9,10 +9,12 @@ import {Grid,Tab} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import DestributorTable from './Table'
-import RegisterDestributor from "./AddDestributor";
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './../../theme'
 import ArchivedDisTable from './Table/Archived'
+import {  IconButton, Paper } from '@material-ui/core';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -48,11 +50,28 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     width: "100%",
   },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  
+  },
+
+  search: {
+    // padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'right',
+    width: '100%',
+    float:"right"
+  },
 }));
 
 export default function FullWidthTabs() {
   const classes = useStyles();
- 
+  const [filter,setFilter]= React.useState("")
+  const [Afilter,AsetFilter]= React.useState("")
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -91,10 +110,29 @@ export default function FullWidthTabs() {
         <TabPanel value={value} index={0} dir={theme.direction}>
           <Grid container sm={12}> 
           <Grid item sm={12} style={{textAlign:"right",marginBottom:"12px"}}>
-          <RegisterDestributor/>
+          <Grid item sm={3} xs={3} style={{textAlign:"right",float:"right",marginBottom:"10px"}}>
+        
+        <Paper component="form" className={classes.search} >
+     
+        <InputBase
+          className={classes.input}
+          placeholder="Search"
+          inputProps={{ 'aria-label': 'search customers' }}
+          onChange={(e)=>setFilter(e.target.value)}
+        />
+        <span style={{  backgroundColor:"#FFA500",borderRadius:"3px"}}>
+        <IconButton type="submit" className={classes.iconButton} aria-label="search">
+          <SearchIcon style={{color:"white"}}/>
+        </IconButton>
+        </span>
+    
+      </Paper>
+     
+     
+        </Grid>
           </Grid>
         <Grid item sm={12} xs={12}>
-        <DestributorTable/>
+        <DestributorTable mysearch={filter}/>
         </Grid>
         </Grid>
         </TabPanel>
@@ -102,7 +140,34 @@ export default function FullWidthTabs() {
    
          
         
-          <ArchivedDisTable/>
+         
+          <Grid container sm={12}> 
+          <Grid item sm={12} style={{textAlign:"right",marginBottom:"12px"}}>
+          <Grid item sm={3} xs={3} style={{textAlign:"right",float:"right",marginBottom:"10px"}}>
+        
+        <Paper component="form" className={classes.search} >
+     
+        <InputBase
+          className={classes.input}
+          placeholder="Search"
+          inputProps={{ 'aria-label': 'search customers' }}
+          onChange={(e)=>AsetFilter(e.target.value)}
+        />
+        <span style={{  backgroundColor:"#FFA500",borderRadius:"3px"}}>
+        <IconButton type="submit" className={classes.iconButton} aria-label="search">
+          <SearchIcon style={{color:"white"}}/>
+        </IconButton>
+        </span>
+    
+      </Paper>
+     
+     
+        </Grid>
+          </Grid>
+        <Grid item sm={12} xs={12}>
+        <ArchivedDisTable mysearch={Afilter}/>
+        </Grid>
+        </Grid>
         </TabPanel>
 
       </SwipeableViews>

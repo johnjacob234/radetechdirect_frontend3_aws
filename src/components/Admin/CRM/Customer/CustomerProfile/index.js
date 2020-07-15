@@ -22,18 +22,22 @@ import TollIcon from '@material-ui/icons/Toll'
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import theme from './../../theme'
 import ActivityTable from './ActivityLogs'
 class CustProfile extends React.Component {
   state = {  }
 
   componentDidMount(){
-    let {startingStore:{getAccounts}}=this.props;
+    let {crmStore:{getAccounts}}=this.props;
     getAccounts()
   }
   render() { 
-    let {startingStore:{listOfUsers,account,editAccount}}=this.props
+    let {crmStore:{listOfUsers,account,editAccount}}=this.props
 
 function createData(id,name,pos,email,address,contactNo,birthday,dateRegistered,shopName,shopAddress){
   return {id,name,pos,email,address,contactNo,birthday,dateRegistered,shopName,shopAddress}
@@ -90,20 +94,56 @@ function ListItemLink(props) {
  function ProfileGrid() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [Dopen, DsetOpen] = React.useState(false);
   const handleClick = () => {
     setOpen(!open);
+   
   };
 
   
   let deactivate = userdata =>{
-  
+    DsetOpen(true);
     account.setProperty('account_ID',userdata.id)
     account.setProperty('account_status','archived')
+    
+  }
+
+  let handleArchive =()=>{
     editAccount();
   }
+  const handleClickD = () => {
+  
+    DsetOpen(false);
+  };
+
 
   return (
     <div className={classes.root}>
+
+<Dialog
+        open={Dopen}
+        onClose={handleClickD}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Deactivate this account?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+           
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <ThemeProvider theme={theme}>
+          <Button onClick={handleClickD} color="secondary" variant='contained' style={{color:'white'}}>
+            Cancel
+          </Button>
+          <Button onClick={handleArchive} color="primary" autoFocus variant='contained' style={{color:'white'}}>
+            Agree
+          </Button>
+          </ThemeProvider>
+        </DialogActions>
+      </Dialog>
+
        <Grid container direction="row">
         <Typography variant="h5" >
            Customer Relationship Management
@@ -265,7 +305,7 @@ Voucher
           <Typography variant='h6'>Activities</Typography>
           </Grid>
           <Grid item  xs={12} sm={12} style={{marginTop:"16px"}}>
-            <ActivityTable/>
+            <ActivityTable account_ID={info.id}/>
           </Grid>
           </Grid>
         </Grid>
@@ -323,4 +363,4 @@ return (
 }
 }
 
-export default withRouter(inject("startingStore")(observer(CustProfile)));
+export default withRouter(inject("crmStore")(observer(CustProfile)));

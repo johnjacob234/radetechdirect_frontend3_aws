@@ -22,8 +22,8 @@ import ReplenishTable from './Replenishment';
 // charts
 // import StatChart from './StatTab/StatChart';
 import StatTab from './StatTab';
-
-
+import PersonIcon from '@material-ui/icons/Person';
+import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 
 class AdDashboard extends Component{
 
@@ -31,43 +31,43 @@ class AdDashboard extends Component{
 
   
     componentDidMount() {
-      let {startingStore:{getAccounts,getProducts,getOrder,getCartD}}=this.props;
+      let {startingStore:{getAccounts,getProducts,getOrder,getCartD,getDistributors }}=this.props;
     
         getOrder();
         getProducts();
         getAccounts();
         getCartD();
-
+        getDistributors ();
       
     }
   
   
   
-    state = {}
+  
   render(){
-    let {startingStore:{listOfOrder,listOfUsers,listOfCart}}=this.props;
+    let {startingStore:{listOfOrder,listOfUsers,listOfCart,listOfDistributors}}=this.props;
     let getId =JSON.parse(sessionStorage.getItem("userData"))
 
 
-    let saless =()=>{
-      this.props.history.push("/Admin/PaymentReceived")
+    let actDist =()=>{
+      this.props.history.push("/SuperAdmin/DistributorManagement")
     }
 
     let orders =()=>{
-      this.props.history.push("/Admin/OrderManagement")
+      // this.props.history.push("/Admin/OrderManagement")
     }
     let usersact =()=>{
-      this.props.history.push("/Admin/CRM")
+      // this.props.history.push("/Admin/CRM")
     }
-    let collections =()=>{
-      this.props.history.push("/Admin/Accounting")
+    let inactDist =()=>{
+      this.props.history.push("/SuperAdmin/DistributorManagement")
     }
 
     let failed =()=>{
-      this.props.history.push("/Admin/OrderManagement")
+      this.props.history.push("/SuperAdmin/Issues")
     }
     let newcust =()=>{
-      this.props.history.push("/Admin/CRM")
+      // this.props.history.push("/Admin/CRM")
     }
 
     function Alert(props) {
@@ -160,27 +160,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-let filactivecust = listOfUsers.filter(account => account.distributor_ID === getId.distributor_ID).length;
-
+let filactivecust = listOfUsers.filter(account => account.account_status === 'active').length;
+let filinactivecust = listOfUsers.filter(account => account.account_status === 'archived').length;
 let filorder = listOfOrder.filter(order => order.distributor_ID === getId.distributor_ID).length;
 
 
-let salesYTD =  listOfOrder.map(product => {
-  
-  return (
-
-    listOfOrder.filter((amount) => (amount.distributor_ID === getId.distributor_ID))
-    .reduce((sum, record) => parseInt(sum) + parseInt(record.orderTotalAmount) , 0)
-
-
-
-    );
-
- })
+let activeDist =  listOfDistributors.filter(acc=> acc.distributor_status === 'active').length;
+let inactiveDist =  listOfDistributors.filter(acc=> acc.distributor_status === 'archived').length;
 
  let failedOrders = listOfOrder.filter(order => order.distributor_ID === getId.distributor_ID && order.orderStatus === 'Failed').length;
 
- const sales = `${salesYTD.pop()}`;
+
 
 
   function AdminDashboard() {
@@ -224,15 +214,15 @@ let salesYTD =  listOfOrder.map(product => {
       <Grid container spacing={3} >
    
       <Grid item xs={4}>
-        <CardActionArea onClick={saless}>
+        <CardActionArea onClick={actDist}>
         <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title}  gutterBottom style={{float:"right"}}>
-          Sales YTD
+          Active Distributors
         </Typography>
         <Typography variant="h5"  style={{textAlign:"left"}} >
-       <MonetizationOnOutlinedIcon style={{fontSize:"3.5em",color:"white"}}/>
-      <span style={{textAlign:"right",color:"white"}}> &#8369;{sales.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>
+       <PersonIcon style={{fontSize:"3.5em",color:"white"}}/>
+      <span style={{textAlign:"right",color:"white"}}>{activeDist.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>
         </Typography>
        
         <Typography variant="body2" component="p">
@@ -311,15 +301,15 @@ let salesYTD =  listOfOrder.map(product => {
     </CardActionArea>
         </Grid>
         <Grid item xs={4}>
-        <CardActionArea onClick={collections}>
+        <CardActionArea onClick={inactDist}>
         <Card className={classes.card2}>
       <CardContent>
         <Typography className={classes.title}  gutterBottom style={{float:"right"}}>
-          Collections YTD
+          Inactive Distributors
         </Typography>
         <Typography variant="h5"  style={{textAlign:"left"}} >
-       <CollectionsBookmarkOutlinedIcon style={{fontSize:"3.5em",color:"white"}}/>
-      <span style={{textAlign:"right",color:"white"}}>&#8369;{sales.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>
+       <PersonAddDisabledIcon style={{fontSize:"3.5em",color:"white"}}/>
+      <span style={{textAlign:"right",color:"white"}}>{inactiveDist.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>
         </Typography>
        
         <Typography variant="body2" component="p">
@@ -375,11 +365,11 @@ let salesYTD =  listOfOrder.map(product => {
         <Card className={classes.card2}>
       <CardContent>
         <Typography className={classes.title}  gutterBottom style={{float:"right"}}>
-          New Customers
+          Inactive Customers
         </Typography>
         <Typography variant="h5"  style={{textAlign:"left"}} >
-       <PersonAddOutlinedIcon style={{fontSize:"3.5em",color:"white"}}/>
-      <span style={{textAlign:"right",color:"white"}}> 500</span>
+       <PersonAddDisabledIcon style={{fontSize:"3.5em",color:"white"}}/>
+      <span style={{textAlign:"right",color:"white"}}> {filinactivecust.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</span>
         </Typography>
        
         <Typography variant="body2" component="p">
@@ -401,124 +391,13 @@ let salesYTD =  listOfOrder.map(product => {
         </Grid>
 
 
-        <Grid item xs={9}>
-          <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Sales Statistics</Typography>
-              </Grid>
-              <Grid xs={6}> 
-             {/* tab */}
-              </Grid>
-              </Grid>
-              <Divider/>
-              <Grid xs={12}>
-              <StatTab/>
-{/* <StatChart/> */}
-              </Grid>
-            </CardContent>
-
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-        <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Top 5 Best Selling</Typography>
-              </Grid>
-          
-              </Grid>
-             
-            </CardContent>
-            <Divider/>
-            <CardContent>
-         
-            </CardContent>
-          </Card>
-        </Grid>
 
         <Grid item xs={9}>
         <Card>
             <CardContent>
               <Grid container>
                 <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Order Statistics</Typography>
-              </Grid>
-              <Grid xs={6}> 
-           
-              </Grid>
-              </Grid>
-              <Divider/>
-              <Grid xs={12}>
-<OrderChart/>
-              </Grid>
-            </CardContent>
-
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-        <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}>Top 5 Locations</Typography>
-              </Grid>
-          
-              </Grid>
-             
-            </CardContent>
-            <Divider/>
-            <CardContent>
-         
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={9}>
-        <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Delivery Activity</Typography>
-              </Grid>
-              <Grid xs={6}> 
-           
-              </Grid>
-              </Grid>
-              <Divider/>
-              <Grid xs={12}> 
-           <DeliveryTab/>
-           </Grid>
-            </CardContent>
-
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-        <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}>Top 5 Customers</Typography>
-              </Grid>
-          
-              </Grid>
-             
-            </CardContent>
-            <Divider/>
-            <CardContent>
-         
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={9}>
-        <Card>
-            <CardContent>
-              <Grid container>
-                <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Customer Balance</Typography>
+              <Typography variant="h5" style={{color :"grey"}}> Customer per distributor</Typography>
               </Grid>
               <Grid xs={6}> 
            
@@ -532,12 +411,13 @@ let salesYTD =  listOfOrder.map(product => {
 
           </Card>
         </Grid>
+
         <Grid item xs={3}>
         <Card>
             <CardContent>
               <Grid container>
                 <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Bottom 5 Customers</Typography>
+              <Typography variant="h5" style={{color :"grey"}}> Top 5 Distributor</Typography>
               </Grid>
           
               </Grid>
@@ -550,12 +430,13 @@ let salesYTD =  listOfOrder.map(product => {
           </Card>
         </Grid>
 
+
         <Grid item xs={9}>
         <Card>
             <CardContent>
               <Grid container>
                 <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}>Replenishment</Typography>
+              <Typography variant="h5" style={{color :"grey"}}>Help/Support</Typography>
               </Grid>
               <Grid xs={6}> 
            
@@ -569,12 +450,13 @@ let salesYTD =  listOfOrder.map(product => {
 
           </Card>
         </Grid>
+
         <Grid item xs={3}>
         <Card>
             <CardContent>
               <Grid container>
                 <Grid item xs={6}> 
-              <Typography variant="h5" style={{color :"grey"}}> Bottom 5 Locations</Typography>
+              <Typography variant="h5" style={{color :"grey"}}>Bottom 5 Distributor</Typography>
               </Grid>
           
               </Grid>
@@ -586,6 +468,12 @@ let salesYTD =  listOfOrder.map(product => {
             </CardContent>
           </Card>
         </Grid>
+
+ 
+
+
+
+
 
       </Grid>
     </div>
