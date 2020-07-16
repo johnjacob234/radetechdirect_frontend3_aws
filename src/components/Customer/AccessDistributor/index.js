@@ -97,8 +97,8 @@ console.log(res,'ress')
       setTimeout(() => {
       addcLogs();
       distributor.setProperty("distributor_ID",res.distributor_ID)
-      this.props.history.push("/Customer" )
-    }, 500);
+     this.props.history.push({"pathname":"/Customer", state:{ Distid: res.distributor_ID}} )
+    }, 1500);
 
 
  
