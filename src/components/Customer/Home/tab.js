@@ -26,13 +26,23 @@ class HomeTab extends React.Component {
       
     let {customerStore:{getProducts,getDistributors,getAccounts }}=this.props;
 
-    getProducts();
+    
    
     getDistributors();
     getAccounts();
 
 
-  }
+    getProducts().then(res => {
+        
+
+      this.setState({listofProducts: res})
+    })
+   
+
+}
+state={
+listofProducts:[],
+}
 
 
   render() { 
