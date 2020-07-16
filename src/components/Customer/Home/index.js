@@ -30,10 +30,16 @@ const styles={
   
         getDistributors();
         getCart();
+      
+        getProducts().then(res => {
         
-        getProducts();  
-       
+
+          this.setState({listofProducts: res})
     
+  }
+                           
+     state={
+    listofProducts:[],
   }
   
   render() {
