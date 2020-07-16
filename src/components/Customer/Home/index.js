@@ -25,20 +25,21 @@ const styles={
     this.setState({ selected: event.target.value, name: event.target.name});
   };
 
-  componentWillMount() {
-    let {customerStore:{getProducts,getDistributors, getCart }}=this.props;
+  componenDidMount() {
+    let {customerStore:{getProducts,getDistributors, getCart,listofProducts  }}=this.props;
   
         getDistributors();
         getCart();
-      
+        
         getProducts().then(res => {
         
 
           this.setState({listofProducts: res})
+        })
+       
     
   }
-                           
-     state={
+  state={
     listofProducts:[],
   }
   
