@@ -23,7 +23,7 @@ class MyDistributor extends React.Component {
     let {customerStore:{ getMembership,getToken}}=this.props;
     
     getToken();
-    getMembership().then(res => this.setState({"listOfMember" : res}));
+    getMembership();
   }
 
   
@@ -42,7 +42,7 @@ class MyDistributor extends React.Component {
   getNewMembers = () => {
     let {customerStore:{ getMembership,getToken}}=this.props;
     getToken();
-    getMembership().then(res => this.setState({"listOfMember" : res}));
+    getMembership() 
   }
   
   
@@ -199,7 +199,7 @@ function DistGrid() {
           </Paper>
         </Grid>
         </Grid>
-               <div style={{margin:0, top: 'auto',right: 20,bottom: 70,left: 'auto',position: 'fixed'}}>
+               <div style={{margin:0, top: 'auto',right: 20,bottom: 70,left: 'auto',position: 'fixed'}} onClick={()=> this.getNewMembers()})>
    <AddDist />
     </div>
    <Grid  item lg={12} sm={12} xs={12} style={{bottom: 0,position: 'absolute',border:'1px solid white',width:'100%'}}>
