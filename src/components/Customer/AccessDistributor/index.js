@@ -120,7 +120,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-let getDist = this.state.listOfMember.filter(ace => ace.account_ID === getId.account_ID).map(dist =>{
+let getDist = this.state.listOfMember.filter(ace => ace.account_ID === getId.account_ID)
+
+let git = getDist.map(dist =>{
   return (
 <React.Fragment key={dist.membership_ID}>
 <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}}    open={snackbaropen} autoHideDuration={2000} onClose={snackbarClose}  >   
@@ -185,7 +187,7 @@ function DistGrid() {
       </List>
       <Divider />
       <List component="nav" aria-label="secondary mailbox folders">
-       {getDist}
+       {git}
       </List>
           </Paper>
         </Grid>
