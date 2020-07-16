@@ -39,6 +39,11 @@ class MyDistributor extends React.Component {
     }
   
     
+  getNewMembers = () => {
+    let {customerStore:{ getMembership,getToken}}=this.props;
+    getToken();
+    getMembership().then(res => this.setState({"listOfMember" : res}));
+  }
   
   
 
@@ -120,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-let getDist = this.state.listOfMember.filter(ace => ace.account_ID === getId.account_ID)
+let getDist = listOfMembership.filter(ace => ace.account_ID === getId.account_ID)
 
 let git = getDist.map(dist =>{
   return (
@@ -132,7 +137,9 @@ let git = getDist.map(dist =>{
 <ListItem button onClick={()=>accessD(dist)}>
         <ListItemText secondary={dist.distributor_wHouse} />
         <ListItemSecondaryAction>
-                  <IconButton onClick={()=>accessD(dist)}  edge="end" aria-label="icon">
+                  <IconButton onClick={()=>{accessD(dist) 
+                                     
+                                           }}  edge="end" aria-label="icon">
                     <ArrowForwardIosIcon />
                    
                   </IconButton>
