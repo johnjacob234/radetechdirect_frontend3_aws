@@ -84,9 +84,10 @@ function FormDialog() {
       membership.setProperty('distributor_wHouse',disWH[0])
       membership.setProperty('membership_ID',`${disID[0]}-${ Math.floor(1000 + Math.random() * 9000)}`)
       membership.setProperty('account_ID',myId.account_ID)
+      addMembership();
+      getMembership();
       setTimeout(()=>{
-        addMembership();
-        getMembership();
+        setOpen(false)
       },500)
      
     }else if (filmember !=0){
