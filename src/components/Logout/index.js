@@ -10,7 +10,7 @@ import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import {inject,observer} from 'mobx-react'
-import {BrowserRouter as Router,withRouter} from 'react-router-dom'
+import {HashRouter as Router,withRouter} from 'react-router-dom'
 
 class Options extends React.Component {
   state = {  }

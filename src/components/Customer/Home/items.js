@@ -192,7 +192,7 @@ setTimeout(() => {
           setTimeout(() => {
           
   
-            this.props.history.push({"pathname":"/Customer/itemInfo", state:{ prod_id: products.product_ID,dis_id:disId.distributor_ID}} )
+            this.props.history.push({"pathname":"/Customer/ItemInfo", state:{ prod_id: products.product_ID,dis_id:disId.distributor_ID}} )
           }, 500);
         };  
 

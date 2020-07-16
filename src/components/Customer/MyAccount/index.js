@@ -52,7 +52,7 @@ class MyAccount extends React.Component {
  
   function  logout() {
     sessionStorage.clear();
-    window.location.href = '/Login';
+    window.location.href = '/#/Login';
   }
 
 

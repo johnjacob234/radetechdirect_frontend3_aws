@@ -7,11 +7,12 @@ import HomeIcon from '@material-ui/icons/Home';
 import LocalShippingTwoToneIcon from '@material-ui/icons/LocalShippingTwoTone';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import theme from './theme';
-import {withRouter} from 'react-router-dom'
+import {HashRouter as Router,withRouter} from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 import Badge from '@material-ui/core/Badge';
 import {inject,observer} from 'mobx-react'
+import { CssBaseline } from '@material-ui/core';
 
 class FooterNav extends React.Component {
 
@@ -50,7 +51,7 @@ let getID = JSON.parse(sessionStorage.getItem('userData'))
     }
     let HomeD =()=>{
       setTimeout(() =>{
-        this.props.history.push("/Customer/Home")
+        this.props.history.push("/Customer")
       
       },1000)
     }
@@ -89,6 +90,7 @@ let notif =filnotif.map(notf => {return notf})
 
   return (
     <React.Fragment>
+      <CssBaseline/>
     <ThemeProvider theme={theme}>
     <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
         <CircularProgress color="primary" />

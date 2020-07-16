@@ -42,7 +42,7 @@ const StyledTableCell = withStyles((theme) => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14,
+    fontSize: 12,
   },
 }))(TableCell);
 
@@ -105,7 +105,7 @@ const useStyles = makeStyles({
           <TableRow>
            
             <StyledTableCell align="left">Product</StyledTableCell>
-            <StyledTableCell align="right">Quantity</StyledTableCell>
+            <StyledTableCell align="right">Qty</StyledTableCell>
          
             <StyledTableCell align="right">Amount</StyledTableCell>
           </TableRow>

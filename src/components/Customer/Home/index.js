@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import {Grid} from '@material-ui/core';
+import {Grid, CssBaseline} from '@material-ui/core';
 import CenteredTabs from './tab.js';
 import {
-  BrowserRouter as Router,withRouter,
+  HashRouter as Router,withRouter,
 
 
 } from "react-router-dom";
@@ -41,7 +41,7 @@ const styles={
     return (
       
       <div >
-       
+       <CssBaseline/>
       <Grid style={styles}>
         
       <CenteredTabs />

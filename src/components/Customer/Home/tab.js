@@ -18,7 +18,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {Divider,Paper,IconButton,Grid,Button} from '@material-ui/core';
+import {Divider,Paper,IconButton,Grid,Button, CssBaseline} from '@material-ui/core';
 class HomeTab extends React.Component {
   state = {  }
 
@@ -134,6 +134,7 @@ const useStyles = makeStyles(theme => ({
 
   return (
     <div className={classes.root}>
+      <CssBaseline/>
       <ThemeProvider theme={theme}>
       <AppBar position="static">
         <Tabs

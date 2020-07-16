@@ -124,7 +124,7 @@ import { Link, withRouter } from 'react-router-dom';
                 </Grid>
                 </form>
                 </React.Fragment>
-                <Grid container sm={12} xs={12} style={{marginTop:"16px"}} alignItems='center'><Grid item xs={12} sm={12} style={{textAlign:'center',marginRight:'5px'}}><Typography variant='captiontext' >Have already an account? <Link to='/Login'> Login Here</Link></Typography></Grid>  </Grid>
+                <Grid container sm={12} xs={12} style={{marginTop:"16px"}} alignItems='center'><Grid item xs={12} sm={12} style={{textAlign:'center',marginRight:'5px'}}><Typography variant='captiontext' >Have already an account? <Link to='/#/Login'> Login Here</Link></Typography></Grid>  </Grid>
             </div>
         )
     }

@@ -69,6 +69,8 @@ return(createData(
 const useStyles = makeStyles({
   table: {
     width: '100%',
+    
+    minWidth:250
   },
 });
  function Failed() {

@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
-import { BrowserRouter as Router, withRouter } from "react-router-dom";
+import { HashRouter as Router, withRouter } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,7 +51,7 @@ let MyDist =listOfDis.map(distributorss =>{
 
    setTimeout(() => {
 
-    this.props.history.push({"pathname":"/Customer/Home", state:{ id: distributorss.distributor_ID}} )
+    this.props.history.push({"pathname":"/Customer", state:{ id: distributorss.distributor_ID}} )
   }, 500);
 
   }

@@ -1,12 +1,12 @@
 import { Grid,CssBaseline } from '@material-ui/core';
 import { inject, observer } from "mobx-react";
 import React, { Component } from "react";
-import { HashRouter  as Router, Route, Switch, withRouter } from "react-router-dom";
+import { HashRouter as Router, Route, Switch, withRouter } from "react-router-dom";
 import AccountSetting from './AccountSettings';
 import CheckOutGrid from './CheckOut';
 import Footer from './Footer';
 import Header from './Header';
-import Home from './Home';
+import CustHome from './Home';
 import Carousel from './Home/carousel.js';
 import ItemInfo from './itemInfo';
 import MyAccountGrid from './MyAccount';
@@ -41,10 +41,12 @@ import CustomizedSteppers from './Stepper';
 </div>
      
 
+<Switch>
       {/* <Route  path="/AccessDistributor" render={()=><AccessD/>}/> */}
+      <Route exact path="/Customer" render={()=><CustHome/>}/>
       <Route path="/Customer/Register" render={()=><Register/>}/>
-    <Route exact path="/Customer/Home" render={()=><Home/>}/>
-        <Route path="/Customer/itemInfo" render={()=><ItemInfo/>}/>
+  
+        <Route path="/Customer/ItemInfo" render={()=><ItemInfo/>}/>
        <Route path="/Customer/Stepper" render={()=><CustomizedSteppers/>}/>
        <Route path="/Customer/RegisterS" render={()=><UserForm/>}/>
    
@@ -59,7 +61,7 @@ import CustomizedSteppers from './Stepper';
      
       {/*<Route  path="/Admin/AdminUserManagement" render={()=><AdminUserManagement/>}/> */}
       
-
+  </Switch>
 
 
 

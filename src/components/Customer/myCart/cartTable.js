@@ -92,7 +92,7 @@ arrayBufferToBase64 (buffer) {
       // let getuname = JSON.parse(sessionStorage.getItem('userData'))
       setTimeout(() => {
         // openNotificationSucess();
-        this.props.history.push("/Customer/Home")
+        this.props.history.push("/Customer")
       }, 500);
      }
 

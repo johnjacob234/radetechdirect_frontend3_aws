@@ -27,7 +27,7 @@ const StyledTableCell = withStyles((theme) => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14,
+    fontSize: 12,
   },
 }))(TableCell);
 
@@ -81,8 +81,8 @@ function OrderTable() {
       <TableHead>
         <TableRow>
           <StyledTableCell>Name</StyledTableCell>
-          <StyledTableCell align="left">Quantity</StyledTableCell>
-          <StyledTableCell align="left">Total</StyledTableCell>
+          <StyledTableCell align="right">Quantity</StyledTableCell>
+          {/* <StyledTableCell align="left">Total</StyledTableCell> */}
       
         </TableRow>
       </TableHead>
@@ -99,7 +99,7 @@ function OrderTable() {
             <StyledTableCell component="th" scope="row">
               {item}
             </StyledTableCell>
-            <StyledTableCell align="left">{qtys}</StyledTableCell>
+            <StyledTableCell align="right">{qtys}</StyledTableCell>
           
          
           </StyledTableRow>

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import {Typography,Divider} from '@material-ui/core'
-import {BrowserRouter as Router,withRouter} from 'react-router-dom'
+import {HashRouter as Router,withRouter} from 'react-router-dom'
 import {inject,observer} from 'mobx-react'
 import {TextField,Button} from '@material-ui/core'
 import UpdateIcon from '@material-ui/icons/Update';

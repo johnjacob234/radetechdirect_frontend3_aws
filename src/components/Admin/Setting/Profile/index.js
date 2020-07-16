@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import {Typography,Divider} from '@material-ui/core'
-import {BrowserRouter as Router,withRouter} from 'react-router-dom'
+
 import {inject,observer} from 'mobx-react'
 import {TextField,Button} from '@material-ui/core'
 import UpdateIcon from '@material-ui/icons/Update';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-class Profile extends React.Component {
+class myProfile extends React.Component {
     state = {  }
 
     componentDidMount(){
@@ -19,7 +19,7 @@ class Profile extends React.Component {
     }
 
     render() { 
-       
+      
   let{startingStore:{account,editAccount}}=this.props
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,6 +85,7 @@ function Alert(props) {
 
 
   return (
+    <Fragment>
     <div className={classes.root}>
 
 <Snackbar open={open} autoHideDuration={2000}  anchorOrigin={{vertical:'center',horizontal:'center'}}>
@@ -231,6 +232,7 @@ function Alert(props) {
       ))} 
       </form>
     </div>
+    </Fragment>
   );
 }
 return ( 
@@ -239,4 +241,4 @@ return (
 }
 }
 
-export default withRouter(inject("startingStore")(observer(Profile)));
+export default inject("startingStore")(observer(myProfile));

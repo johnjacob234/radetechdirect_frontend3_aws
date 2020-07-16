@@ -228,7 +228,7 @@ class EditForm extends Component{
 
       <FormControl  variant="outlined" className={classes.formControl} style={{width:"100%"}}>
         <InputLabel htmlFor="grouped-native-select">Category</InputLabel>
-        <Select native  defaultValue={product.product_Category} id="grouped-native-select"
+        <Select native  defaultValue={product.product_Category} id="grouped-native-select" label="Category"
         onChange={product_Category=>{product.setProperty("product_Category", product_Category.target.value)}}
         >
           <option aria-label="None" value="" />
@@ -381,7 +381,7 @@ class EditForm extends Component{
       <Grid item  xs={6} style={{margin:"5px"}}>
       <FormControl  variant="outlined" className={classes.formControl} style={{width:"100%"}}>
         <InputLabel htmlFor="grouped-native-select">Variant</InputLabel>
-        <Select native  defaultValue={product.product_Variant} id="grouped-native-select"
+        <Select native  defaultValue={product.product_Variant} id="grouped-native-select" label="Variant"
         onChange={product_Variant=>{product.setProperty("product_Variant", product_Variant.target.value)}}
         >
           <option aria-label="None" value="" />

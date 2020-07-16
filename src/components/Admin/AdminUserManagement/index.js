@@ -7,6 +7,12 @@ import ProfilesTab from './profileTab.js';
 
 
 class adDrawer extends Component{
+  componentDidMount(){
+    let {employeeStore:{getAccounts}}=this.props;
+
+    getAccounts();
+  }
+
 
 render(){
   function AdminUserManagement() {
@@ -37,7 +43,7 @@ return (
 
 }
 }
-export default withRouter(inject("startingStore")(observer(adDrawer)));
+export default withRouter(inject("employeeStore")(observer(adDrawer)));
 
 
 

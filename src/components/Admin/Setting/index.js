@@ -43,7 +43,7 @@ Setting
 </Typography>
 
 
-<Grid item sm={12} xs={12} style={{marginTop:'25px'}}>
+{/* <Grid item sm={12} xs={12} style={{marginTop:'25px'}}>
   <Typography variant='h6'>My Profile</Typography>
       <Grid container spacing={3} sm={12} xs={12}>
  
@@ -52,7 +52,7 @@ Setting
          <MyProfile/>
          </Grid>
         </Grid>
-        </Grid>
+        </Grid> */}
 
 
 <Grid item sm={12} xs={12} style={{marginTop:'25px'}}>
@@ -64,6 +64,7 @@ Setting
           <ChangeButton/>
        </Grid>
        <Grid item sm={12} xs={12} >
+       <MyProfile/>
          <AccessCode/>
          </Grid>
         </Grid>

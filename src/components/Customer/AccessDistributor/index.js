@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, CssBaseline } from '@material-ui/core';
 import { Divider, Paper } from '@material-ui/core/';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -23,7 +23,7 @@ class MyDistributor extends React.Component {
     let {customerStore:{ getMembership,getToken}}=this.props;
     
     getToken();
-    getMembership().then(res => this.setState(){"listOfMember" : res});
+    getMembership().then(res => this.setState({"listOfMember" : res}));
   }
 
   
@@ -97,7 +97,7 @@ console.log(res,'ress')
       setTimeout(() => {
       addcLogs();
       distributor.setProperty("distributor_ID",res.distributor_ID)
-      this.props.history.push("/Customer/Home" )
+      this.props.history.push("/Customer" )
     }, 500);
 
 
@@ -151,7 +151,7 @@ function DistGrid() {
 
 
     <div className={classes.root}>
-  
+  <CssBaseline/>
 
 <AppBar position="fixed" style={{backgroundColor:"#208769"}}>
         <Toolbar style={{textAlign:"center"}}>

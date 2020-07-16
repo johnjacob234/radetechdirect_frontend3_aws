@@ -15,7 +15,11 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 
 class IssueTable extends React.Component {
-   
+ 
+  componentDidMount(){
+    let {startingStore:{getReport}}=this.props;
+    getReport();
+  }
     render() {
       let{startingStore:{listOfReport}}=this.props;
 
@@ -129,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: '100%',
+    minWidth:1350
   },
   visuallyHidden: {
     border: 0,

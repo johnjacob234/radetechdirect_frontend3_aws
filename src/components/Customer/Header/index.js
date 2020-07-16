@@ -1,14 +1,12 @@
-import React from 'react';
-import {AppBar,Paper,InputBase,Typography,IconButton,Grid,NativeSelect,Box} from '@material-ui/core';
-
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
-import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
-import SearchIcon from '@material-ui/icons/Search';
+import { AppBar, Grid, IconButton, InputBase, Paper, Typography, CssBaseline } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import SearchIcon from '@material-ui/icons/Search';
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
+import React from 'react';
+import {HashRouter as Router, withRouter } from 'react-router-dom';
 
-import {withRouter} from 'react-router-dom'
+
 class CHeader extends React.Component {
   state = {  }
   render() { 
@@ -29,14 +27,14 @@ function Header(){
  
   function  logout() {
     localStorage.clear();
-    window.location.href = '/Login';
+    window.location.href = '/#/Login';
 }
 
 
 
 return(
-
-
+<React.Fragment>
+<CssBaseline/>
 
 <AppBar position="static" maxWidth="100"  style={styles}>
         <Grid container maxWidth="100" spacing={2} style={{marginTop:"25px",backgroundColor:"#208769",borderBottom:"5px solid orange"}}>
@@ -95,7 +93,7 @@ return(
 
 
 
-
+      </React.Fragment>
 
 
 );

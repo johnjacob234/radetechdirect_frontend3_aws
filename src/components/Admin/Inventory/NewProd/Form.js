@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     input: {
       display: 'none',
     },
+    
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
@@ -275,12 +276,13 @@ componentWillUnmount(){
 <Grid item  xs={6} style={{margin:"5px"}}>
 <FormControl variant="outlined" className={classes.formControl} style={{width:"100%"}}>
         <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-          Package
+          Packaging
         </InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
           maxWidth="100"
+          label='Packaging'
           onChange={product_Packaging=>{product.setProperty("product_Packaging", product_Packaging.target.value)}}
           labelWidth={labelWidth}
         >
@@ -337,8 +339,11 @@ componentWillUnmount(){
       </FormControl> */}
 
       <FormControl  variant="outlined" className={classes.formControl} style={{width:"100%"}}>
-        <InputLabel htmlFor="grouped-native-select">Category</InputLabel>
-        <Select native defaultValue="" id="grouped-native-select"
+        <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
+        <Select native labelId="demo-simple-select-outlined-label"  label="Category"  inputProps={{
+            name: 'Categoty',
+            id: 'outlined-age-native-simple',
+          }}
         onChange={product_Category=>{product.setProperty("product_Category", product_Category.target.value)}}
         >
           <option aria-label="None" value="" />
@@ -492,6 +497,7 @@ componentWillUnmount(){
       <FormControl  variant="outlined" className={classes.formControl} style={{width:"100%"}}>
         <InputLabel htmlFor="grouped-native-select">Variant</InputLabel>
         <Select native defaultValue="" id="grouped-native-select"
+        label="Variant"
         onChange={product_Variant=>{product.setProperty("product_Variant", product_Variant.target.value)}}
         >
           <option aria-label="None" value="" />

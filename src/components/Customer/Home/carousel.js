@@ -7,6 +7,7 @@ import ads1 from './OnSale/images/ads1.jpg'
 import ads2 from './OnSale/images/ads2.jpg'
 import ads3 from './OnSale/images/ads3.jpg'
 import ads4 from './OnSale/images/ads4.jpg'
+import { CssBaseline } from '@material-ui/core';
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const tutorialSteps = [
@@ -73,7 +74,7 @@ function AdCarousel() {
 
   return (
     <div className={classes.root}>
-    
+    <CssBaseline/>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}

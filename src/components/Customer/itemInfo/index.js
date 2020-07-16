@@ -13,7 +13,7 @@ import {inject,observer} from 'mobx-react'
 import Quantity from './quantity.js'
 import moment from 'moment';
 import {
-  BrowserRouter as Router,withRouter,
+  HashRouter as Router,withRouter,
  
 
 } from "react-router-dom";
@@ -129,7 +129,7 @@ let getdist = JSON.parse(sessionStorage.getItem('distData'))
    
           setTimeout(() => {
        
-            this.props.history.push({"pathname":"/Customer/myCart", state:{ id: getId.account_ID,myDis:diz}} )
+            this.props.history.push({"pathname":"/Customer/myCart", state:{ id: getId.account_ID}} )
           }, 2000);
         
       }

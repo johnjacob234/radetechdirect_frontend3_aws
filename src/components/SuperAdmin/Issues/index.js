@@ -7,7 +7,7 @@ import Tabs from './tab'
 
 
  class IssuesGrid extends React.Component {
-componentDidMount(){
+componentWillMount(){
   let {startingStore:{getReport}}=this.props;
   getReport();
 }

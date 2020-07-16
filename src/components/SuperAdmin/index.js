@@ -8,7 +8,7 @@ import QuestionAnswerOutlinedIcon from '@material-ui/icons/QuestionAnswerOutline
 import clsx from 'clsx';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { HashRouter  as Router, Route, Switch, withRouter } from "react-router-dom";
+import { HashRouter as Router, Route, Switch, withRouter } from "react-router-dom";
 // import SuperAdminDashboard from './Dashboard'; 
 import LogoutButton from './../Logout';
 import pr from './../pr.png';
