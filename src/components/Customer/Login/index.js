@@ -53,7 +53,7 @@ import MuiAlert from '@material-ui/lab/Alert';
         
           setTimeout(() => {
             this.setState({ snackbaropen: true });
-            this.props.history.push("/#/Login")
+            this.props.history.push("/Login")
           }, 500);
        
         }
