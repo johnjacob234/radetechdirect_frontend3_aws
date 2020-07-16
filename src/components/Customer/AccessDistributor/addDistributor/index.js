@@ -25,7 +25,7 @@ class AddStore extends React.Component {
     render() {
    
         let myId =JSON.parse(sessionStorage.getItem('userData'))
- let {customerStore:{addMembership,membership,listOfToken,listOfMembership }}=this.props;
+ let {customerStore:{addMembership,membership,listOfToken,listOfMembership,getMembership }}=this.props;
 
  function getHash(input){
     var hash = 0, len = input.length;
@@ -86,6 +86,7 @@ function FormDialog() {
       membership.setProperty('account_ID',myId.account_ID)
       setTimeout(()=>{
         addMembership();
+        getMembership();
       },500)
      
     }else if (filmember !=0){
